@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RD备考｜2026-08-14 50题</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #333; padding: 20px; }
+.container { max-width: 860px; margin: 0 auto; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+.header .meta { font-size: 14px; opacity: 0.9; }
+.controls { background: #fff; border-radius: 12px; padding: 16px 24px; margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.controls button { padding: 10px 28px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+.btn-submit { background: #667eea; color: #fff; }
+.btn-submit:hover { background: #5a6fd6; transform: translateY(-1px); }
+.btn-reset { background: #e8e8e8; color: #555; }
+.btn-reset:hover { background: #ddd; }
+.score-badge { margin-left: auto; font-size: 16px; font-weight: 600; color: #667eea; background: #f0f2ff; padding: 6px 16px; border-radius: 20px; }
+.question-card { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.2s; border-left: 4px solid transparent; }
+.question-card.correct { border-left-color: #52c41a; background: #f6ffed; }
+.question-card.wrong { border-left-color: #ff4d4f; background: #fff2f0; }
+.q-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+.q-number { font-size: 15px; font-weight: 700; color: #667eea; min-width: 60px; }
+.q-type { font-size: 12px; padding: 2px 10px; border-radius: 10px; background: #f0f2ff; color: #667eea; font-weight: 600; }
+.q-module { font-size: 12px; color: #999; margin-left: 4px; }
+.q-stem { font-size: 16px; line-height: 1.7; margin-bottom: 16px; font-weight: 500; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border: 2px solid #e8e8e8; border-radius: 8px; cursor: pointer; transition: all 0.15s; font-size: 15px; line-height: 1.5; }
+.option:hover { border-color: #667eea; background: #f8f9ff; }
+.option.selected { border-color: #667eea; background: #f0f2ff; }
+.option.correct-answer { border-color: #52c41a; background: #f6ffed; }
+.option.wrong-answer { border-color: #ff4d4f; background: #fff2f0; }
+.option-key { font-weight: 700; color: #667eea; min-width: 24px; }
+.option.disabled { pointer-events: none; opacity: 0.85; }
+.explanation-box { margin-top: 14px; padding: 14px 18px; background: #fafafa; border-radius: 8px; border-left: 4px solid #667eea; display: none; font-size: 14px; line-height: 1.7; color: #555; }
+.explanation-box.show { display: block; }
+.explanation-box .exp-label { font-weight: 700; color: #667eea; margin-bottom: 6px; }
+.footer { text-align: center; color: #999; font-size: 12px; padding: 20px 0; }
+.status-bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.stat-item { font-size: 13px; color: #666; }
+.stat-item strong { color: #333; }
+.summary-bar { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.summary-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+.summary-item { text-align: center; }
+.summary-item .num { font-size: 28px; font-weight: 700; }
+.summary-item .label { font-size: 13px; color: #999; margin-top: 2px; }
+.btn-copy-wrong { background: #ff4d4f; color: #fff; }
+.btn-copy-wrong:hover { background: #e04343; transform: translateY(-1px); }
+.wrong-list { margin-top: 14px; padding: 14px 18px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 8px; display: none; }
+.wrong-list.show { display: block; }
+.wrong-list .wl-title { font-weight: 600; color: #ff4d4f; margin-bottom: 6px; font-size: 15px; }
+.wrong-list .wl-nums { font-size: 14px; line-height: 1.8; color: #333; }
+	.wrong-list .wl-nums span { display: inline-block; padding: 2px 10px; margin: 3px 4px; background: #fff1f0; border: 1px solid #ffa39e; border-radius: 4px; font-size: 13px; font-weight: 600; color: #cf1322; }
+	.copy-area { margin-top: 14px; }
+	.copy-area textarea { width:100%; height:140px; font-size:13px; font-family:"Courier New",monospace; padding:10px; border:1px solid #d9d9d9; border-radius:6px; background:#fafafa; resize:vertical; box-sizing:border-box; }
+	.copy-area .copy-btn { margin-top:6px; padding:6px 20px; background:#667eea; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer; }
+	.copy-area .copy-btn:hover { background:#5a6fd6; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+.question-card { animation: fadeIn 0.3s ease; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>📝 RD 备考练习</h1>
+      <div class="meta">2026-08-14 ｜ 50 题 ｜ 综合</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:24px;font-weight:700;">50</div>
+      <div style="font-size:13px;opacity:0.8;"># of questions</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-submit" onclick="submitQuiz()">✅ 提交判分</button>
+    <button class="btn-reset" onclick="resetQuiz()">🔄 重新答题</button>
+    <button class="btn-copy-wrong" id="copyWrongBtn" onclick="copyWrongAnswers()" style="display:none">📋 复制错题号</button>
+    <div class="score-badge" id="scoreBadge">待提交</div>
+  </div>
+
+  <div class="summary-bar" id="summaryBar">
+    <h3 style="margin:0 0 8px;font-size:16px;color:#333;">📊 答题结果</h3>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="num" id="summaryTotal" style="color:#667eea">0</div><div class="label">总题数</div></div>
+      <div class="summary-item"><div class="num" id="summaryCorrect" style="color:#52c41a">0</div><div class="label">正确</div></div>
+      <div class="summary-item"><div class="num" id="summaryWrong" style="color:#ff4d4f">0</div><div class="label">错误</div></div>
+      <div class="summary-item"><div class="num" id="summaryRate" style="color:#667eea">0%</div><div class="label">正确率</div></div>
+    </div>
+    <div class="wrong-list" id="wrongList">
+      <div class="wl-title">❌ 错题详情 <span style="font-weight:400;font-size:12px;color:#999;">（可直接复制下方文本发给教练）</span></div>
+      <div class="wl-nums" id="wrongNums"></div>
+      <div class="copy-area">
+        <textarea id="wrongDetailText" readonly placeholder="提交后这里会显示错题详情，可直接复制..."></textarea>
+        <button class="copy-btn" onclick="copyWrongDetail()">📋 复制错题详情</button>
+      </div>
+    </div>
+  </div>
+  <div id="questionsContainer">
+    <div id="jsFallback" style="text-align:center;padding:60px 20px;color:#999;">
+      <div style="font-size:48px;margin-bottom:16px;">⚠️</div>
+      <div style="font-size:16px;">题目加载中...</div>
+      <div style="font-size:13px;margin-top:8px;">如果持续看不到题目，请刷新页面或重新生成题卡</div>
+    </div>
+  </div>
+
+  <noscript><div style="text-align:center;padding:40px;color:#ff4d4f;font-size:16px;">❌ 您的浏览器未启用 JavaScript，无法答题。</div></noscript>
+
+  <div class="footer">RD 备考题库 · 本地互动题卡</div>
+</div>
+
+<script>
+const QUESTIONS = [{"id": 3461, "index": 1, "type": "multiple", "stem": "肠外营养的适应证包括哪些？", "options": {"A": "不能经口进食或经口进食不能满足需求者", "B": "胃肠道消化与吸收功能障碍或衰竭者", "C": "EN实施3~7天后仍达不到目标量60%的患者", "D": "肠道功能正常且能获得足量营养者", "E": "重度烧伤导致摄入不足者"}, "answer": ["A", "B", "C", "E"], "explanation": "D不是适应证而是禁忌证。PN的适应证包括：不能经口进食或进食不足者（如吞咽功能障碍、严重创伤烧伤、重症胰腺炎早期等）、胃肠道消化吸收功能障碍者（如短肠综合征、肠梗阻等），以及EN实施3~7天后仍达不到目标量60%者（应考虑SPN）。", "module": "临床营养", "is_single": false}, {"id": 3486, "index": 2, "type": "multiple", "stem": "营养治疗在手术、创伤和危重症患者中的作用包括？", "options": {"A": "提供机体所需能量及营养素", "B": "发挥代谢调节治疗，抑制过激炎症反应", "C": "纠正代谢紊乱，抑制分解代谢", "D": "完全替代药物治疗", "E": "促进合成代谢"}, "answer": ["A", "B", "C", "E"], "explanation": "D错误：营养治疗是基础治疗、一线治疗，但不能完全替代药物治疗。营养治疗一方面提供能量及营养素供机体修复使用、促进合成代谢；另一方面发挥代谢调节治疗作用，抑制过激炎症反应，纠正代谢紊乱，抑制分解代谢。", "module": "临床营养", "is_single": false}, {"id": 3546, "index": 3, "type": "single", "stem": "下列营养素过剩的危害对应关系中，正确的是：①蛋白质—Kwashiorkor；②钙—奶碱综合征；③锌—肠病性肢端皮炎；④维生素D—高钙血症；⑤叶酸—巨幼红细胞性贫血。", "options": {"A": "②④", "B": "②④⑤", "C": "①②③⑤", "D": "②③④⑤"}, "answer": "A", "explanation": "钙过量可导致奶碱综合征（高钙血症+碱中毒+肾衰竭）；维生素D过量导致高钙血症。Kwashiorkor是蛋白质缺乏而非过剩；肠病性肢端皮炎（acrodermatitis enteropathica）是锌缺乏疾病；巨幼红细胞性贫血是叶酸缺乏而非过剩。", "module": "临床营养", "is_single": true}, {"id": 3465, "index": 4, "type": "multiple", "stem": "肠外营养的代谢相关并发症包括？", "options": {"A": "高血糖和低血糖", "B": "脂肪超载综合征", "C": "肝功能损害（PN相关性肝病）", "D": "再喂养综合征", "E": "导管相关血流感染"}, "answer": ["A", "B", "C", "D"], "explanation": "E错误：导管相关血流感染属于导管相关并发症，而非代谢相关并发症。PN代谢相关并发症包括：糖代谢紊乱（高/低血糖）、氨基酸代谢紊乱、脂肪超载综合征、微量营养素异常、再喂养综合征、肝功能损害、胆囊胆泥和结石形成、肾结石、代谢性骨病等。", "module": "临床营养", "is_single": false}, {"id": 2382, "index": 5, "type": "multiple", "stem": "发病主要在夏秋季的食物中毒包括（ ）。", "options": {"A": "沙门菌食物中毒", "B": "肉毒梭菌毒素中毒", "C": "葡萄球菌肠毒素中毒", "D": "河豚鱼食物中毒", "E": "副溶血性弧菌食物中毒"}, "answer": ["A", "C", "E"], "explanation": "夏秋季气温高、湿度大，适合细菌生长繁殖。沙门菌、葡萄球菌、副溶血性弧菌在夏秋季更易 污染食物引发食物中毒。肉毒梭菌毒素中毒多因食用被肉毒梭菌污染的罐头、腌肉等，无明显季节性。河豚 鱼中毒主要与河豚鱼的捕获及食用季节有关，并非夏秋季高发。答案：ACE", "module": "临床营养", "is_single": false}, {"id": 3440, "index": 6, "type": "multiple", "stem": "关于口服营养补充（ONS），以下叙述正确的有？", "options": {"A": "ONS是最为经济有效的营养治疗方式", "B": "每天通过ONS提供的能量大于400~600kcal才能更好地发挥作用", "C": "ONS制剂宜大口、快速服用以提高依从性", "D": "ONS通常作为加餐，建议一日三餐之间和晚餐后使用，即\"3+3\"模式", "E": "每次20~50ml，每次间隔10~30分钟"}, "answer": ["A", "B", "D", "E"], "explanation": "C错误：ONS制剂宜小口、慢速服用，尤其是高能量密度制剂，以免出现头晕、心慌、腹泻等不适。A正确：ONS是最为经济有效的营养治疗方式；B正确：每天>400~600kcal才能更好发挥作用；D正确：\"3+3\"模式；E正确：每次20~50ml，间隔10~30分钟。", "module": "临床营养", "is_single": false}, {"id": 3929, "index": 7, "type": "single", "stem": "临床营养的目的不正确的是", "options": {"A": "缩短病程", "B": "减轻病痛", "C": "确保疾病不再复发", "D": "促进康复"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P179。临床营养的目的是增强机体抵抗力，改善代谢、修补组织，积极地促进使疾病的转归，从而使病人早日康复。 确保疾病不再复发不属于临床营养目的。", "module": "临床营养", "is_single": true}, {"id": 4117, "index": 8, "type": "single", "stem": "【技师不做】下列不是反流性食管炎病因的是", "options": {"A": "饮烈酒", "B": "腹内压增高", "C": "胃肠插管", "D": "胃酸分泌少"}, "answer": "D", "explanation": "本题考查的是反流性食管炎的病因,反流性食管炎的病因主要包括三方面:①食管下端括约肌功能障碍,比如饮烈酒、腹内压增高、胃肠插管等;②反流物对食管黏膜的损害;③食管对反流物清除能力减弱。", "module": "临床营养", "is_single": true}, {"id": 4018, "index": 9, "type": "single", "stem": "软食适用于", "options": {"A": "腹部手术患者", "B": "痢疾患者", "C": "消化不良患者", "D": "喉部手术患者"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P182。软食易咀嚼、易消化,可减少胃肠负担,适用于消化不良的患者。", "module": "临床营养", "is_single": true}, {"id": 4023, "index": 10, "type": "single", "stem": "下列不是普通膳食饮食原则与要求的是", "options": {"A": "应少用一些难消化的食物", "B": "食物应清淡少盐", "C": "体力劳动者每天能量满足8.79~9.41MJ(1800~2250kcal)", "D": "食物的色、香、味、形可不用注意"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版P182。本题考查的是普通膳食的饮食原则与要求,普通膳食也要注意美观可口、色、香、味、形、新鲜卫生和多样化。", "module": "临床营养", "is_single": true}, {"id": 4014, "index": 11, "type": "single", "stem": "【技师不做】下列关于隐血试验膳食的说法,错误的是", "options": {"A": "用于辅助诊断消化道隐性出血", "B": "需减少红肉的摄入", "C": "可食用深色蔬菜", "D": "禁用肉类、肝和动物血"}, "answer": "C", "explanation": "本题考查隐血试验膳食的试验要求,隐血试验要求禁用深色蔬菜。", "module": "临床营养", "is_single": true}, {"id": 3954, "index": 12, "type": "single", "stem": "预防动脉粥样硬化应增加摄入的脂类成分为", "options": {"A": "饱和脂肪酸", "B": "不饱和脂肪酸", "C": "反式脂肪酸", "D": "甘油三酯"}, "answer": "B", "explanation": "《营养与食品卫生学》第8版P255，单不饱和脂肪酸可以降低血LDL-C和TG，而且不会降低HDL-C水平。", "module": "临床营养", "is_single": true}, {"id": 3933, "index": 13, "type": "single", "stem": "【技师不做】肠外营养适用于", "options": {"A": "呼吸衰竭", "B": "败血症", "C": "肝肾衰竭", "D": "临终关怀患者"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P193。肠外营养适应于：①非外科疾病：营养不良伴胃肠功能紊乱或障碍、神经性厌食或顽固性呕吐、肠道疾病（局限性或溃疡性结肠炎、肠结核、放射性肠炎等）、化疗与放疗辅助治疗期间、肝肾疾病、严重感染和败血症等；②外科疾病：胃肠道梗阻、胃大部切除及胃肠吻合术、大手术创伤及复合性外伤、消化道瘘、急性胰腺炎、脏器或骨髓移植后功能尚未恢复、大面积烧伤和重度感染。", "module": "临床营养", "is_single": true}, {"id": 4091, "index": 14, "type": "single", "stem": "可以减轻或消除便秘症状的膳食是", "options": {"A": "低脂膳食", "B": "高纤维膳食", "C": "低苯丙氨酸膳食", "D": "低嘌呤膳食"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P212。这是几种治疗膳食。可以减轻或消除胆囊炎症状的膳食是低脂膳食;可以控制苯丙酮尿症病情的膳食是低苯丙氨酸膳食;可以减轻或消除便秘症状的膳食是高纤维膳食;可以减轻体重、预防肥胖的膳食是低热能膳食;可以减轻或消除痛风症状的膳食是低嘌呤膳食。", "module": "临床营养", "is_single": true}, {"id": 4069, "index": 15, "type": "single", "stem": "低蛋白膳食不适用于", "options": {"A": "急性肾炎患者", "B": "尿毒症患者", "C": "慢性肾衰竭患者", "D": "烧伤患者"}, "answer": "D", "explanation": "烧伤患者属于高代谢状态,应给予高蛋白膳食。", "module": "临床营养", "is_single": true}, {"id": 4102, "index": 16, "type": "single", "stem": "【技师不做】浅表性胃炎胃酸分泌过多时,应建议选择的食物是", "options": {"A": "藕粉", "B": "肉汤", "C": "鸡汤", "D": "果汁"}, "answer": "A", "explanation": "《临床营养学》第3版P283。肉汤、鸡汤、果汁刺激胃酸分泌。", "module": "临床营养", "is_single": true}, {"id": 3971, "index": 17, "type": "single", "stem": "低嘌呤膳食不包括", "options": {"A": "精制谷类", "B": "牛奶", "C": "鸡蛋", "D": "肉汤"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版P218，表7-5精制谷类、牛奶、鸡蛋都属于低嘌呤食物。", "module": "临床营养", "is_single": true}, {"id": 4022, "index": 18, "type": "single", "stem": "脂肪肝、胆囊疾患、胰腺炎患者应选择", "options": {"A": "低蛋白膳食", "B": "低盐膳食", "C": "低脂膳食", "D": "低嘌呤膳食"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P184-185。低蛋白膳食适用对象肾脏疾病如急性肾炎急性肾衰竭、慢性肾衰竭、肾病综合征、尿毒症及肾透析,肝脏疾病中的肝性脑病各期。低盐膳食适用对象高血压、心力衰竭、急性肾炎、妊娠毒血症,各种原因引起的水、钠潴留患者。低脂膳食适用对象急慢性肝炎、肝硬化、脂肪肝、胆囊疾患、胰腺炎、高脂血症、冠心病、高血压、肥胖症。低嘌呤膳食适用对象痛风患者、无症状高尿酸血症者、尿酸性结石患者。", "module": "临床营养", "is_single": true}, {"id": 4072, "index": 19, "type": "single", "stem": "下面关于NRS2002营养风险筛查与评估量表的描述,正确的是", "options": {"A": "NRS2002量表内容包括疾病评分、营养状况评分和年龄评分", "B": "NRS2002量表总分7分,分数越低表示营养风险越高", "C": "该表需要进行特殊培训但用时短,简便易行", "D": "该表是主观全面评估量表"}, "answer": "A", "explanation": "NRS2002量表总分7分,分数越低表明营养风险越低;该表不需特殊培训;该量表不是主观性工具。", "module": "临床营养", "is_single": true}, {"id": 3950, "index": 20, "type": "single", "stem": "低嘌呤膳食中忌食用的是", "options": {"A": "蔬菜", "B": "水果", "C": "脑", "D": "牛奶"}, "answer": "C", "explanation": "《营养与食品卫生学》第8版P234，低嘌呤膳食忌用的食物：脑、肝、肾等动物内脏，凤尾鱼、沙丁鱼、肉汁、鸡汁等嘌呤含量高的食物。选项C-脑属于低嘌呤膳食忌用的食物。", "module": "临床营养", "is_single": true}, {"id": 3986, "index": 21, "type": "single", "stem": "某男性,50岁,身高159cm,体重73kg,其营养治疗的首要原则为", "options": {"A": "限制脂肪摄入量", "B": "少油低盐膳食", "C": "减少精制糖的摄入", "D": "控制总能量的摄入"}, "answer": "D", "explanation": "&nbsp;《营养与食品卫生学》第9版P201。该男性的BMI为73/1.59/1.59=28.8，为肥胖。 能量摄入大于消耗是肥胖的根本原因，因此对于肥胖的营养防控首先是控制总能量的摄入。", "module": "临床营养", "is_single": true}, {"id": 3985, "index": 22, "type": "single", "stem": "DASH膳食富含的营养素是", "options": {"A": "总脂肪", "B": "饱和脂肪酸", "C": "膳食纤维", "D": "钠"}, "answer": "C", "explanation": "《营养与食品卫生学》第8版P264。高血压治疗膳食（DASH），该膳食特点为富含水果、蔬菜，包括全谷类、家禽、鱼类、坚果，其富含的营养素有：钾、镁、钙和蛋白质，而总脂肪、饱和脂肪酸、胆固醇含量较低，富含膳食纤维。", "module": "临床营养", "is_single": true}, {"id": 4003, "index": 23, "type": "single", "stem": "肝豆状核变性患者应选择的膳食为", "options": {"A": "低渣膳食", "B": "低铜膳食", "C": "低热能膳食", "D": "高蛋白膳食"}, "answer": "B", "explanation": "《中国营养科学全书》第2版P1469。本题考核不同类型膳食的适应证", "module": "临床营养", "is_single": true}, {"id": 4089, "index": 24, "type": "single", "stem": "下列不属于基本膳食的是", "options": {"A": "普食", "B": "氮平衡膳食", "C": "软食", "D": "流质膳食"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P182-P183。基本膳食与一般健康人日常食用的膳食基本相同,膳食结构、能量与各种营养素和餐次均应遵守平衡膳食的原则,使能量及营养素数量和质量达到合理营养的要求。基本膳食包括普通膳食、软食、半流质膳食和流质膳食。氮平衡试验膳食通过计算膳食蛋白质的摄入量和排出氮量,观察体内蛋白质营养状况,属于诊断膳食。", "module": "临床营养", "is_single": true}, {"id": 3967, "index": 25, "type": "single", "stem": "高血压患者适宜选择的食物是", "options": {"A": "动物内脏", "B": "巧克力", "C": "糖果", "D": "牛奶"}, "answer": "D", "explanation": "《营养与食品卫生学》第8版P274，高血压的营养防治，减少膳食脂肪摄入量，增加优质蛋白的摄入。减少SFA的摄入量；减少高能量密度食物的摄入，少吃高能量的零食，如动物油脂、油炸食品、糖、甜点、含糖饮料。 动物内脏以饱和脂肪酸为主，巧克力和糖果属于高能量密度的零食。 牛奶属于优质蛋白。", "module": "临床营养", "is_single": true}, {"id": 4077, "index": 26, "type": "single", "stem": "属于高血压危险因素的有①肥胖②胰岛素抵抗③性别④遗传⑤年龄", "options": {"A": "①②③④", "B": "①②④⑤", "C": "①③④⑤", "D": "②③④⑤"}, "answer": "B", "explanation": "《营养与食品卫生学》第8版P260。原发性高血压病因复杂，已知的发病相关因素有：遗传、肥胖、胰岛素抵抗、某些营养素的过量或不足、过量饮酒、人口老龄化等。", "module": "临床营养", "is_single": true}, {"id": 4044, "index": 27, "type": "single", "stem": "低膳食纤维或低渣膳食不适用于", "options": {"A": "急慢性肠炎", "B": "溃疡性结肠炎", "C": "食管静脉曲张", "D": "无并发症的憩室病"}, "answer": "D", "explanation": "《中国营养科学全书》第二版下册P1465。低膳食纤维膳食适用于各种急慢性肠炎、伤寒、痢疾、结肠憩室炎、肠管肿瘤等;消化道少量出血,肠道手术前后,肠道或食管管腔狭窄及食管静脉曲张。", "module": "临床营养", "is_single": true}, {"id": 4079, "index": 28, "type": "single", "stem": "医院常规膳食不包括", "options": {"A": "普通膳食", "B": "软食", "C": "低蛋白膳食", "D": "半流质膳食"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P182。医院常规膳食通常是平衡膳食,只是注重食物种类和烹调方法,而治疗膳食需要调整营养素及其主要食物组成,如低蛋白膳食。", "module": "临床营养", "is_single": true}, {"id": 3973, "index": 29, "type": "single", "stem": "【技师不做】围手术期病人营养不良的临床表现不包括", "options": {"A": "高血糖", "B": "负氮平衡", "C": "免疫功能降低", "D": "肝功能异常"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P187。围手术期病人营养不良主要是指由于蛋白质和能量摄入不足引起的蛋白质-能量营养不良相应的一系列临床表现，如负氮平衡、血浆渗透压异常、免疫功能降低以及肝功能异常等集体代谢紊乱。 选项A高血糖不属于围手术期病人营养不良的临床表现。", "module": "临床营养", "is_single": true}, {"id": 3996, "index": 30, "type": "single", "stem": "某男,51岁,身高169cm,体重77kg,患高血压3年余,时有头晕、头痛等不适,一直服用降压药。其营养治疗的原则不包括", "options": {"A": "合理控制体重", "B": "限制食盐摄取", "C": "低蛋白饮食", "D": "控制膳食脂肪摄入"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P201。该男性的BMI为77/1.69/1.69=27，为超重。 《营养与食品卫生学》第8版P247。目前比较公认的减肥膳食是高蛋白（供能比占20%～25%）、低脂肪（功能比占20%～30%）、低碳水化合物（供能比占45%～50%）膳食。 所以选项C低蛋白是错误的。", "module": "临床营养", "is_single": true}, {"id": 6107, "index": 31, "type": "single", "stem": "除含铁卟啉外,细胞色素c氧化酶还含有", "options": {"A": "Mg", "B": "Zn", "C": "Cu", "D": "Mn"}, "answer": "C", "explanation": "暂无解析", "module": "生物氧化", "is_single": true}, {"id": 5759, "index": 32, "type": "single", "stem": "肾脏球旁器的功能是", "options": {"A": "合成血管紧张素原", "B": "分泌肾素", "C": "控制磷酸盐的排泄", "D": "调节集合管对水的重吸收"}, "answer": "B", "explanation": "《生理学》第9版P247。肾素是一种蛋白水解酶，由球旁器的球旁细胞合成、储存和释放，可以催化血浆中的血管紧张素原转变为血管紧张素1.血管紧张素I(十肽）在血管紧张素转换酶作用下生成血管紧张素II(八肽）。血管紧张素II可刺激肾上腺皮质球状带合成和分泌醛固酮。", "module": "尿的生成和排出", "is_single": true}, {"id": 5819, "index": 33, "type": "single", "stem": "下列氨基酸中参与体内嘧啶核苷酸合成的是", "options": {"A": "甘氨酸", "B": "谷氨酸", "C": "精氨酸", "D": "天冬氨酸"}, "answer": "D", "explanation": "暂无解析", "module": "核苷酸代谢", "is_single": true}, {"id": 6594, "index": 34, "type": "single", "stem": "以血红素为辅基的蛋白质是", "options": {"A": "ALA合酶", "B": "细胞色素", "C": "珠蛋白", "D": "铁鳌合酶"}, "answer": "B", "explanation": "《生物化学与分子生物学》第9版P351。血红素不但是血红蛋白的辅基，也是肌红蛋白、细胞色素、过氧化物酶等的辅基。", "module": "血液的生物化学", "is_single": true}, {"id": 5613, "index": 35, "type": "single", "stem": "消化道内,与蛋白质消化有关的酶有①胰淀粉酶②胰蛋白酶③糜蛋白酶④羧基肽酶", "options": {"A": "②③④", "B": "①③④", "C": "①②④", "D": "①②③④"}, "answer": "A", "explanation": "《生理学》第9版P193。胰蛋白酶和糜蛋白酶都能分解蛋白质为䏡和胨，当两者一同 作用于蛋白质时，则可将蛋白质消化为小分子多肽和游离氨基酸。羧基肽酶可作用于多肽末端的肽键，释出具有自由羧基的氨基酸。胰淀粉酶是胰腺分泌的消化淀粉的酶。", "module": "消化系统", "is_single": true}, {"id": 5878, "index": 36, "type": "single", "stem": "在形成核苷酸时,通过N9与戊糖连接的是", "options": {"A": "胸腺嘧啶", "B": "假尿嘧啶", "C": "胞嘧啶", "D": "腺嘌呤"}, "answer": "D", "explanation": "暂无解析", "module": "核酸的结构与功能", "is_single": true}, {"id": 6141, "index": 37, "type": "single", "stem": "2分子丙氨酸异生为葡萄糖需消耗儿个高能磷酸键", "options": {"A": "3", "B": "4", "C": "5", "D": "6"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P113。 丙氨酸等生糖氨基酸转化为丙酮酸后，参与糖异生。", "module": "糖代谢", "is_single": true}, {"id": 5725, "index": 38, "type": "single", "stem": "ADH除增加内髓集合管对水的通透性外,还", "options": {"A": "增加内髓集合管对尿素的通透性", "B": "增加近端小管钠的重吸收", "C": "降低髓袢降支细段对水的重吸收", "D": "增加髓袢升支细段对钠的通透性"}, "answer": "A", "explanation": "《生理学》第9版P239。抗利尿激素（ADH),是一种九肽激素。在人和某些哺乳动物，其第八位氨基酸残基为精氨酸，故又称精氨酸血管升压素（AVP)，ADH除增加内髓集合管对水的通透性外，内髓部集合管末端依赖抗利尿激素调控的尿素通道蛋白UT-A1和UT-A3对尿素高度通透，使浓缩的尿素扩散到内髓部组织。", "module": "尿的生成和排出", "is_single": true}, {"id": 5461, "index": 39, "type": "single", "stem": "下列关于胸膜腔内负压生理意义的描述，错误的是", "options": {"A": "促进静脉回流", "B": "促进淋巴回流", "C": "降低气道阻力", "D": "使肺保持扩张状态"}, "answer": "C", "explanation": "《生理学》第10版P139。胸膜腔内负压有重要的生理意义。它不仅通过密闭的胸膜腔把肺与胸廓两个弹性结构耦联在一起，使肺能随胸廓的张缩而张缩，还作用于胸腔内的腔静脉和胸导管，使之扩张，有利于静脉血和淋巴液的回流。胸膜腔负压减小或消失，肺依其自身的弹性回缩力而塌陷，造成肺不张，同时也阻碍了静脉血和淋巴液回流。", "module": "呼吸", "is_single": true}, {"id": 6636, "index": 40, "type": "single", "stem": "对可逆性抑制剂的描述正确的是", "options": {"A": "使酶变性失活的抑制剂", "B": "抑制剂与酶共价结合", "C": "抑制剂与酶是非共价键结合", "D": "可逆性抑制剂即指竞争性抑制"}, "answer": "C", "explanation": "暂无解析", "module": "酶与酶促反应", "is_single": true}, {"id": 6387, "index": 41, "type": "single", "stem": "14岁少年,患有渐进性肌疲劳和抽筋。内科实验室检测未发现有低血糖,胰高血糖素刺激下的脂肪动员正常。肌活检发现,肌细胞的胞质内有大量异常脂质填充空泡,成分分析空泡内脂质成分主要为甘油三酯。通过以上结果分析,该少年体内最有可能缺乏", "options": {"A": "肌糖原磷酸化酶", "B": "肝细胞糖原磷酸化酶", "C": "糖原脱支酶", "D": "肉碱"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P148。 脂肪酸氧化在肝、心肌、骨骼肌最强，在线粒体氧化后释放大量ATP，酯酰CoA进入线粒体是脂肪酸β-氧化的限速步骤，需肉碱协助转运，肉碱酯酰转移酶I是关键酶，肉碱缺乏可导致脂肪酸氧化不足，能量不足。", "module": "脂质代谢", "is_single": true}, {"id": 5190, "index": 42, "type": "single", "stem": "凝血酶的主要作用是", "options": {"A": "加速FⅦ复合物的形成", "B": "加速凝血酶原酶复合物的形成", "C": "使纤维蛋白原转变为纤维蛋白", "D": "激活FⅩⅡ"}, "answer": "C", "explanation": "《生理学》第9版P74表3-2。", "module": "血液", "is_single": true}, {"id": 6692, "index": 43, "type": "single", "stem": "三羧酸循环的关键酶是", "options": {"A": "磷酸化酶", "B": "HMG-CoA还原酶", "C": "丙酮酸激酶", "D": "柠檬酸合酶"}, "answer": "D", "explanation": "暂无解析", "module": "酶与酶促反应", "is_single": true}, {"id": 3729, "index": 44, "type": "single", "stem": "不能用于抗坏血酸营养状况评价的是", "options": {"A": "血浆维生素C浓度", "B": "白细胞维生素C浓度", "C": "尿负荷试验", "D": "血浆同型半胱氨酸含量"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版P95。抗坏血酸营养状况评价的方法:尿负荷试验和血浆维生素C含量。", "module": "基础营养", "is_single": true}, {"id": 6049, "index": 45, "type": "single", "stem": "PAPS的前体氨基酸是", "options": {"A": "Trp", "B": "Ala", "C": "Tyr", "D": "Cys"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P191。半胱氨酸是体内硫酸根的主要来源。体内的硫酸根，一部分以无机盐的形式随尿排出，另一部分由ATP或化成活性硫酸根，即3‘-磷酸腺苷-5’磷酸硫酸PAPS。因此其前体氨基酸为半胱氨酸Cys。Trp 色氨酸； Ala 丙氨酸； Tyr 酪氨酸选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 6126, "index": 46, "type": "single", "stem": "氧化磷酸化的解偶联剂是", "options": {"A": "甲状腺素", "B": "鱼藤酮", "C": "CO", "D": "2,4-二硝基苯酚"}, "answer": "D", "explanation": "暂无解析", "module": "生物氧化", "is_single": true}, {"id": 5495, "index": 47, "type": "single", "stem": "肺牵张反射包括①肺扩胀反射②肺防御反射③肺萎陷反射④肺本体感受性反射", "options": {"A": "①②", "B": "①③", "C": "①④", "D": "②④"}, "answer": "B", "explanation": "《生理学》第9版P174。肺牵张反射包括肺扩张反射和肺萎陷反射，故选①③。", "module": "呼吸", "is_single": true}, {"id": 5784, "index": 48, "type": "single", "stem": "某物质可自由通过滤过膜,既不重吸收又不被分泌,其", "options": {"A": "血浆清除率为零", "B": "血浆清除率等于GFR", "C": "血浆清除率大于GFR(125ml/min)", "D": "血浆清除率小于GFR"}, "answer": "B", "explanation": "《生理学》第9版P251。在测定肾小球滤过率时，已知肾每分钟排出某物质（x)的量为Ux*V,如果该物质可经肾小球自由滤过而进入肾小管，并被肾小管和集合管重吸收和分泌，则Ux*V应等于每钟肾小球滤过量、重吸收量（Rx)和分泌量（Sx)代数和。每分钟内肾小球滤过的该物质的量应等于肾小球滤过率（GFR)与该物质血浆浓度（Px）的乘积，因而肾每分钟排出该物质的量，即Ux*V=GFR*Px-Rx+Sx（x物质的清除率=肾小球滤过率*x物质血浆浓度-重吸收量+分泌量）当重吸收量和分泌量为0时，x物质的清除率即等于肾小球滤过率。", "module": "尿的生成和排出", "is_single": true}, {"id": 5404, "index": 49, "type": "single", "stem": "平均动脉压在下列哪个范围内,脑血流可保持恒定", "options": {"A": "50~180mmHg(6.7~24.0Kpa)", "B": "80~120mmHg(10.7~16.0Kpa)", "C": "40~200rnmHg(5.35~26.7Kpa）", "D": "60~140mmHg(8.0~18.7Kpa)"}, "answer": "D", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 5194, "index": 50, "type": "single", "stem": "静脉注射肝素所引起的体内抗凝作用大于其体外抗凝作用,这主要是因为肝素", "options": {"A": "体外迅速灭活", "B": "在体内促进TFPI释放", "C": "在体内抑制凝血因子的产生", "D": "在体内促进抗凝血酶的产生"}, "answer": "B", "explanation": "《生理学》第9版P78。肝素可促进结合于血管内皮细胞表面的组织因子途径抑制物（TFPI）释放，使血浆TFPI水平升高，故肝素在体内的抗凝作用强于体外。", "module": "血液", "is_single": true}];
+const userAnswers = {};
+
+function renderQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const isSingle = q.is_single;
+    const optionsHtml = Object.entries(q.options).map(([key, val]) =>
+      `<div class="option ${isSingle?'option-single':'option-multi'}" data-q="${i}" data-key="${key}" onclick="selectOption(${i},'${key}',${isSingle})"><span class="option-key">${key}.</span><span>${val}</span></div>`
+    ).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `qcard-${i}`;
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-number">#${i+1} <span style="font-weight:400;color:#999;font-size:13px">/ ${QUESTIONS.length}</span></span>
+        <span><span class="q-type">${isSingle?'单选题':'多选题'}</span><span class="q-module">${q.module}</span></span>
+      </div>
+      <div class="q-stem">${q.stem}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="exp-toggle"><button id="expBtn-${i}" onclick="toggleExp(${i})" style="background:none;border:1px solid #d0d0d0;border-radius:6px;padding:4px 14px;font-size:13px;cursor:pointer;color:#667eea">📖 查看解析</button></div>
+      <div class="explanation-box" id="exp-${i}">
+        <div class="exp-label">📖 解析</div>
+        <div>${q.explanation.replace('\n','<br>')}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qIdx, key, isSingle) {
+  const card = document.getElementById(`qcard-${qIdx}`);
+  const opts = card.querySelectorAll('.option');
+  if (isSingle) {
+    opts.forEach(o => o.classList.remove('selected'));
+    opts.forEach(o => {
+      if (o.dataset.key === key) o.classList.add('selected');
+    });
+    userAnswers[qIdx] = [key];
+  } else {
+    const el = card.querySelector(`.option[data-key="${key}"]`);
+    el.classList.toggle('selected');
+    const selected = [...card.querySelectorAll('.option.selected')].map(o => o.dataset.key);
+    userAnswers[qIdx] = selected.length > 0 ? selected : null;
+  }
+}
+
+function toggleExp(qIdx) {
+  const box = document.getElementById(`exp-${qIdx}`);
+  const btn = document.getElementById(`expBtn-${qIdx}`);
+  if (box.classList.contains('show')) {
+    box.classList.remove('show');
+    btn.innerHTML = '📖 查看解析';
+  } else {
+    box.classList.add('show');
+    btn.innerHTML = '📎 收起解析';
+  }
+}
+
+function submitQuiz() {
+  let correct = 0, wrong = 0;
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    const opts = card.querySelectorAll('.option');
+    const exp = document.getElementById(`exp-${i}`);
+    const correctAnswer = Array.isArray(q.answer) ? q.answer.slice().sort() : [q.answer];
+    const userAns = userAnswers[i] || [];
+    const isCorrect = userAns.length > 0 && JSON.stringify(userAns.slice().sort()) === JSON.stringify(correctAnswer);
+
+    opts.forEach(o => o.classList.add('disabled'));
+    if (isCorrect) {
+      card.classList.add('correct');
+      correct++;
+    } else {
+      card.classList.add('wrong');
+      wrong++;
+    }
+    // Highlight correct/incorrect options
+    opts.forEach(o => {
+      const k = o.dataset.key;
+      const isUser = userAns.includes(k);
+      const isRight = correctAnswer.includes(k);
+      if (isUser && isRight) o.classList.add('correct-answer');
+      else if (isUser && !isRight) o.classList.add('wrong-answer');
+      else if (!isUser && isRight) o.classList.add('correct-answer');
+    });
+    exp.classList.add('show');
+  });
+
+  const total = QUESTIONS.length;
+  const pct = total > 0 ? Math.round(correct/total*100) : 0;
+  document.getElementById('scoreBadge').innerHTML = `${correct}/${total} (${pct}%)`;
+  document.getElementById('scoreBadge').style.color = pct >= 70 ? '#52c41a' : pct >= 50 ? '#faad14' : '#ff4d4f';
+
+  // Update summary
+  document.getElementById('summaryTotal').textContent = total;
+  document.getElementById('summaryCorrect').textContent = correct;
+  document.getElementById('summaryWrong').textContent = wrong;
+  document.getElementById('summaryRate').textContent = pct + '%';
+  document.getElementById('summaryBar').classList.add('show');
+
+  // Scroll to top
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  // Show wrong list with detail
+  const wrongIndices = [];
+  const wrongDetails = [];
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    if (card.classList.contains('wrong')) {
+      wrongIndices.push(i + 1);
+      const userAns = userAnswers[i] || [];
+      const correctAnswer = Array.isArray(q.answer) ? q.answer.slice().sort() : [q.answer];
+      wrongDetails.push({
+        idx: i + 1,
+        id: q.id,
+        module: q.module,
+        stem: q.stem,
+        userAnswer: userAns.length ? userAns.join(', ') : '（未作答）',
+        correctAnswer: correctAnswer.join(', '),
+      });
+    }
+  });
+  const wrongNumsEl = document.getElementById('wrongNums');
+  const detailText = document.getElementById('wrongDetailText');
+  if (wrongIndices.length > 0) {
+    wrongNumsEl.innerHTML = wrongIndices.map(n => `<span>#${n}</span>`).join('');
+    // Build detail text for copying
+    let text = '===== RD 错题报告 =====\n';
+    text += '共 ' + wrongIndices.length + ' 题\n\n';
+    wrongDetails.forEach((w, i) => {
+      text += '--- 第' + w.idx + '题 ---\n';
+      text += '题号: ' + w.idx + '  (数据库ID: ' + w.id + ')\n';
+      text += '模块: ' + w.module + '\n';
+      text += '题干: ' + w.stem + '\n';
+      text += '你的答案: ' + w.userAnswer + '\n';
+      text += '正确答案: ' + w.correctAnswer + '\n';
+      text += '——————————————\n';
+    });
+    text += '\n请帮我分析这些错题的错因和薄弱点。';
+    detailText.value = text;
+    document.getElementById('wrongList').classList.add('show');
+    document.getElementById('copyWrongBtn').style.display = '';
+  } else {
+    wrongNumsEl.innerHTML = '<span style="color:#52c41a;font-weight:600;">🎉 全部正确！</span>';
+    detailText.value = '🎉 全部正确，太棒了！';
+    document.getElementById('wrongList').classList.add('show');
+    document.getElementById('copyWrongBtn').style.display = 'none';
+  }
+}
+
+function resetQuiz() {
+  Object.keys(userAnswers).forEach(k => delete userAnswers[k]);
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    card.className = 'question-card';
+    card.querySelectorAll('.option').forEach(o => {
+      o.classList.remove('selected', 'correct-answer', 'wrong-answer', 'disabled');
+    });
+    document.getElementById(`exp-${i}`).classList.remove('show');
+  });
+  document.getElementById('scoreBadge').innerHTML = '待提交';
+  document.getElementById('scoreBadge').style.color = '#667eea';
+  document.getElementById('wrongList').classList.remove('show');
+  document.getElementById('copyWrongBtn').style.display = 'none';
+}
+
+function copyWrongDetail() {
+  const ta = document.getElementById('wrongDetailText');
+  ta.select();
+  ta.setSelectionRange(0, 999999);
+  try {
+    navigator.clipboard.writeText(ta.value).then(() => {
+      alert('✅ 已复制错题详情，请发给教练分析！');
+    }).catch(() => {
+      document.execCommand('copy');
+      alert('✅ 已复制，请发给教练分析！');
+    });
+  } catch(e) {
+    document.execCommand('copy');
+    alert('✅ 已复制，请发给教练分析！');
+  }
+}
+
+function copyWrongAnswers() {
+  const wrongIndices = [];
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    if (card.classList.contains('wrong')) wrongIndices.push(i + 1);
+  });
+  if (wrongIndices.length === 0) {
+    alert('🎉 全部正确，没有错题！');
+    return;
+  }
+  const text = wrongIndices.join(', ');
+  navigator.clipboard.writeText(text).then(() => {
+    alert(`✅ 已复制错题号：${text}`);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert(`✅ 已复制错题号：${text}`);
+  });
+}
+
+try {
+  renderQuestions();
+  document.getElementById('jsFallback').style.display = 'none';
+} catch(e) {
+  document.getElementById('jsFallback').innerHTML =
+    '<div style="font-size:48px;margin-bottom:16px;">❌</div>' +
+    '<div style="font-size:16px;color:#ff4d4f;">题目加载失败</div>' +
+    '<div style="font-size:13px;margin-top:8px;color:#999;">错误: ' + e.message + '</div>' +
+    '<div style="font-size:13px;margin-top:4px;color:#999;">请截屏此错误信息发给教练修复</div>';
+  console.error('RD题卡渲染错误:', e);
+}
+</script>
+<script>
+(function() {
+  const RD_CARD_KEY = "2026-08-14-RD每日题卡_20260814_Part1_上午50题";
+  const RD_CARD_FILE = "RD每日题卡_20260814_Part1_上午50题.html";
+  const RD_DATE = "2026-08-14";
+  const RD_STORAGE_KEY = "rd-progress:" + RD_CARD_KEY;
+  const RD_HISTORY_KEY = RD_STORAGE_KEY + ":attempted";
+  function localHost() {
+    const h = location.hostname;
+    return location.protocol === "http:" && (h === "localhost" || h === "127.0.0.1" || /^10\./.test(h) || /^192\.168\./.test(h) || /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(h));
+  }
+  function questionId(card, idx) {
+    let index = card && card.id.indexOf('qcard-') === 0 ? Number(card.id.slice(6)) : idx;
+    try { if (QUESTIONS[index]) return String(QUESTIONS[index].id); } catch (e) {}
+    return String(index + 1);
+  }
+  function remember(card, idx) {
+    const qid = questionId(card, idx);
+    let history = {};
+    try { history = JSON.parse(localStorage.getItem(RD_HISTORY_KEY) || '{}'); } catch (e) {}
+    history[qid] = true;
+    try { localStorage.setItem(RD_HISTORY_KEY, JSON.stringify(history)); } catch (e) {}
+  }
+  function snapshot() {
+    const attempted = {};
+    let history = {};
+    try { history = JSON.parse(localStorage.getItem(RD_HISTORY_KEY) || '{}'); } catch (e) {}
+    Object.keys(history).forEach(qid => attempted[qid] = []);
+    document.querySelectorAll('[id^="qcard-"], .q').forEach((card, idx) => {
+      const selected = [...card.querySelectorAll('.option.selected, input:checked')].map(el => el.dataset?.key || el.value).filter(Boolean);
+      const questionId = questionIdForCard(card, idx);
+      if (selected.length) attempted[questionId] = [...new Set(selected)].sort();
+    });
+    return {card_key: RD_CARD_KEY, card_filename: RD_CARD_FILE, date: RD_DATE, attempted: attempted, updated_at: new Date().toISOString()};
+  }
+  function questionIdForCard(card, idx) { return questionId(card, idx); }
+  function paint(data) {
+    let el = document.getElementById('rdAutoProgress');
+    if (!el) { el = document.createElement('div'); el.id = 'rdAutoProgress'; el.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:9999;background:#fff;padding:8px 12px;border-radius:8px;box-shadow:0 2px 10px #0002;font-size:13px;color:#555'; document.body.appendChild(el); }
+    el.textContent = '已自动记录：' + Object.keys(data.attempted || {}).length + '题';
+  }
+  function apply(data) {
+    const attempted = data && data.attempted || {};
+    Object.entries(attempted).forEach(([qid, values]) => {
+      let index = -1;
+      try { index = QUESTIONS.findIndex(q => String(q.id) === String(qid)); } catch (e) {}
+      const card = index >= 0 ? (document.getElementById('qcard-' + index) || document.getElementById('c' + (index + 1))) : null;
+      if (!card) return;
+      (values || []).forEach(key => {
+        const option = card.querySelector('.option[data-key="' + key + '"], input[value="' + key + '"]');
+        if (option && option.classList && option.classList.contains('option')) option.click();
+        else if (option) option.checked = true;
+      });
+    });
+    paint(data || {attempted: {}});
+  }
+  async function restore() {
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(RD_STORAGE_KEY) || 'null'); } catch (e) {}
+    if (localHost()) {
+      try {
+        const r = await fetch(location.origin + '/api/progress?date=' + encodeURIComponent(RD_DATE) + '&card_key=' + encodeURIComponent(RD_CARD_KEY));
+        if (r.ok) data = await r.json();
+      } catch (e) {}
+    }
+    if (data) apply(data);
+  }
+  function save() {
+    const data = snapshot();
+    try { localStorage.setItem(RD_STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+    paint(data);
+    if (localHost()) {
+      try { navigator.sendBeacon(location.origin + '/api/progress', new Blob([JSON.stringify(data)], {type:'application/json'})); } catch (e) {}
+    }
+  }
+  function init() {
+    document.addEventListener('click', e => {
+      const target = e.target.closest('.option, .op, input');
+      if (!target) return;
+      const card = target.closest('[id^="qcard-"], .q');
+      if (card) { const cards = [...document.querySelectorAll('[id^="qcard-"], .q')]; remember(card, cards.indexOf(card)); }
+      setTimeout(save, 0);
+    });
+    document.addEventListener('change', e => {
+      const card = e.target.closest('[id^="qcard-"], .q');
+      if (card) { const cards = [...document.querySelectorAll('[id^="qcard-"], .q')]; remember(card, cards.indexOf(card)); }
+      save();
+    });
+    window.addEventListener('beforeunload', save);
+    restore().finally(() => setTimeout(save, 300));
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script></body>
+</html>

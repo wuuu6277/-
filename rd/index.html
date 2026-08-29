@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>RD 题库练习系统</title>
+    <link rel="stylesheet" href="./style.css?v=20260710-ui6" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-main">
+          <p class="eyebrow">RD Daily Practice</p>
+          <h1>RD 题库练习系统</h1>
+          <p class="hero-text">
+            面向注册营养师备考的刷题工具。按模块、难度和考点快速抽题，提交后立即判分并沉淀错题。
+          </p>
+          <div class="hero-chips">
+            <span class="hero-chip">4019 题库</span>
+            <span class="hero-chip">即时判分</span>
+            <span class="hero-chip">错题回炉</span>
+            <span class="hero-chip">进度记录</span>
+          </div>
+        </div>
+        <div class="hero-panel hero-panel-grid">
+          <div class="hero-stat">
+            <span>当前模式</span>
+            <strong id="practiceModeLabel">综合训练</strong>
+          </div>
+          <div class="hero-stat">
+            <span>当前模块</span>
+            <strong id="currentModuleLabel">全部题目</strong>
+          </div>
+          <div class="hero-stat">
+            <span>当前载入</span>
+            <strong id="questionLoaded">0 题</strong>
+          </div>
+          <div class="hero-stat">
+            <span>题库总数</span>
+            <strong id="totalQuestionCount">0 题</strong>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="card config-card config-card-wide">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Practice Setup</p>
+              <h2>练习配置</h2>
+            </div>
+          </div>
+
+          <div class="config-form-grid">
+            <div class="control-group">
+              <label for="moduleSelect">模块筛选</label>
+              <select id="moduleSelect" class="field">
+                <option value="全部题目">全部题目</option>
+                <option value="基础营养">基础营养</option>
+                <option value="食物营养">食物营养</option>
+                <option value="人群营养">人群营养</option>
+                <option value="临床营养">临床营养</option>
+                <option value="食品卫生">食品卫生</option>
+                <option value="DRIs">DRIs</option>
+                <option value="膳食指南">膳食指南</option>
+                <option value="综合训练">综合训练</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <span>题量选择</span>
+              <div class="segmented" id="sizePicker">
+                <button class="segmented-btn active" type="button" data-size="10">10 题小练</button>
+                <button class="segmented-btn" type="button" data-size="20">20 题专项</button>
+                <button class="segmented-btn" type="button" data-size="50">50 题每日题卡</button>
+                <button class="segmented-btn" type="button" data-size="100">100 题周末强化</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label for="difficultySelect">难度筛选</label>
+              <select id="difficultySelect" class="field">
+                <option value="全部难度">全部难度</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="keyPointSearch">考点关键词</label>
+              <input
+                id="keyPointSearch"
+                class="field"
+                type="search"
+                placeholder="输入考点、题干或解析关键词"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div class="toolbar-actions">
+            <button id="reloadBtn" class="btn btn-secondary" type="button">按当前条件抽题</button>
+            <button id="wrongTrainBtn" class="btn btn-accent" type="button">错题回炉训练</button>
+            <button id="favoriteTrainBtn" class="btn btn-outline" type="button">重点题训练</button>
+          </div>
+
+          <div class="inline-note" id="practiceHint">
+            单选题点击即选中，多选题支持反复点选/取消。筛选条件会同时作用于普通练习和错题回炉。
+          </div>
+        </section>
+
+        <section id="statusBanner" class="status-banner hidden"></section>
+
+        <section id="summaryCard" class="summary card hidden">
+          <div class="summary-head">
+            <div>
+              <p class="section-kicker">Result Summary</p>
+              <h2>本次结果</h2>
+            </div>
+            <button id="copyWrongBtn" class="btn btn-outline" type="button">一键复制错题号</button>
+          </div>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <span>总题数</span>
+              <strong id="summaryTotal">0</strong>
+            </div>
+            <div class="summary-item">
+              <span>正确题数</span>
+              <strong id="summaryCorrect">0</strong>
+            </div>
+            <div class="summary-item">
+              <span>错误题数</span>
+              <strong id="summaryWrong">0</strong>
+            </div>
+            <div class="summary-item">
+              <span>得分</span>
+              <strong id="summaryScore">0</strong>
+            </div>
+          </div>
+          <div class="summary-extended">
+            <div class="wrong-ids">
+              <span>错题号列表</span>
+              <p id="wrongIdList">暂无</p>
+            </div>
+            <div class="distribution-card">
+              <span>单选题答案分布</span>
+              <p id="distributionText">暂无</p>
+              <p id="distributionTip" class="distribution-tip">提交后显示本次答案分布提示。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="questionList" class="question-list" aria-live="polite"></section>
+
+        <section class="card submit-card">
+          <div class="submit-card-inner">
+            <div>
+              <p class="section-kicker">Submit</p>
+              <h2>做完后提交试卷</h2>
+              <p class="submit-note">请在检查完最后一道题后再提交，提交后会立即判分并展开解析。</p>
+              <p class="answer-progress" id="answerProgress">已答 0 / 0</p>
+            </div>
+            <button id="submitBtn" class="btn btn-primary submit-btn-large" type="button">提交判分</button>
+          </div>
+        </section>
+
+        <section class="card wrongbook-card wrongbook-card-compact">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Wrong Book</p>
+              <h2>错题本</h2>
+            </div>
+            <div class="section-actions">
+              <button id="copyWrongBookBtn" class="btn btn-outline" type="button">复制错题清单</button>
+              <button id="clearWrongBookBtn" class="btn btn-danger" type="button">一键清空错题</button>
+            </div>
+          </div>
+
+          <div class="wrongbook-summary" id="wrongBookSummary">当前错题本为空。</div>
+
+          <div class="table-shell table-shell-compact">
+            <table class="wrongbook-table">
+              <thead>
+                <tr>
+                  <th>错题 ID</th>
+                  <th>所属模块</th>
+                  <th>考点</th>
+                  <th>错误次数</th>
+                  <th>掌握进度</th>
+                  <th>最近错误时间</th>
+                </tr>
+              </thead>
+              <tbody id="wrongBookTableBody">
+                <tr>
+                  <td colspan="6" class="empty-cell">当前还没有错题记录。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <details class="card record-card record-card-collapsed">
+          <summary class="record-toggle">
+            <div>
+              <p class="section-kicker">Study Records</p>
+              <h2>学习记录</h2>
+            </div>
+            <div class="record-side">
+              <div class="record-summary record-summary-inline" id="recordSummary">当前还没有做题记录。</div>
+              <div class="record-actions">
+                <button id="exportDataBtn" class="btn btn-outline" type="button">导出学习数据</button>
+                <button id="importDataBtn" class="btn btn-secondary" type="button">导入学习数据</button>
+                <input id="importDataInput" class="hidden" type="file" accept="application/json,.json" />
+              </div>
+            </div>
+          </summary>
+
+          <div class="record-content">
+            <div class="table-shell">
+              <table class="record-table">
+                <thead>
+                  <tr>
+                    <th>日期时间</th>
+                    <th>模式</th>
+                    <th>模块</th>
+                    <th>题量</th>
+                    <th>正确数</th>
+                    <th>错误数</th>
+                    <th>得分</th>
+                    <th>错题 ID</th>
+                  </tr>
+                </thead>
+                <tbody id="recordTableBody">
+                  <tr>
+                    <td colspan="8" class="empty-cell">当前还没有做题记录。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </main>
+    </div>
+
+    <template id="questionTemplate">
+      <article class="question-card card">
+        <div class="question-top">
+          <div class="question-meta"></div>
+          <div class="question-index"></div>
+        </div>
+        <h2 class="question-title"></h2>
+        <p class="question-hint"></p>
+        <div class="option-list"></div>
+        <div class="answer-panel hidden"></div>
+      </article>
+    </template>
+
+    <script src="./app.js?v=20260710-ui6"></script>
+  </body>
+</html>

@@ -6,4 +6,4 @@
 - 历史题卡按日期保存在 `YYYYMMDD/cards/`
 - 今日入口：`YYYYMMDD/cards/card_200.html`
 
-今天已发布：20260828
+今天已发布：20260829

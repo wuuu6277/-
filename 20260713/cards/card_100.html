@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RD备考｜2026-07-13 20题</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #333; padding: 20px; }
+.container { max-width: 860px; margin: 0 auto; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+.header .meta { font-size: 14px; opacity: 0.9; }
+.controls { background: #fff; border-radius: 12px; padding: 16px 24px; margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.controls button { padding: 10px 28px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+.btn-submit { background: #667eea; color: #fff; }
+.btn-submit:hover { background: #5a6fd6; transform: translateY(-1px); }
+.btn-reset { background: #e8e8e8; color: #555; }
+.btn-reset:hover { background: #ddd; }
+.score-badge { margin-left: auto; font-size: 16px; font-weight: 600; color: #667eea; background: #f0f2ff; padding: 6px 16px; border-radius: 20px; }
+.question-card { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.2s; border-left: 4px solid transparent; }
+.question-card.correct { border-left-color: #52c41a; background: #f6ffed; }
+.question-card.wrong { border-left-color: #ff4d4f; background: #fff2f0; }
+.q-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+.q-number { font-size: 15px; font-weight: 700; color: #667eea; min-width: 60px; }
+.q-type { font-size: 12px; padding: 2px 10px; border-radius: 10px; background: #f0f2ff; color: #667eea; font-weight: 600; }
+.q-module { font-size: 12px; color: #999; margin-left: 4px; }
+.q-stem { font-size: 16px; line-height: 1.7; margin-bottom: 16px; font-weight: 500; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border: 2px solid #e8e8e8; border-radius: 8px; cursor: pointer; transition: all 0.15s; font-size: 15px; line-height: 1.5; }
+.option:hover { border-color: #667eea; background: #f8f9ff; }
+.option.selected { border-color: #667eea; background: #f0f2ff; }
+.option.correct-answer { border-color: #52c41a; background: #f6ffed; }
+.option.wrong-answer { border-color: #ff4d4f; background: #fff2f0; }
+.option-key { font-weight: 700; color: #667eea; min-width: 24px; }
+.option.disabled { pointer-events: none; opacity: 0.85; }
+.explanation-box { margin-top: 14px; padding: 14px 18px; background: #fafafa; border-radius: 8px; border-left: 4px solid #667eea; display: none; font-size: 14px; line-height: 1.7; color: #555; }
+.explanation-box.show { display: block; }
+.explanation-box .exp-label { font-weight: 700; color: #667eea; margin-bottom: 6px; }
+.footer { text-align: center; color: #999; font-size: 12px; padding: 20px 0; }
+.status-bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.stat-item { font-size: 13px; color: #666; }
+.stat-item strong { color: #333; }
+.summary-bar { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.summary-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+.summary-item { text-align: center; }
+.summary-item .num { font-size: 28px; font-weight: 700; }
+.summary-item .label { font-size: 13px; color: #999; margin-top: 2px; }
+.btn-copy-wrong { background: #ff4d4f; color: #fff; }
+.btn-copy-wrong:hover { background: #e04343; transform: translateY(-1px); }
+.wrong-list { margin-top: 14px; padding: 14px 18px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 8px; display: none; }
+.wrong-list.show { display: block; }
+.wrong-list .wl-title { font-weight: 600; color: #ff4d4f; margin-bottom: 6px; font-size: 15px; }
+.wrong-list .wl-nums { font-size: 14px; line-height: 1.8; color: #333; }
+	.wrong-list .wl-nums span { display: inline-block; padding: 2px 10px; margin: 3px 4px; background: #fff1f0; border: 1px solid #ffa39e; border-radius: 4px; font-size: 13px; font-weight: 600; color: #cf1322; }
+	.copy-area { margin-top: 14px; }
+	.copy-area textarea { width:100%; height:140px; font-size:13px; font-family:"Courier New",monospace; padding:10px; border:1px solid #d9d9d9; border-radius:6px; background:#fafafa; resize:vertical; box-sizing:border-box; }
+	.copy-area .copy-btn { margin-top:6px; padding:6px 20px; background:#667eea; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer; }
+	.copy-area .copy-btn:hover { background:#5a6fd6; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+.question-card { animation: fadeIn 0.3s ease; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>📝 RD 备考练习</h1>
+      <div class="meta">2026-07-13 ｜ 20 题 ｜ 综合</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:24px;font-weight:700;">20</div>
+      <div style="font-size:13px;opacity:0.8;"># of questions</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-submit" onclick="submitQuiz()">✅ 提交判分</button>
+    <button class="btn-reset" onclick="resetQuiz()">🔄 重新答题</button>
+    <button class="btn-copy-wrong" id="copyWrongBtn" onclick="copyWrongAnswers()" style="display:none">📋 复制错题号</button>
+    <div class="score-badge" id="scoreBadge">待提交</div>
+  </div>
+
+  <div class="summary-bar" id="summaryBar">
+    <h3 style="margin:0 0 8px;font-size:16px;color:#333;">📊 答题结果</h3>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="num" id="summaryTotal" style="color:#667eea">0</div><div class="label">总题数</div></div>
+      <div class="summary-item"><div class="num" id="summaryCorrect" style="color:#52c41a">0</div><div class="label">正确</div></div>
+      <div class="summary-item"><div class="num" id="summaryWrong" style="color:#ff4d4f">0</div><div class="label">错误</div></div>
+      <div class="summary-item"><div class="num" id="summaryRate" style="color:#667eea">0%</div><div class="label">正确率</div></div>
+    </div>
+    <div class="wrong-list" id="wrongList">
+      <div class="wl-title">❌ 错题详情 <span style="font-weight:400;font-size:12px;color:#999;">（可直接复制下方文本发给教练）</span></div>
+      <div class="wl-nums" id="wrongNums"></div>
+      <div class="copy-area">
+        <textarea id="wrongDetailText" readonly placeholder="提交后这里会显示错题详情，可直接复制..."></textarea>
+        <button class="copy-btn" onclick="copyWrongDetail()">📋 复制错题详情</button>
+      </div>
+    </div>
+  </div>
+  <div id="questionsContainer">
+    <div id="jsFallback" style="text-align:center;padding:60px 20px;color:#999;">
+      <div style="font-size:48px;margin-bottom:16px;">⚠️</div>
+      <div style="font-size:16px;">题目加载中...</div>
+      <div style="font-size:13px;margin-top:8px;">如果持续看不到题目，请刷新页面或重新生成题卡</div>
+    </div>
+  </div>
+
+  <noscript><div style="text-align:center;padding:40px;color:#ff4d4f;font-size:16px;">❌ 您的浏览器未启用 JavaScript，无法答题。</div></noscript>
+
+  <div class="footer">RD 备考题库 · 本地互动题卡</div>
+</div>
+
+<script>
+const QUESTIONS = [{"id": 2764, "index": 1, "type": "multiple", "stem": "下列矿物质中，属于必需微量元素的有（ ）。", "options": {"A": "锌", "B": "磷", "C": "钙", "D": "铁"}, "answer": ["A", "D"], "explanation": "必需微量元素在人体中含量很少但有重要生理功能。锌和铁是常见的必需微量元素。 钙和磷 属于常量元素，常量元素在人体含量相对较多。答案：AD", "module": "食品卫生", "is_single": false}, {"id": 2842, "index": 2, "type": "multiple", "stem": "下列关于鱼类营养特点的描述，正确的是（ ）。", "options": {"A": "鱼类蛋白质含量平均18％左右", "B": "鱼类脂肪含量平均5％左右", "C": "鳕鱼含脂肪最低，在1％以下", "D": "河鳗脂肪含量最高，达10.8％", "E": "鱼类尤其是海鱼，含嘌呤比较高"}, "answer": ["A", "B", "C", "D", "E"], "explanation": "鱼类蛋白质含量平均约18％，脂肪含量平均约5％ ，鳕鱼脂肪含量低在1％以下，河鳗脂肪含量 较高达10.8％ ，且鱼类尤其是海鱼含嘌呤较高。以上选项描述均正确。答案：ABCDE", "module": "人群营养", "is_single": false}, {"id": 2832, "index": 3, "type": "multiple", "stem": "含糖较多的蔬菜有（ ）。", "options": {"A": "小白菜", "B": "油菜", "C": "胡萝卜", "D": "洋葱", "E": "藕"}, "answer": ["C", "D", "E"], "explanation": "正确答案：C、D、E。选项解析：A.小白菜；B.油菜；C.胡萝卜；D.洋葱；E.藕。建议查阅教材相应章节巩固知识。", "module": "人群营养", "is_single": false}, {"id": 1472, "index": 4, "type": "multiple", "stem": "下列关于幼儿园食谱编制的说法，正确的是（ ）。", "options": {"A": "确定膳食制度，以三餐二点制为宜", "B": "根据《中国居民膳食营养素参考摄入量》确定其营养需要目标", "C": "每周的食谱应在上一周周末向儿童家长公布", "D": "按周编制食谱，一周食谱应不重复", "E": "每周安排一次海产食物，以补充碘，安排一次动物的肝脏（约25g/人）以补充维生素A和铁。"}, "answer": ["A", "B", "C", "D", "E"], "explanation": "答案：ABCDE幼儿园食谱编制通常需要考虑幼儿的营养需求、膳食平衡、食物多样性以及家长的 知情权。选项A提到的三餐二点制符合幼儿的生理特点和消化能力；选项B强调根据营养素参考摄入量来确定 营养需求，这是科学的方法；选项C确保家长对幼儿在园饮食的了解，增加透明度；选项D的按周编制且不重 复食谱有助于保证食物的多样性和新鲜感；选项E提到的特别食物安排则针对特定的营养素补充，体现了食谱 的专业性和细致性。因此，所有选项均正确。", "module": "人群营养", "is_single": false}, {"id": 4257, "index": 5, "type": "single", "stem": "下列各类菌是引起罐头变质的主要因素的是", "options": {"A": "嗜冷菌", "B": "嗜温菌", "C": "嗜热菌", "D": "好氧菌"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P250。嗜热菌经过高温杀菌后还可能存活,因此是罐头食品变质的主要因素。", "module": "食品卫生", "is_single": true}, {"id": 4068, "index": 6, "type": "single", "stem": "低钠膳食适用于心、肾、腹水、水肿、高血压、先兆子痫及尿毒症等疾病的患者,膳食中1日钠供给量为", "options": {"A": "食盐<3g", "B": "全日膳食中含钠量<500mg", "C": "酱油<15ml", "D": "全日膳食中含钠量<1500mg"}, "answer": "B", "explanation": "《中国营养科学全书》第2版P1464。低钠膳食含钠量在300~500mg，此膳食需在医务人员的监测下短期使用。", "module": "临床营养", "is_single": true}, {"id": 3993, "index": 7, "type": "single", "stem": "【技师不做】肌酐试验膳食的适用范围不包括", "options": {"A": "肾盂肾炎", "B": "慢性肾脏病", "C": "肾功能损害", "D": "肝功能损害"}, "answer": "D", "explanation": "《中国营养科学全书 》第2版P1472。本题考查的是肌酐试验膳食的适用范围。", "module": "临床营养", "is_single": true}, {"id": 5392, "index": 8, "type": "single", "stem": "女,23岁,体检发现血压升高,150/100mmHg。B超示:左肾动脉中段缩窄。则下列情况中,可能出现的是", "options": {"A": "醛固酮水平降低", "B": "肾素水平降低", "C": "体循环平均充盈压降低", "D": "尿钠排出量减少"}, "answer": "D", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 4423, "index": 9, "type": "single", "stem": "母乳中的免疫物质量多的是", "options": {"A": "IgA", "B": "IgG", "C": "IgM", "D": "IgD"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P142。母乳中的免疫物质有：各种免疫球蛋白，包括IgA、IgG、IgM、IgD，其中IgA占总量的90%，多为分泌型IgA，具有抗肠道微生物和异物的作用。", "module": "人群营养", "is_single": true}, {"id": 4381, "index": 10, "type": "single", "stem": "对于长期接触电离辐射人群的营养需要描述正确的包括①蛋白质摄入不足可增加机体对辐射的敏感性②建议蛋白质供能占总能量的12%~18%③建议碳水化合物供能占总能量的60%~65%④果糖和葡萄糖不具有防辐射效果⑤建议适当增加脂肪供能的比例", "options": {"A": "①②⑤", "B": "①④⑤", "C": "①②③", "D": "②③⑤"}, "answer": "C", "explanation": "《营养与食品卫生学》第8版P203。接触电离辐射人群膳食营养需要 1、保证充足的产能营养素供给：能量、蛋白质和必需氨基酸（如蛋氨酸和组氨酸）摄入不足可以增加机体对辐射的敏感性，增加机体能量消耗、加重组织损伤和延缓恢复。一般建议蛋白质供能占总热能的 12%~18%，以补充优质蛋白质为主，碳水化合物占 60%~65%，应选择防辐射效果好的果糖和葡萄糖；注意适量增加必需脂肪酸的摄入，控制血脂水平的升高，不建议增加脂肪占总能量的 2、选择富含抗氧化营养素的蔬菜和水果：保证足量的维生素C和适量脂溶性维生素(维生素A、维生素E和维生素K）的摄入，以减少辐射介导的活性氧对机体的损伤。同时，也应选择富含B族维生素（维生素B1、维生素B2，和维生素PP、维生素B6、叶酸和维生素B12）的食物，增加机体防辐射效果 3、补充适量的矿物质：在保持水盐代谢平衡的基础上，适量增加微量元素（如锌、铁、铜、硒和锰）和常量元素（钠和钾）的摄入量，并注意矿物质之间的平衡。 4、注意多种营养物质配伍：增加抗氧化物质的摄入，提高机体对辐射损伤的综合防护作用。", "module": "人群营养", "is_single": true}, {"id": 3845, "index": 11, "type": "single", "stem": "下列不是蔬菜、水果中富含的成分的是", "options": {"A": "碳水化合物", "B": "蛋白质", "C": "脂肪", "D": "芳香物质"}, "answer": "C", "explanation": "蔬菜中脂肪含量较低。", "module": "食物营养", "is_single": true}, {"id": 4599, "index": 12, "type": "single", "stem": "与公共营养相关的学科有①基础医学②临床医学③预防医学④人类学⑤经济学", "options": {"A": "②③④⑤", "B": "①③④⑤", "C": "①②④⑤", "D": "①②③④⑤"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版P160。尽管公共营养是营养学的一部分，但是其宏观性、实践性和社会性的特点，决定了公共营养涉及自然科学和社会科学。自然科学主要包括基础医学、临床医学和预防医学等，社会科学包括人类学、社会与行为科学、经济学和政治科学等。", "module": "公共营养", "is_single": true}, {"id": 5632, "index": 13, "type": "single", "stem": "消化道平滑肌共有的运动形式是", "options": {"A": "紧张性收缩", "B": "容受性舒张", "C": "蠕动", "D": "分节运动"}, "answer": "A", "explanation": "《生理学》第9版P190、P197。消化道平滑肌经常处于一定程度的缓慢持续收缩状态，称为紧张性收缩。紧张性收缩是消化道平滑肌共有的运动形式。", "module": "消化系统", "is_single": true}, {"id": 6154, "index": 14, "type": "single", "stem": "1mol丙酮酸在线粒体内氧化成CO2及H2O,可生成多少molATP", "options": {"A": "8", "B": "10", "C": "12", "D": "15"}, "answer": "C", "explanation": "《生物化学与分子生物学》第9版P101。 从丙酮酸脱氢开始计算，1分子丙酮酸产生12.5分子ATP。", "module": "糖代谢", "is_single": true}, {"id": 6353, "index": 15, "type": "single", "stem": "分解后不能生成乙酰CoA的是", "options": {"A": "葡萄糖", "B": "亮氨酸", "C": "酮体", "D": "胆固醇"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P164。 胆固醇主要是转化为胆汁酸，不能再体内被彻底分解，作为各种激素的原料。", "module": "脂质代谢", "is_single": true}, {"id": 5507, "index": 16, "type": "single", "stem": "可使呼吸膜面积减小的因索有①肺不张②肺实变③肺气肿④肺间质水肿", "options": {"A": "①②③", "B": "①②④", "C": "①③④", "D": "②③④"}, "answer": "A", "explanation": "《生理学》第9版P161。肺不张、肺实变、肺气肿、肺叶切除或肺毛细血管关闭和阻塞等，均可使呼吸膜扩散面积减小而影响肺换气。故选①②③。", "module": "呼吸", "is_single": true}, {"id": 6481, "index": 17, "type": "single", "stem": "不能用于蛋白质含量测定的方法是", "options": {"A": "紫外吸收光谱", "B": "茚三酮反应", "C": "透析", "D": "双缩脲反应"}, "answer": "C", "explanation": "暂无解析", "module": "蛋白质的结构与功能", "is_single": true}, {"id": 5232, "index": 18, "type": "single", "stem": "血浆胶体渗透压主要决定于", "options": {"A": "红细胞数量", "B": "血浆总蛋白含量", "C": "血浆球蛋白含量", "D": "血浆白蛋白含量"}, "answer": "D", "explanation": "《生理学》第9版P59。由蛋白质所形成的渗透压称为胶体渗透压。由于白蛋白的分子量小，其分子数量远多于其他血浆蛋白，故血浆胶体渗透压的75%～80%来自白蛋白。", "module": "血液", "is_single": true}, {"id": 6691, "index": 19, "type": "single", "stem": "FAD", "options": {"A": "递氢作用", "B": "转氨基作用", "C": "转移一碳单位", "D": "转酰基作用"}, "answer": "A", "explanation": "暂无解析", "module": "酶与酶促反应", "is_single": true}, {"id": 5749, "index": 20, "type": "single", "stem": "某大学生,在进行10000m长跑后出汗1L。该大学生在跑步结束后为解渴饮清水1L。与出汗前相比", "options": {"A": "受试者的细胞内液为低渗", "B": "受试者的细胞外液为高渗", "C": "受试者的细胞内液量增加", "D": "受试者的细胞外液量增加"}, "answer": "C", "explanation": "《生理学》第9版P246. 大量出汗、严重腹泻、呕吐、高热等导致机体失水多于溶质的丢失，血浆晶体渗透压升高，视上核及其周围区域渗透压感受器受刺激，使神经垂 体释放抗利尿激素，集合管管腔膜对水通透性增加，水的重吸收增多，尿液浓缩，尿量减少，细胞内液量减少。当大量饮清水后，血液被稀释，血浆晶体渗透压降低，引起抗利尿激素分泌减少，集合管对水的重吸收减少，尿液稀释，尿量增加，细胞内液量会增加。", "module": "尿的生成和排出", "is_single": true}];
+const userAnswers = {};
+
+function renderQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const isSingle = q.is_single;
+    const optionsHtml = Object.entries(q.options).map(([key, val]) =>
+      `<div class="option ${isSingle?'option-single':'option-multi'}" data-q="${i}" data-key="${key}" onclick="selectOption(${i},'${key}',${isSingle})"><span class="option-key">${key}.</span><span>${val}</span></div>`
+    ).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `qcard-${i}`;
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-number">#${i+1} <span style="font-weight:400;color:#999;font-size:13px">/ ${QUESTIONS.length}</span></span>
+        <span><span class="q-type">${isSingle?'单选题':'多选题'}</span><span class="q-module">${q.module}</span></span>
+      </div>
+      <div class="q-stem">${q.stem}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="exp-toggle"><button id="expBtn-${i}" onclick="toggleExp(${i})" style="background:none;border:1px solid #d0d0d0;border-radius:6px;padding:4px 14px;font-size:13px;cursor:pointer;color:#667eea">📖 查看解析</button></div>
+      <div class="explanation-box" id="exp-${i}">
+        <div class="exp-label">📖 解析</div>
+        <div>${q.explanation.replace('\n','<br>')}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qIdx, key, isSingle) {
+  const card = document.getElementById(`qcard-${qIdx}`);
+  const opts = card.querySelectorAll('.option');
+  if (isSingle) {
+    opts.forEach(o => o.classList.remove('selected'));
+    opts.forEach(o => {
+      if (o.dataset.key === key) o.classList.add('selected');
+    });
+    userAnswers[qIdx] = [key];
+  } else {
+    const el = card.querySelector(`.option[data-key="${key}"]`);
+    el.classList.toggle('selected');
+    const selected = [...card.querySelectorAll('.option.selected')].map(o => o.dataset.key);
+    userAnswers[qIdx] = selected.length > 0 ? selected : null;
+  }
+}
+
+function toggleExp(qIdx) {
+  const box = document.getElementById(`exp-${qIdx}`);
+  const btn = document.getElementById(`expBtn-${qIdx}`);
+  if (box.classList.contains('show')) {
+    box.classList.remove('show');
+    btn.innerHTML = '📖 查看解析';
+  } else {
+    box.classList.add('show');
+    btn.innerHTML = '📎 收起解析';
+  }
+}
+
+function submitQuiz() {
+  let correct = 0, wrong = 0;
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    const opts = card.querySelectorAll('.option');
+    const exp = document.getElementById(`exp-${i}`);
+    const correctAnswer = Array.isArray(q.answer) ? q.answer.slice().sort() : [q.answer];
+    const userAns = userAnswers[i] || [];
+    const isCorrect = userAns.length > 0 && JSON.stringify(userAns.slice().sort()) === JSON.stringify(correctAnswer);
+
+    opts.forEach(o => o.classList.add('disabled'));
+    if (isCorrect) {
+      card.classList.add('correct');
+      correct++;
+    } else {
+      card.classList.add('wrong');
+      wrong++;
+    }
+    // Highlight correct/incorrect options
+    opts.forEach(o => {
+      const k = o.dataset.key;
+      const isUser = userAns.includes(k);
+      const isRight = correctAnswer.includes(k);
+      if (isUser && isRight) o.classList.add('correct-answer');
+      else if (isUser && !isRight) o.classList.add('wrong-answer');
+      else if (!isUser && isRight) o.classList.add('correct-answer');
+    });
+    exp.classList.add('show');
+  });
+
+  const total = QUESTIONS.length;
+  const pct = total > 0 ? Math.round(correct/total*100) : 0;
+  document.getElementById('scoreBadge').innerHTML = `${correct}/${total} (${pct}%)`;
+  document.getElementById('scoreBadge').style.color = pct >= 70 ? '#52c41a' : pct >= 50 ? '#faad14' : '#ff4d4f';
+
+  // Update summary
+  document.getElementById('summaryTotal').textContent = total;
+  document.getElementById('summaryCorrect').textContent = correct;
+  document.getElementById('summaryWrong').textContent = wrong;
+  document.getElementById('summaryRate').textContent = pct + '%';
+  document.getElementById('summaryBar').classList.add('show');
+
+  // Scroll to top
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  // Show wrong list with detail
+  const wrongIndices = [];
+  const wrongDetails = [];
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    if (card.classList.contains('wrong')) {
+      wrongIndices.push(i + 1);
+      const userAns = userAnswers[i] || [];
+      const correctAnswer = Array.isArray(q.answer) ? q.answer.slice().sort() : [q.answer];
+      wrongDetails.push({
+        idx: i + 1,
+        id: q.id,
+        module: q.module,
+        stem: q.stem,
+        userAnswer: userAns.length ? userAns.join(', ') : '（未作答）',
+        correctAnswer: correctAnswer.join(', '),
+      });
+    }
+  });
+  const wrongNumsEl = document.getElementById('wrongNums');
+  const detailText = document.getElementById('wrongDetailText');
+  if (wrongIndices.length > 0) {
+    wrongNumsEl.innerHTML = wrongIndices.map(n => `<span>#${n}</span>`).join('');
+    // Build detail text for copying
+    let text = '===== RD 错题报告 =====\n';
+    text += '共 ' + wrongIndices.length + ' 题\n\n';
+    wrongDetails.forEach((w, i) => {
+      text += '--- 第' + w.idx + '题 ---\n';
+      text += '题号: ' + w.idx + '  (数据库ID: ' + w.id + ')\n';
+      text += '模块: ' + w.module + '\n';
+      text += '题干: ' + w.stem + '\n';
+      text += '你的答案: ' + w.userAnswer + '\n';
+      text += '正确答案: ' + w.correctAnswer + '\n';
+      text += '——————————————\n';
+    });
+    text += '\n请帮我分析这些错题的错因和薄弱点。';
+    detailText.value = text;
+    document.getElementById('wrongList').classList.add('show');
+    document.getElementById('copyWrongBtn').style.display = '';
+  } else {
+    wrongNumsEl.innerHTML = '<span style="color:#52c41a;font-weight:600;">🎉 全部正确！</span>';
+    detailText.value = '🎉 全部正确，太棒了！';
+    document.getElementById('wrongList').classList.add('show');
+    document.getElementById('copyWrongBtn').style.display = 'none';
+  }
+}
+
+function resetQuiz() {
+  Object.keys(userAnswers).forEach(k => delete userAnswers[k]);
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    card.className = 'question-card';
+    card.querySelectorAll('.option').forEach(o => {
+      o.classList.remove('selected', 'correct-answer', 'wrong-answer', 'disabled');
+    });
+    document.getElementById(`exp-${i}`).classList.remove('show');
+  });
+  document.getElementById('scoreBadge').innerHTML = '待提交';
+  document.getElementById('scoreBadge').style.color = '#667eea';
+  document.getElementById('wrongList').classList.remove('show');
+  document.getElementById('copyWrongBtn').style.display = 'none';
+}
+
+function copyWrongDetail() {
+  const ta = document.getElementById('wrongDetailText');
+  ta.select();
+  ta.setSelectionRange(0, 999999);
+  try {
+    navigator.clipboard.writeText(ta.value).then(() => {
+      alert('✅ 已复制错题详情，请发给教练分析！');
+    }).catch(() => {
+      document.execCommand('copy');
+      alert('✅ 已复制，请发给教练分析！');
+    });
+  } catch(e) {
+    document.execCommand('copy');
+    alert('✅ 已复制，请发给教练分析！');
+  }
+}
+
+function copyWrongAnswers() {
+  const wrongIndices = [];
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    if (card.classList.contains('wrong')) wrongIndices.push(i + 1);
+  });
+  if (wrongIndices.length === 0) {
+    alert('🎉 全部正确，没有错题！');
+    return;
+  }
+  const text = wrongIndices.join(', ');
+  navigator.clipboard.writeText(text).then(() => {
+    alert(`✅ 已复制错题号：${text}`);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert(`✅ 已复制错题号：${text}`);
+  });
+}
+
+try {
+  renderQuestions();
+  document.getElementById('jsFallback').style.display = 'none';
+} catch(e) {
+  document.getElementById('jsFallback').innerHTML =
+    '<div style="font-size:48px;margin-bottom:16px;">❌</div>' +
+    '<div style="font-size:16px;color:#ff4d4f;">题目加载失败</div>' +
+    '<div style="font-size:13px;margin-top:8px;color:#999;">错误: ' + e.message + '</div>' +
+    '<div style="font-size:13px;margin-top:4px;color:#999;">请截屏此错误信息发给教练修复</div>';
+  console.error('RD题卡渲染错误:', e);
+}
+</script>
+</body>
+</html>
