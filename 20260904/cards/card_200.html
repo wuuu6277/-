@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RD备考｜2026-09-04 200题</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #333; padding: 20px; }
+.container { max-width: 860px; margin: 0 auto; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+.header .meta { font-size: 14px; opacity: 0.9; }
+.controls { background: #fff; border-radius: 12px; padding: 16px 24px; margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.controls button { padding: 10px 28px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+.btn-submit { background: #667eea; color: #fff; }
+.btn-submit:hover { background: #5a6fd6; transform: translateY(-1px); }
+.btn-reset { background: #e8e8e8; color: #555; }
+.btn-reset:hover { background: #ddd; }
+.score-badge { margin-left: auto; font-size: 16px; font-weight: 600; color: #667eea; background: #f0f2ff; padding: 6px 16px; border-radius: 20px; }
+.question-card { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.2s; border-left: 4px solid transparent; }
+.question-card.correct { border-left-color: #52c41a; background: #f6ffed; }
+.question-card.wrong { border-left-color: #ff4d4f; background: #fff2f0; }
+.question-card.recorded { border-left-color: #91a7ff; background: #f5f7ff; }
+.q-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+.q-number { font-size: 15px; font-weight: 700; color: #667eea; min-width: 60px; }
+.q-type { font-size: 12px; padding: 2px 10px; border-radius: 10px; background: #f0f2ff; color: #667eea; font-weight: 600; }
+.q-module { font-size: 12px; color: #999; margin-left: 4px; }
+.q-stem { font-size: 16px; line-height: 1.7; margin-bottom: 16px; font-weight: 500; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border: 2px solid #e8e8e8; border-radius: 8px; cursor: pointer; transition: all 0.15s; font-size: 15px; line-height: 1.5; }
+.option:hover { border-color: #667eea; background: #f8f9ff; }
+.option.selected { border-color: #667eea; background: #f0f2ff; }
+.option.correct-answer { border-color: #52c41a; background: #f6ffed; }
+.option.wrong-answer { border-color: #ff4d4f; background: #fff2f0; }
+.option-key { font-weight: 700; color: #667eea; min-width: 24px; }
+.option.disabled { pointer-events: none; opacity: 0.85; }
+.question-actions { margin-top: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.btn-check-one { border: none; border-radius: 7px; padding: 8px 18px; background: #667eea; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn-check-one:hover { background: #5a6fd6; }
+.btn-check-one:disabled { background: #b7b7b7; cursor: default; }
+.answer-result { font-size: 14px; font-weight: 700; }
+.answer-result.correct-text { color: #389e0d; }
+.answer-result.wrong-text { color: #cf1322; }
+.explanation-box { margin-top: 14px; padding: 14px 18px; background: #fafafa; border-radius: 8px; border-left: 4px solid #667eea; display: none; font-size: 14px; line-height: 1.7; color: #555; }
+.explanation-box.show { display: block; }
+.explanation-box .exp-label { font-weight: 700; color: #667eea; margin-bottom: 6px; }
+.footer { text-align: center; color: #999; font-size: 12px; padding: 20px 0; }
+.status-bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.stat-item { font-size: 13px; color: #666; }
+.stat-item strong { color: #333; }
+.summary-bar { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.summary-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+.summary-item { text-align: center; }
+.summary-item .num { font-size: 28px; font-weight: 700; }
+.summary-item .label { font-size: 13px; color: #999; margin-top: 2px; }
+.btn-copy-wrong { background: #ff4d4f; color: #fff; }
+.btn-copy-wrong:hover { background: #e04343; transform: translateY(-1px); }
+.wrong-list { margin-top: 14px; padding: 14px 18px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 8px; display: none; }
+.wrong-list.show { display: block; }
+.wrong-list .wl-title { font-weight: 600; color: #ff4d4f; margin-bottom: 6px; font-size: 15px; }
+.wrong-list .wl-nums { font-size: 14px; line-height: 1.8; color: #333; }
+	.wrong-list .wl-nums span { display: inline-block; padding: 2px 10px; margin: 3px 4px; background: #fff1f0; border: 1px solid #ffa39e; border-radius: 4px; font-size: 13px; font-weight: 600; color: #cf1322; }
+	.copy-area { margin-top: 14px; }
+	.copy-area textarea { width:100%; height:140px; font-size:13px; font-family:"Courier New",monospace; padding:10px; border:1px solid #d9d9d9; border-radius:6px; background:#fafafa; resize:vertical; box-sizing:border-box; }
+	.copy-area .copy-btn { margin-top:6px; padding:6px 20px; background:#667eea; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer; }
+	.copy-area .copy-btn:hover { background:#5a6fd6; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+.question-card { animation: fadeIn 0.3s ease; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>📝 RD 备考练习</h1>
+      <div class="meta">2026-09-04 ｜ 200 题 ｜ 综合</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:24px;font-weight:700;">200</div>
+      <div style="font-size:13px;opacity:0.8;"># of questions</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-submit" onclick="submitQuiz()">✅ 提交判分</button>
+    <button class="btn-reset" onclick="resetQuiz()">🔄 重新答题</button>
+    <button class="btn-copy-wrong" id="copyWrongBtn" onclick="copyWrongAnswers()" style="display:none">📋 复制错题号</button>
+    <div class="score-badge" id="scoreBadge">待提交</div>
+    <div id="resumeBadge" style="width:100%;margin-top:8px;font-size:13px;color:#667eea;display:none;"></div>
+  </div>
+
+  <div class="summary-bar" id="summaryBar">
+    <h3 style="margin:0 0 8px;font-size:16px;color:#333;">📊 答题结果</h3>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="num" id="summaryTotal" style="color:#667eea">0</div><div class="label">总题数</div></div>
+      <div class="summary-item"><div class="num" id="summaryCorrect" style="color:#52c41a">0</div><div class="label">正确</div></div>
+      <div class="summary-item"><div class="num" id="summaryWrong" style="color:#ff4d4f">0</div><div class="label">错误</div></div>
+      <div class="summary-item"><div class="num" id="summaryRate" style="color:#667eea">0%</div><div class="label">正确率</div></div>
+    </div>
+    <div class="wrong-list" id="wrongList">
+      <div class="wl-title">❌ 错题详情 <span style="font-weight:400;font-size:12px;color:#999;">（可直接复制下方文本发给教练）</span></div>
+      <div class="wl-nums" id="wrongNums"></div>
+      <div class="copy-area">
+        <textarea id="wrongDetailText" readonly placeholder="提交后这里会显示错题详情，可直接复制..."></textarea>
+        <button class="copy-btn" onclick="copyWrongDetail()">📋 复制错题详情</button>
+      </div>
+    </div>
+  </div>
+  <div id="questionsContainer">
+    <div id="jsFallback" style="text-align:center;padding:60px 20px;color:#999;">
+      <div style="font-size:48px;margin-bottom:16px;">⚠️</div>
+      <div style="font-size:16px;">题目加载中...</div>
+      <div style="font-size:13px;margin-top:8px;">如果持续看不到题目，请刷新页面或重新生成题卡</div>
+    </div>
+  </div>
+
+  <noscript><div style="text-align:center;padding:40px;color:#ff4d4f;font-size:16px;">❌ 您的浏览器未启用 JavaScript，无法答题。</div></noscript>
+
+  <div class="footer">RD 备考题库 · 本地互动题卡</div>
+</div>
+
+<script>
+const QUESTIONS = [{"id": 6036, "index": 1, "type": "single", "stem": "一名38岁女性紊食者被怀疑为维生素B12缺乏,正在等待进一步的血液检查结果,请问下列哪一项可能与假设诊断不符", "options": {"A": "同型半胱氨酸水平升高", "B": "叶酸水平正常", "C": "苯丙酮酸水平升高", "D": "红细胞减少"}, "answer": "C", "explanation": "《生物化学与分子生物学》第9版P192。苯丙酮酸水平升高为苯丙酮尿症的患者，与VB12缺乏无关。选C。", "module": "氨基酸代谢", "is_single": true}, {"id": 3889, "index": 2, "type": "single", "stem": "动物性食品烹调后一般营养素含量变化不大,除了", "options": {"A": "蛋白质", "B": "脂肪", "C": "矿物质", "D": "维生素"}, "answer": "D", "explanation": "动物性食品中富含B族维生素,在烹调过程中,该种维生素较易损失。", "module": "食物营养", "is_single": true}, {"id": 6069, "index": 3, "type": "single", "stem": "肠道中蛋白质腐败可产生尸胺的氨基酸属于", "options": {"A": "支链氨基酸", "B": "芳香族氨基酸", "C": "酸性氨基酸", "D": "碱性氨基酸"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P174。赖氨酸通过脱羧基作用生成尸胺。《生物化学与分子生物学》第9版P9-10 表1-1氨基酸分类中赖氨酸属于碱性氨基酸。选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 3588, "index": 4, "type": "single", "stem": "下列不是钠的食物来源的是", "options": {"A": "酱油", "B": "蚕豆", "C": "烟熏食品", "D": "发酵豆制品"}, "answer": "B", "explanation": "考查钠的食物来源。钠普遍存在于各种食物中,一般动物性食物钠含量高于植物性食物,但人体钠主要来源为食盐以及加工过程中加入的钠或含钠化合物。", "module": "基础营养", "is_single": true}, {"id": 4207, "index": 5, "type": "single", "stem": "下列反映食品可能被污染及污染程度的指标的是", "options": {"A": "致病性微生物", "B": "毒素", "C": "菌落总数", "D": "乙醇含量"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P431。反映食品可能被污染及污染程度的指标是菌落总数和大肠埃希菌菌群总数。致病性微生物与毒素、有毒有害化学物质、放射性污染物等是严重危害人体健康的指标,而乙醇含量是商品质量指标。", "module": "食品卫生", "is_single": true}, {"id": 1812, "index": 6, "type": "single", "stem": "下列资料属于分类变量资料的是（ ）。", "options": {"A": "性别", "B": "身高", "C": "贫穷富裕程度", "D": "年龄"}, "answer": "A", "explanation": "分类变量资料是将观察单位按某种属性或类别分组，清点各组的观察单位数所得的资料。A选项 性别只有男、女两类，属于分类变量；B选项身高是数值型资料，用具体数值表示；C选项贫穷富裕程度虽有 分类特点，但属于有序分类资料（等级资料），和单纯分类变量有区别；D选项年龄是数值型资料，用数字表 示大小。答案：A", "module": "食品卫生", "is_single": true}, {"id": 6074, "index": 7, "type": "single", "stem": "N5-CH3-FH4转甲基酶的辅酶是", "options": {"A": "维生素B12", "B": "磷酸吡哆醛", "C": "NAD+", "D": "维生素B6"}, "answer": "A", "explanation": "《生物化学与分子生物学》第9版P190。N5-CH3-FH4转甲基酶又称甲硫氨酸合成酶，其辅酶是维生素B12。选A。", "module": "氨基酸代谢", "is_single": true}, {"id": 5347, "index": 8, "type": "single", "stem": "关于心迷走神经对心脏的支配和作用,正确的是", "options": {"A": "节前纤维释放乙酰胆碱,节后纤维释放去甲肾上腺素", "B": "具有紧张性,紧张性升高时增加自律细胞的自律性", "C": "对心房肌和心室肌均有较高的支配密度", "D": "安静时心迷走神经活动占优势"}, "answer": "D", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 4197, "index": 9, "type": "single", "stem": "在食品中有毒有害物质限量标准的制定程序中，需要通过人群的膳食调查，了解含有该物质的食品种类及各种食品的每日摄入量才能确定的是", "options": {"A": "最大无作用剂量", "B": "人体每日允许摄入量", "C": "总膳食中的允许含量", "D": "每种食物的最大允许量"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版P443。此题考查考生是否了解如何制定食品中有毒有害物质的限量标准。", "module": "食品卫生", "is_single": true}, {"id": 193, "index": 10, "type": "single", "stem": "下列调查方法中，最适合于膳食结构与相关疾病的关系分析的是（ ）。", "options": {"A": "称重法", "B": "记账法", "C": "24h回顾法", "D": "食物频率法"}, "answer": "D", "explanation": "食物频率法可反映长期的膳食模式，便于研究膳食结构与相关疾病的关系。而称重法、记账法 、24h回顾法多侧重于短期的膳食摄入情况统计。 答案：D", "module": "食品卫生", "is_single": true}, {"id": 2579, "index": 11, "type": "single", "stem": "味精的化学名为（ ）。", "options": {"A": "谷氨酰胺", "B": "谷氨酸钾", "C": "谷氨酸钠", "D": "鸟苷酸二钠"}, "answer": "C", "explanation": "味精主要成分是谷氨酸钠，这是生活常识。答案：C", "module": "食品卫生", "is_single": true}, {"id": 3515, "index": 12, "type": "single", "stem": "高血压患者预防动脉粥样硬化时，需同时监测下列哪项与维生素B₁₂、叶酸代谢相关的指标？", "options": {"A": "血清葡萄糖", "B": "血清尿酸", "C": "血清同型半胱氨酸", "D": "血清铁"}, "answer": "C", "explanation": "同型半胱氨酸（Hcy）代谢依赖叶酸和维生素B₁₂作为辅酶。Hcy升高是动脉粥样硬化和心血管疾病的独立危险因素。高血压合并高Hcy血症被称为'H型高血压'，在控制血压的同时需补充叶酸和VB₁₂降低Hcy。", "module": "临床营养", "is_single": true}, {"id": 5971, "index": 13, "type": "single", "stem": "下列物质在体内氧化成CO2和H2O时,同时产生ATP,哪种产生ATP最多", "options": {"A": "甘油", "B": "丙酮酸", "C": "乳酸", "D": "谷氨酸"}, "answer": "D", "explanation": "一摩尔谷氨酸生成21.5个ATP，甘油生成18.5个ATP；丙酮酸氧化后产生15个ATP； 乳酸脱氢后生成丙酮酸，故其比丙酮酸多产生3或2个ATP。", "module": "氨基酸代谢", "is_single": true}, {"id": 6082, "index": 14, "type": "single", "stem": "可提供甲基的是", "options": {"A": "SAM", "B": "PAPS", "C": "NAD+", "D": "FAD"}, "answer": "A", "explanation": "《生物化学与分子生物学》第9版P189。S-腺苷甲硫氨酸（SAM）是体内最重要的甲基直接供体。", "module": "氨基酸代谢", "is_single": true}, {"id": 2, "index": 15, "type": "single", "stem": "关于膳食纤维的分类，下列描述正确的是？", "options": {"A": "纤维素属于可溶性膳食纤维", "B": "果胶属于不可溶性膳食纤维", "C": "木质素属于不可溶性膳食纤维", "D": "低聚果糖属于多糖类膳食纤维"}, "answer": "C", "explanation": "**考点定位**：膳食纤维的分类（可溶性vs不可溶性）。属RD考试基础营养中膳食纤维的核心考点。\n**解题思路**：木质素为不可溶性膳食纤维。逐一排除：A错，纤维素属于不可溶性膳食纤维，不是可溶性；B错，果胶属于可溶性膳食纤维；D错，低聚果糖属于低聚糖而非多糖类。\n**易错点**：最容易混淆的是纤维素的归类——纤维素是植物细胞壁主要成分，不溶于水；果胶存在于水果中，有凝胶特性，可溶于水。\n**记忆点**：可溶性纤维=果胶+树胶+部分半纤维素；不可溶性纤维=纤维素+木质素+部分半纤维素。\n（教材回扣：《营养与食品卫生学》第2章·膳食纤维分类）", "module": "基础营养", "is_single": true}, {"id": 1031, "index": 16, "type": "multiple", "stem": "孕期体重的增加是由于（ ）。", "options": {"A": "胎儿", "B": "羊水", "C": "胎盘", "D": "血容量的增加", "E": "乳腺"}, "answer": ["A", "B", "C", "D", "E"], "explanation": "孕期体重增加是多种因素共同作用，胎儿、羊水、胎盘、血容量增加、乳腺增大等都会使体重 上升。这几个选项都参与其中。答案：ABCDE", "module": "人群营养", "is_single": false}, {"id": 1407, "index": 17, "type": "multiple", "stem": "食物中毒的特点有（ ）。", "options": {"A": "人与人之间相互传染", "B": "发病与食物有关", "C": "短时间多人突然发病", "D": "临床表现类似", "E": "有共同的饮食史"}, "answer": ["B", "C", "D", "E"], "explanation": "食物中毒通常是因食用被污染食物等引起，发病与食物有关，常因多人食用相同污染食物而短 时间多人突然发病，且临床表现多类似，大家一般有共同饮食史。食物中毒并非人与人之间相互传染疾病。 答案：BCDE", "module": "人群营养", "is_single": false}, {"id": 5984, "index": 18, "type": "single", "stem": "儿茶酚胺是由哪个氨基酸转化生成的", "options": {"A": "色氨酸", "B": "谷氨酸", "C": "酪氨酸", "D": "赖氨酸"}, "answer": "C", "explanation": "《生物化学与分子生物学》第9版P192。酪氨酸转变为儿茶酚胺和黑色素或彻底氧化分解。选C。", "module": "氨基酸代谢", "is_single": true}, {"id": 1280, "index": 19, "type": "multiple", "stem": "蛋白质过度加热出现的有害劣变产物的主要危害是（ ）。", "options": {"A": "致突变", "B": "致癌性", "C": "急性中毒", "D": "损害神经系统", "E": "降低蛋白质营养价值"}, "answer": ["A", "B", "E"], "explanation": "正确答案：A、B、E。选项解析：A.致突变；B.致癌性；C.急性中毒；D.损害神经系统；E.降低蛋白质营养价值。建议查阅教材相应章节巩固知识。", "module": "人群营养", "is_single": false}, {"id": 5980, "index": 20, "type": "single", "stem": "血浆清蛋白生物合成的场所是", "options": {"A": "肾", "B": "肝", "C": "红细胞", "D": "白细胞"}, "answer": "B", "explanation": "《生物化学与分子生物学》第9版P349表18-1。", "module": "氨基酸代谢", "is_single": true}, {"id": 397, "index": 21, "type": "single", "stem": "一般来说，配餐中膳食蛋白质以每日推荐摄入量的（ ）即为基本合格。", "options": {"A": "95%", "B": "90%", "C": "85%", "D": "80%"}, "answer": "B", "explanation": "正确答案：B。选项解析：A.95%；B.90%；C.85%；D.80%。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": true}, {"id": 2909, "index": 22, "type": "multiple", "stem": "家庭称重记账法调查表的设计应能够记录下列内容（ ）。", "options": {"A": "对结存、购进、废弃、剩余食物量进行登记", "B": "家庭成员人数", "C": "家庭成员的就餐地点", "D": "家庭成员在家就餐的餐次登记", "E": "家庭成员的基本情况"}, "answer": ["A", "B", "D", "E"], "explanation": "正确答案：A、B、D、E。选项解析：A.对结存、购进、废弃、剩余食物量进行登记；B.家庭成员人数；C.家庭成员的就餐地点；D.家庭成员在家就餐的餐次登记；E.家庭成员的基本情况。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": false}, {"id": 1483, "index": 23, "type": "multiple", "stem": "关于循证医学下列说法错误的是（ ）", "options": {"A": "循证医学诋毁临床经验", "B": "循证医学忽略病人的价值取向和选择", "C": "循证医学是一个不切实际的概念", "D": "循证医学不只限于临床研究", "E": "缺乏随机试验的证据时可能导致临床治疗上的犹豫不决"}, "answer": ["A", "B", "C", "E"], "explanation": "正确答案：A、B、C、E。选项解析：A.循证医学诋毁临床经验；B.循证医学忽略病人的价值取向和选择；C.循证医学是一个不切实际的概念；D.循证医学不只限于临床研究；E.缺乏随机试验的证据时可能导致临床治疗上的犹豫不决。建议查阅教材相应章节巩固知识。", "module": "人群营养", "is_single": false}, {"id": 307, "index": 24, "type": "single", "stem": "在谷类蛋白质氨基酸组成中，（ ）含量相对较低。", "options": {"A": "赖氨酸", "B": "蛋氨酸", "C": "色氨酸", "D": "烟酸"}, "answer": "A", "explanation": "谷类蛋白质中赖氨酸含量相对较低，是其第一限制氨基酸 。答案：A", "module": "食品卫生", "is_single": true}, {"id": 767, "index": 25, "type": "multiple", "stem": "INFOODS的意思是（ ）。", "options": {"A": "食物中的", "B": "摄入的食物", "C": "国际性组织机构缩写", "D": "FA0和UNU共同成立的国际机构", "E": "国际食物信息工作联合体"}, "answer": ["C", "D", "E"], "explanation": "正确答案：C、D、E。选项解析：A.食物中的；B.摄入的食物；C.国际性组织机构缩写；D.FA0和UNU共同成立的国际机构；E.国际食物信息工作联合体。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": false}, {"id": 714, "index": 26, "type": "multiple", "stem": "（ ）应鼓励摄入。", "options": {"A": "水果", "B": "蔬菜", "C": "全麸谷类食物", "D": "脱脂和低脂乳品"}, "answer": ["A", "B", "C"], "explanation": "正确答案：A、B、C。选项解析：A.水果；B.蔬菜；C.全麸谷类食物；D.脱脂和低脂乳品。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": false}, {"id": 6057, "index": 27, "type": "single", "stem": "以辅酶Ⅰ或辅酶Ⅱ为辅酶的酶是", "options": {"A": "L-谷氨酸脱氢酶", "B": "腺苷酸脱氨酶", "C": "谷氨酰胺合成酶", "D": "精氨酸代琥珀酸合成酶"}, "answer": "A", "explanation": "《生物化学与分子生物学》第9版P179。L-瓜氨酸脱氢酶是唯一技能利用NAD+（辅酶I）又能利用NADP+（辅酶II）接受还原当量的酶。", "module": "氨基酸代谢", "is_single": true}, {"id": 850, "index": 28, "type": "single", "stem": "能促进母体骨骼更新，调节钙的吸收与潴留的激素是（ ）。", "options": {"A": "胎盘催乳素", "B": "游离甲状腺素", "C": "雌激素", "D": "促绒毛激素"}, "answer": "C", "explanation": "雌激素可促进母体骨骼更新，调节钙的吸收与潴留。而胎盘催乳素主要作用是促进乳腺腺泡发 育，为产后泌乳作准备等；游离甲状腺素主要调节机体代谢等；促绒毛激素主要维持妊娠等，它们在促进母 体骨骼更新及调节钙吸收潴留方面作用不明显。答案：C", "module": "人群营养", "is_single": true}, {"id": 316, "index": 29, "type": "single", "stem": "判断人群中某营养素有过量摄入风险的大小，是根据日常摄入量超过（ ）者所占的百分数。", "options": {"A": "平均需要量（EAR）", "B": "适宜摄入量（AI）", "C": "推荐摄入量（RNI）", "D": "最高摄入限量（UL）"}, "answer": "D", "explanation": "最高摄入限量（UL）是平均每日可以摄入该营养素的最高量，超过UL有过量摄入风险。判断人 群某营养素有过量摄入风险大小，是看日常摄入量超过UL者所占百分数。答案：D", "module": "食品卫生", "is_single": true}, {"id": 717, "index": 30, "type": "multiple", "stem": "特别应增加鱼、肉、蛋、奶、海产品摄入的两类人群是（ ）。", "options": {"A": "学龄儿童", "B": "青少年", "C": "孕妇", "D": "乳母", "E": "老年"}, "answer": ["C", "D"], "explanation": "孕妇和乳母对蛋白质等营养需求高，鱼、肉、蛋、奶、海产品富含优质蛋白质等多种营养素 ，能满足其特殊生理时期的营养需求；学龄儿童、青少年虽也需营养，但程度不及孕妇和乳母；老年人消化 功能下降，对这类食物的需求和前两者情况不同。答案：CD", "module": "食品卫生", "is_single": false}, {"id": 6029, "index": 31, "type": "single", "stem": "α-酮酸的代谢不产生", "options": {"A": "CO2", "B": "ATP", "C": "H2O", "D": "NH3"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P180。α-酮酸可氧化分解成CO2和H2O，并提供能量。故选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 4555, "index": 32, "type": "single", "stem": "下列因素对营养素毒副作用无影响的是", "options": {"A": "个体生命进程中的生理改变", "B": "营养素的浓度和化学形式", "C": "个体的营养健康状况和排泄丢失情况", "D": "个体的生活习惯"}, "answer": "D", "explanation": "营养素毒副作用的影响因素有：个体生命进程中生理改变引起敏感性的变异、生物利用率、营养素间的相互作用。其中影响生物利用率的因素包括营养素的浓度和化学形式。", "module": "公共营养", "is_single": true}, {"id": 3934, "index": 33, "type": "single", "stem": "可降低血糖水平的食物或食物成分是", "options": {"A": "膳食纤维", "B": "高GI食物", "C": "支链淀粉", "D": "低聚异麦芽糖"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P207。膳食纤维分为可溶性和不溶性两种，可溶性膳食纤维能吸水膨胀，吸附并延缓碳水化合物在消化道的吸收，使餐后血糖和胰岛素水平降低，还有降胆固醇的作用。不溶性膳食纤维能促进肠道蠕动，加快食物通过肠道，减少吸收，具有间接缓解餐后血糖升高和减肥的作用。 膳食纤维可降低血糖水平。", "module": "临床营养", "is_single": true}, {"id": 5963, "index": 34, "type": "single", "stem": "蛋白质与脂肪酸分解代谢的最终产物不同的是", "options": {"A": "H2O", "B": "尿素", "C": "CO2", "D": "ATP"}, "answer": "B", "explanation": "《生物化学与分子生物学》第9版P183。正常情况下体内的氨主要在肝合成尿素，只有少部分氨在肾以铵盐形式随尿排出。蛋白质代谢后有氨生成，但脂肪酸成分只有C、H、O，故选B。", "module": "氨基酸代谢", "is_single": true}, {"id": 2746, "index": 35, "type": "single", "stem": "罐头食品的灭菌温度是（ ）。", "options": {"A": "90～100℃", "B": "100～120℃", "C": "120～150℃", "D": "180℃以上"}, "answer": "B", "explanation": "罐头食品灭菌温度通常在100 - 120℃，既要杀死微生物保证食品保质期，又要避免温度过高影 响食品品质。答案选B。", "module": "食品卫生", "is_single": true}, {"id": 2838, "index": 36, "type": "multiple", "stem": "植物性食物中（ ）。", "options": {"A": "以油脂类坚果类食物的脂肪含量最高", "B": "以豆类食物的脂肪含量最高", "C": "脂肪酸以亚油酸为主", "D": "脂肪酸以牛磺酸为主", "E": "含纤维素较高"}, "answer": ["A", "C", "E"], "explanation": "植物性食物中，油脂类坚果脂肪含量可高达40%以上，是植物性食物中脂肪含量最高的；植物性 食物脂肪酸以亚油酸等不饱和脂肪酸为主；同时植物性食物含纤维素相对较高。豆类脂肪含量不是最高。牛 磺酸不是脂肪酸，且主要存在于动物性食物尤其是贝类中。综上，ACE都符合植物性食物特点。答案：ACE", "module": "人群营养", "is_single": false}, {"id": 1498, "index": 37, "type": "single", "stem": "关于逻辑数据层描述不正确的是（ ）。", "options": {"A": "逻辑数据层是膳食调查数据库的基本结构之一", "B": "逻辑数据层指出了每个数据的逻辑定义及数据间的逻辑关系", "C": "逻辑数据层是用户所看到和使用的数据库", "D": "逻辑数据层表示了一个或一些特定用户使用的数据集合，即逻辑记录集合"}, "answer": "B", "explanation": "正确答案：B。选项解析：A.逻辑数据层是膳食调查数据库的基本结构之一；B.逻辑数据层指出了每个数据的逻辑定义及数据间的逻辑关系；C.逻辑数据层是用户所看到和使用的数据库；D.逻辑数据层表示了一个或一些特定用户使用的数据集合，即逻辑记录集合。建议查阅教材相应章节巩固知识。", "module": "人群营养", "is_single": true}, {"id": 5331, "index": 38, "type": "single", "stem": "肾上腺素不具备下列哪种作用", "options": {"A": "使心肌收缩力加强", "B": "使心率加快", "C": "使内脏皮肤血管收缩", "D": "使组织液生成减少"}, "answer": "D", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 6023, "index": 39, "type": "single", "stem": "下列关于甲硫氨酸的叙述,哪项是错误的", "options": {"A": "S-腺苷甲硫氨酸上的甲基能转移生成肾上腺素等化合物", "B": "S-腺苷甲硫氨酸是甲硫氨酸的活性形式", "C": "N5-CH3-FH4可向同型半胱氨酸提供甲基", "D": "由于人体能合成甲硫氨酸,故它是非必需氨基酸"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P189。甲硫氨酸可以转变为半胱氨酸和胱氨酸，半胱氨酸和胱氨酸又可以相互转化变，但是后两种都不能再变为甲硫氨酸，所以甲硫氨酸是营养必需氨基酸。D错，选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 5391, "index": 40, "type": "single", "stem": "肾上腺素和去甲肾上腺素对心血管的效应是", "options": {"A": "两者的升压效应相同", "B": "两者引起心率变化相同", "C": "小剂量的肾上腺素使骨骼肌微动脉舒张", "D": "去甲肾上腺素使胃肠微动脉舒张"}, "answer": "C", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 1809, "index": 41, "type": "single", "stem": "正常成年男子收缩压的正常值范围一般指该指标在（ ）中的波动范围。", "options": {"A": "所有人", "B": "所有正常人", "C": "绝大部分正常人", "D": "少部分正常人"}, "answer": "C", "explanation": "医学上指标的正常值范围一般是指绝大部分正常人的波动范围，并非涵盖所有人或所有正常人 ，少部分正常人不符合通常对正常值范围的定义。答案：C", "module": "食品卫生", "is_single": true}, {"id": 2413, "index": 42, "type": "single", "stem": "对婴儿来讲，属于必需氨基酸的是（ ）。", "options": {"A": "丙氨酸", "B": "丝氨酸", "C": "谷氨酸", "D": "组氨酸"}, "answer": "D", "explanation": "成人必需氨基酸有8种，婴儿比成人多一种必需氨基酸即组氨酸。答案：D", "module": "食物营养", "is_single": true}, {"id": 5528, "index": 43, "type": "single", "stem": "关于消化道平滑肌慢波的叙述,错误的是", "options": {"A": "在胃肠不收缩的情况下,也可记录到慢波电位", "B": "慢波的波幅和频率与平滑肌组织的种类无关", "C": "慢波起源于纵行肌和环肌之间的Cajal间质细胞", "D": "慢波的产生是肌源性的"}, "answer": "B", "explanation": "《生理学》第9版P178。消化道不同部位平滑肌的慢波频率不同，人的慢波频率在胃约每分钟3次，在十二指肠约每分钟12次，回肠末端为8~9次。故B选项中“慢波的频率与平滑肌组织的种类无关”错误。", "module": "消化系统", "is_single": true}, {"id": 574, "index": 44, "type": "multiple", "stem": "小型餐馆的设置要求：（ ）", "options": {"A": "经营场所使用面积在150㎡以下（含150㎡）", "B": "经营场所使用面积在150--500㎡", "C": "就餐座位数在75座以下（含75座）", "D": "就餐座位数在75--250座"}, "answer": ["A", "C"], "explanation": "小型餐馆一般从经营场所面积或就餐座位数界定，经营场所使用面积在150㎡以下（含150㎡） ，或就餐座位数在75座以下（含75座）属于小型餐馆。答案：AC 。", "module": "食品卫生", "is_single": false}, {"id": 2525, "index": 45, "type": "single", "stem": "（ ）可促进钙的吸收和重吸收。", "options": {"A": "维生素B2", "B": "维生素D", "C": "维生素C", "D": "β-胡萝卜素"}, "answer": "B", "explanation": "维生素D能促进钙的吸收和重吸收，在钙的代谢中起关键作用。其他选项维生素B2、维生素C、 β -胡萝卜素与钙的吸收和重吸收关系不紧密。答案：B", "module": "人群营养", "is_single": true}, {"id": 6047, "index": 46, "type": "single", "stem": "Cys氧化脱羧的产物是", "options": {"A": "γ-氨基丁酸", "B": "牛磺酸", "C": "5-羟色胺", "D": "多胺"}, "answer": "B", "explanation": "《生物化学与分子生物学》第9版P191。半胱氨酸Cys先氧化成磺基丙氨酸，再经磺基丙氨酸脱羧酶催化，脱羧生成牛磺酸。选B。", "module": "氨基酸代谢", "is_single": true}, {"id": 4395, "index": 47, "type": "single", "stem": "关于运动员的饮食，下列错误的是", "options": {"A": "饮食中应供给足够的能量", "B": "有运动员所需要的各种营养素", "C": "供给的饮食要能量高、体积大", "D": "饮食要易于消化吸收"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P156。运动员的饮食应选择浓缩、体积小易消化的食物。", "module": "人群营养", "is_single": true}, {"id": 5546, "index": 48, "type": "single", "stem": "促胰液素能促进胰腺分泌", "options": {"A": "大量水和碳酸氢盐,酶含量较少", "B": "少量水和碳酸氢盐,酶的含量也很少", "C": "少量水和碳酸氢盐,酶的含量很丰富", "D": "大量水,而碳酸氢盐和酶的含量很少"}, "answer": "A", "explanation": "《生理学》第9版P194。促胰液素主要作用于胰腺小管上皮细胞，使其分泌大量的水和碳酸氢盐，酶的含量很低。故选A。", "module": "消化系统", "is_single": true}, {"id": 5592, "index": 49, "type": "single", "stem": "水分在小肠的吸收机制是", "options": {"A": "渗透和滤过", "B": "主动转运", "C": "入胞作用", "D": "单纯扩散"}, "answer": "A", "explanation": "《生理学》第9版P202。水的吸收都是跟随溶质分子的吸收而被动吸收的，特别是NaCl的主动吸收所产生的渗透压梯度是水吸收的主要动力。故选A。", "module": "消化系统", "is_single": true}, {"id": 4077, "index": 50, "type": "single", "stem": "属于高血压危险因素的有①肥胖②胰岛素抵抗③性别④遗传⑤年龄", "options": {"A": "①②③④", "B": "①②④⑤", "C": "①③④⑤", "D": "②③④⑤"}, "answer": "B", "explanation": "《营养与食品卫生学》第8版P260。原发性高血压病因复杂，已知的发病相关因素有：遗传、肥胖、胰岛素抵抗、某些营养素的过量或不足、过量饮酒、人口老龄化等。", "module": "临床营养", "is_single": true}, {"id": 2796, "index": 51, "type": "single", "stem": "发芽马铃薯引起中毒的有毒成分是（ ）。", "options": {"A": "组胺", "B": "龙葵素", "C": "皂甙", "D": "棉酚"}, "answer": "B", "explanation": "发芽马铃薯中毒的有毒成分主要是龙葵素。答案：B。", "module": "食物营养", "is_single": true}, {"id": 2157, "index": 52, "type": "multiple", "stem": "患病率的特点有（ ）。", "options": {"A": "分子为特定时间所调查人群中某病新旧病例数", "B": "分子为一定时期暴露人群中新发生的病例数", "C": "由横断面调查获得的疾病频率", "D": "是一种静态指标", "E": "指现患率和流行率"}, "answer": ["A", "C", "D", "E"], "explanation": "患病率分子为特定时间所调查人群中某病新旧病例数，是通过横断面调查获得的频率，可反映 某病在一定人群中的流行强度，是静态指标，现患率和流行率本质也是患病率相关表述。选项B是发病率的特 点。答案：ACDE", "module": "人群营养", "is_single": false}, {"id": 36, "index": 53, "type": "multiple", "stem": "关于碳水化合物的生理功能，下列叙述正确的有？", "options": {"A": "为机体提供能量，每克碳水化合物约提供4kcal能量", "B": "具有节约蛋白质作用(protein-sparing effect)，足量碳水可减少蛋白质分解供能", "C": "膳食纤维属于可消化碳水化合物，可被人体消化酶分解吸收", "D": "碳水化合物可参与构成核酸(核糖)和糖蛋白", "E": "中枢神经系统在正常情况下只能利用葡萄糖供能，不能直接利用脂肪酸"}, "answer": ["A", "B", "D", "E"], "explanation": "**考点定位**：碳水化合物的四大生理功能（供能/节约蛋白质/构成成分/解毒）。属RD考试基础营养中碳水化合物的核心知识，多选题常考。\n**解题思路**：逐一评估：A（供能4kcal/g）正确；B（节约蛋白质作用）正确——碳水充足时保护蛋白不被分解供能；D（核糖构成核酸、糖蛋白参与细胞识别）正确；E（中枢神经只能利用葡萄糖供能）正确——不能直接利用脂肪酸，饥饿时才部分利用酮体。\n不选C：膳食纤维属于不可消化碳水化合物，人体缺乏水解酶。\n**易错点**：E选项容易错——部分备考者不知大脑正常情况下只能用葡萄糖。另外C选项的\"可消化\"是误判——膳食纤维属于不可消化碳水化合物。\n**记忆点**：碳水四大功能——供能（4kcal/g）+节约蛋白+构成成分（核糖、糖蛋白）+解毒（葡萄糖醛酸）。\n（教材回扣：《营养与食品卫生学》第2章·碳水化合物功能）", "module": "基础营养", "is_single": false}, {"id": 2341, "index": 54, "type": "single", "stem": "河豚毒素含量最高的为河豚鱼的（ ）。", "options": {"A": "血液", "B": "肝脏", "C": "卵巢", "D": "肾脏"}, "answer": "C", "explanation": "一般来说，河豚毒素在河豚鱼不同部位含量有差异，卵巢是河豚毒素含量最高的部位之一。答 案：C", "module": "食物营养", "is_single": true}, {"id": 1814, "index": 55, "type": "single", "stem": "脂类的生理功能不包括下列哪项（ ）", "options": {"A": "供给能量", "B": "构成人体组织结构成分", "C": "调节酸碱平衡和水盐平衡", "D": "供给必需脂肪酸", "E": "脂溶性维生素的重要来源"}, "answer": "C", "explanation": "脂类可供给能量、构成人体组织结构成分、供给必需脂肪酸、作为脂溶性维生素重要来源。而 调节酸碱平衡和水盐平衡主要靠体内的缓冲系统、肺和肾等，不是脂类的生理功能。答案：C", "module": "食品卫生", "is_single": true}, {"id": 646, "index": 56, "type": "multiple", "stem": "菜单依据服务对象划分为（ ）", "options": {"A": "对外菜单", "B": "对内菜单", "C": "儿童餐菜单", "D": "节食菜单", "E": "早餐菜单"}, "answer": ["A", "B", "C", "D"], "explanation": "正确答案：A、B、C、D。选项解析：A.对外菜单；B.对内菜单；C.儿童餐菜单；D.节食菜单；E.早餐菜单。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": false}, {"id": 1524, "index": 57, "type": "single", "stem": "早餐、中餐、晚三餐的适宜餐次比是（ ）。", "options": {"A": "20%、50%、30%", "B": "30%、40%、30%", "C": "30%、50%、20%", "D": "20%、60%、20%"}, "answer": "B", "explanation": "一般来说，合理的三餐餐次比为早餐占30%，中餐占40%，晚餐占30% 。答案：B", "module": "人群营养", "is_single": true}, {"id": 2411, "index": 58, "type": "single", "stem": "下列关于脂肪酸的说法正确的是（ ）。", "options": {"A": "脂肪酸不是构成甘油三酯的成分", "B": "动植物中脂肪酸的种类很少", "C": "脂肪酸根据碳原子数的不同可分为短链、中链和长链", "D": "根据碳链上双键数，可把脂肪酸分成饱和脂肪酸和单不饱含脂肪酸两类"}, "answer": "C", "explanation": "选项A，甘油三酯由甘油和脂肪酸组成，所以脂肪酸是构成甘油三酯的成分，A错误。 选项 B，动植物中脂肪酸种类繁多，B错误。 选项C，脂肪酸根据碳原子数不同分为短链（含4 - 6个碳原子）、中 链（含8 - 12个碳原子）和长链（含14个以上碳原子），C正确。 选项D，根据碳链上双键数，脂肪酸分为饱 和脂肪酸、单不饱和脂肪酸和多不饱和脂肪酸，D错误。答案：C", "module": "食物营养", "is_single": true}, {"id": 1264, "index": 59, "type": "single", "stem": "标准体重的公式是（ ）。", "options": {"A": "标准体重=身高（cm）-100", "B": "标准体重=身高（cm）-105", "C": "标准体重=身高（cm）-110", "D": "标准体重=身高（cm）-95"}, "answer": "B", "explanation": "在常用的标准体重计算公式中，较常见的是标准体重（kg）=身高（cm） - 105 。所以答案选B 。", "module": "人群营养", "is_single": true}, {"id": 5604, "index": 60, "type": "single", "stem": "分泌HCL的是", "options": {"A": "主细胞", "B": "壁细胞", "C": "黏液细胞", "D": "幽门黏膜中G细胞"}, "answer": "B", "explanation": "《生理学》第9版P185。胃酸（HCL）主要由胃粘膜壁细胞分泌。", "module": "消化系统", "is_single": true}, {"id": 2350, "index": 61, "type": "single", "stem": "骨痛病是由于环境（ ）污染通过食物链而引起的人体慢性中毒。", "options": {"A": "铅", "B": "镉", "C": "汞", "D": "砷"}, "answer": "B", "explanation": "骨痛病是因长期食用被镉污染的食物，镉在人体内蓄积引起的慢性中毒。答案：B", "module": "食物营养", "is_single": true}, {"id": 4613, "index": 62, "type": "single", "stem": "下列不属于《中国居民膳食指南（2022）》内容的是（  ）", "options": {"A": "食物多样、合理搭配", "B": "多吃蔬果、奶类、全谷、大豆", "C": "规律进餐，足量饮水", "D": "应禁烟、酒"}, "answer": "D", "explanation": "《中国居民膳食指南（2022）》P9。平衡膳食准则八条，包括：1.食物多样，合理搭配。2.吃动平衡，健康体重。3.多吃蔬果、奶类、全谷、大豆。4.适量吃鱼、禽、蛋、瘦肉。5.少盐少油，控糖限酒。6.规律进餐， 足量饮水。7.会烹会选，会看标签。8.公筷分餐，杜绝浪费。", "module": "公共营养", "is_single": true}, {"id": 1053, "index": 63, "type": "single", "stem": "婴儿配方奶粉主要有（ ）。", "options": {"A": "起始婴儿配方奶粉和后继婴儿配方奶粉", "B": "起始婴儿配方奶粉和较大婴儿配方奶粉", "C": "起始婴儿配方奶粉、后继婴儿配方奶粉和医学配方奶粉", "D": "起始婴儿配方奶粉、较大婴儿配方奶粉和植物性食物奶粉"}, "answer": "C", "explanation": "婴儿配方奶粉分类包括起始婴儿配方奶粉，适用于0 - 6月龄婴儿；后继婴儿配方奶粉，适用于 6月龄以上婴儿；医学配方奶粉，用于特殊医学状况婴儿。所以选项C涵盖更全面。答案：C", "module": "人群营养", "is_single": true}, {"id": 3744, "index": 64, "type": "single", "stem": "核黄素的辅酶活性形式是", "options": {"A": "FAD", "B": "CoA", "C": "NAD", "D": "烟酰胺"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P86。核黄素以黄素单核苷酸（FMN）和黄素腺嘌呤二核苷酸（FAD）辅酶形式参与许多代谢的氧化还原反应。", "module": "基础营养", "is_single": true}, {"id": 4357, "index": 65, "type": "single", "stem": "妊娠期营养不良对胎儿健康的影响包括①生长发育迟缓②先天性畸形③脑发育受损④低出生体重⑤巨大儿", "options": {"A": "②③④⑤", "B": "①③④⑤", "C": "①②④⑤", "D": "①②③④⑤"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版P135-P136。妊娠期营养不良对胎儿健康的影响有胎儿生长发育迟缓、先天性畸形、脑发育受损、低出生体重、巨大儿。", "module": "人群营养", "is_single": true}, {"id": 42, "index": 66, "type": "multiple", "stem": "人体每日总能量消耗(TEE)由以下哪些部分组成？", "options": {"A": "基础代谢(BMR)", "B": "食物热效应(TEF)", "C": "体力活动消耗(PA)", "D": "粪便能量损失", "E": "食物热效应和基础代谢是同一概念"}, "answer": ["A", "B", "C"], "explanation": "**考点定位**：总能量消耗（TEE）的三组成部分。属RD考试基础营养中能量代谢的基础框架。\n**解题思路**：TEE=BMR（60-70%）+TEF（约10%）+PA（15-30%）。A、B、C均选。\n不选D：粪便能量损失不属于TEE。不选E：TEF和BMR是不同的概念。\n**易错点**：粪便能量损失不属于能量消耗——那是未被吸收的能量。BMR（基础代谢）和REE（静息能量消耗）略有差异但考试中常混用。\n**记忆点**：TEE=BMR+TEF+PA。基础代谢是耗能大户（60-70%），活动消耗变数最大。\n（教材回扣：《营养与食品卫生学》第2章·能量消耗组成）", "module": "基础营养", "is_single": false}, {"id": 5293, "index": 67, "type": "single", "stem": "调节心血管活动基本中枢位于", "options": {"A": "脊髓", "B": "延髓", "C": "中脑", "D": "下丘脑"}, "answer": "B", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 641, "index": 68, "type": "multiple", "stem": "食物中毒，指食用了（ ）后出现的急性、亚急性疾病。", "options": {"A": "有毒有害物质", "B": "被有毒有害物质污染的食品", "C": "含有毒有害物质的食品", "D": "过期食品"}, "answer": ["B", "C"], "explanation": "食物中毒是指食用了被有毒有害物质污染的食品或者含有毒有害物质的食品后出现的急性、亚 急性疾病。A选项表述不明确；过期食品不一定就会导致食物中毒，只是有风险。BC都符合食物中毒定义中对 食物情况的描述。答案：BC 。", "module": "食品卫生", "is_single": false}, {"id": 507, "index": 69, "type": "multiple", "stem": "餐饮店天花板采用无毒、无异味（ ）的浅色材料，涂覆或装修。", "options": {"A": "不吸水", "B": "表面光洁", "C": "、耐腐蚀", "D": "耐温"}, "answer": ["A", "B", "C", "D"], "explanation": "正确答案：A、B、C、D。选项解析：A.不吸水；B.表面光洁；C.、耐腐蚀；D.耐温。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": false}, {"id": 3108, "index": 70, "type": "single", "stem": "餐饮消费者在遍布大街小巷的经营性与参观等进行的用餐消费行为属于（ ）消费。", "options": {"A": "生活性", "B": "理想性", "C": "现实性", "D": "生产性"}, "answer": "A", "explanation": "生活性消费是指人们为满足自身生活需要而进行的消费活动，餐饮消费者在大街小巷餐厅用餐 是满足日常生活饮食需求，属于生活性消费。答案：A", "module": "综合训练", "is_single": true}, {"id": 164, "index": 71, "type": "single", "stem": "评价高蛋白食品新鲜度的指标（ ）", "options": {"A": "组织状态", "B": "黏度", "C": "气味", "D": "挥发性盐基氮"}, "answer": "D", "explanation": "挥发性盐基氮是评价高蛋白食品新鲜度的重要指标，随着食品新鲜度下降，挥发性盐基氮含量 会增加。而组织状态、黏度、气味虽也可在一定程度反映食品情况，但不是评价高蛋白食品新鲜度的特征性 指标。答案：D", "module": "综合训练", "is_single": true}, {"id": 2588, "index": 72, "type": "single", "stem": "有人报告低（ ）血症患者可有房室性早搏、房颤以及室速与室颤，半数有血压升高。", "options": {"A": "钙", "B": "钾", "C": "镁", "D": "磷"}, "answer": "C", "explanation": "低镁血症时可出现多种心律失常，如房室性早搏、房颤以及室速与室颤等，还可能半数有血压 升高。而低钙主要是神经肌肉兴奋性改变等表现；低钾主要是肌无力、心律失常等，但与题目所描述特征不 完全契合；低磷主要影响骨骼、代谢等方面，一般不出现此心律失常与血压表现。所以答案为镁相关。答案 ：C", "module": "食品卫生", "is_single": true}, {"id": 1641, "index": 73, "type": "multiple", "stem": "病因预防分为（ ）", "options": {"A": "健康促进", "B": "健康教育", "C": "早发现", "D": "早体检", "E": "早预防"}, "answer": ["A", "B"], "explanation": "正确答案：A、B。选项解析：A.健康促进；B.健康教育；C.早发现；D.早体检；E.早预防。建议查阅教材相应章节巩固知识。", "module": "人群营养", "is_single": false}, {"id": 3989, "index": 74, "type": "single", "stem": "下列有关营养不良的描述,错误的是", "options": {"A": "营养缺乏是营养不良的一种表现形式", "B": "中国居民面临宏量营养素缺乏和微量元素过剩的双重挑战", "C": "营养素摄入过少与过量都会对健康产生不利影响", "D": "营养不良可分为营养缺乏与营养过剩"}, "answer": "B", "explanation": "本题考查对营养不良的理解。中国居民营养不良的主要特点是微量营养素缺乏以及能量过剩。故B选项描述的内容是错误的。", "module": "临床营养", "is_single": true}, {"id": 5979, "index": 75, "type": "single", "stem": "下列氨基酸中哪一种不能提供一碳单位", "options": {"A": "甘氨酸", "B": "丝氨酸", "C": "组氨酸", "D": "酪氨酸"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P188。一碳单位主要来自丝氨酸、甘氨酸、组氨酸和色氨酸的分解代谢。选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 2648, "index": 76, "type": "single", "stem": "维生素B6作为辅酶，可直接参与（ ）的催化代谢。", "options": {"A": "果糖", "B": "DNA", "C": "氨基酸", "D": "脂肪"}, "answer": "C", "explanation": "维生素B6作为辅酶，在人体内主要参与氨基酸的代谢，如参与氨基酸的转氨基、脱羧等反应。 而果糖、DNA、脂肪的代谢一般不以维生素B6为辅酶直接参与催化。答案：C", "module": "食物营养", "is_single": true}, {"id": 1674, "index": 77, "type": "single", "stem": "学龄前儿童膳食安排以（ ）为主要特点。", "options": {"A": "能量密度低、软、多餐", "B": "能量密度低、软、少餐", "C": "能量密度高、软、多餐", "D": "能量密度高、软、少餐"}, "answer": "C", "explanation": "学龄前儿童胃容量小，代谢旺盛，需要充足能量，所以食物能量密度要高；他们咀嚼和消化能 力有限，食物应质地软；且胃容量小又需充足能量，所以要多餐。答案：C", "module": "食物营养", "is_single": true}, {"id": 4313, "index": 78, "type": "single", "stem": "食品加热杀菌的方法包括①巴氏杀菌②射线杀菌③加压杀菌④微波杀菌⑤紫外线杀菌", "options": {"A": "①②③", "B": "①③④", "C": "①③⑤", "D": "②③④"}, "answer": "B", "explanation": "《营养与食品卫生学》第8版P317。食品加热杀菌的方法主要有常压杀菌（巴氏消毒法）、加压杀菌、超高温瞬时杀菌和微波杀菌等。", "module": "食品卫生", "is_single": true}, {"id": 2164, "index": 79, "type": "multiple", "stem": "沟通是健康管理师一项必备的职能，这是因为（ ）", "options": {"A": "工作中服务的对象是人", "B": "工作中要启发健康需求", "C": "需要提供健康咨询", "D": "自身心身健康的需要", "E": "赚钱商业利润的需要"}, "answer": ["A", "B", "C", "D"], "explanation": "健康管理师工作围绕人展开，无论是启发健康需求、提供健康咨询，还是自身心身健康维护 ，都基于服务对象是人这一核心，而赚钱商业利润并非沟通作为必备职能的原因。答案：ABCD", "module": "人群营养", "is_single": false}, {"id": 5414, "index": 80, "type": "single", "stem": "可直接收缩冠状动脉的物质有①NE②肾上腺素分泌增多③大剂量的抗利尿激素④血管紧张素Ⅱ", "options": {"A": "①②③", "B": "①②④", "C": "①③④", "D": "②③④"}, "answer": "C", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 2109, "index": 81, "type": "single", "stem": "世界心理卫生组织指出，70％以上的人会以（ ）来消化自己的情绪。", "options": {"A": "攻击自己身体的方式", "B": "提升自我的方式", "C": "伤害他人的方式", "D": "加强运动", "E": "向好友倾诉"}, "answer": "A", "explanation": "从常识和普遍情况看，很多人在面对情绪困扰时，可能不自觉地通过一些伤害自身身体的行为 来消化情绪，如过度酗酒、暴饮暴食等伤害身体行为。而提升自我一般不是消化情绪常见方式；伤害他人不 符合多数人心理和道德习惯；加强运动、向好友倾诉相对属于积极健康应对方式，比例达不到70％以上。答 案：A", "module": "人群营养", "is_single": true}, {"id": 3915, "index": 82, "type": "single", "stem": "牛奶中含量相对较少的矿物质是", "options": {"A": "钙", "B": "磷", "C": "钾", "D": "铁"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版 P67。牛奶是矿物质的良好来源，其中钙含量约104mg/100ml，吸收率高，是补钙首选食物；磷、钾含量也较为丰富，与钙协同维持骨骼健康；但铁含量极低（约0.3mg/100ml），且吸收率低，因此奶类及制品被称为“贫铁性食品”。", "module": "食物营养", "is_single": true}, {"id": 5300, "index": 83, "type": "single", "stem": "男性,65岁,近日夜晚睡觉时常因心悸气短而惊醒,坐起后呼吸困难有所改善。查体发现肝在肋下3cm触及,腹水征阳性,双下肢凹陷性水肿。出现颈静脉怒张,肝脏肿大和双下肢水肿,该患者最可能的心血管疾病是", "options": {"A": "左心衰", "B": "右心衰", "C": "中心静脉压降低", "D": "肺水肿"}, "answer": "B", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 1025, "index": 84, "type": "multiple", "stem": "儿童在进行身高测量过程中，要求（ ）与立柱或软尺相接触。", "options": {"A": "足跟", "B": "后脑枕骨", "C": "骶骨", "D": "两肩胛间", "E": "胯骨 F.脊柱"}, "answer": ["A", "C", "D"], "explanation": "儿童测量身高时，足跟、骶骨部及两肩胛间与立柱或软尺相接触，保持身体挺直。答案：ACD", "module": "人群营养", "is_single": false}, {"id": 5593, "index": 85, "type": "single", "stem": "萎缩性胃炎患者发生贫血的机制是", "options": {"A": "慢性消化道出血", "B": "铁利用障碍", "C": "蛋白质吸收障碍", "D": "内因子缺乏"}, "answer": "D", "explanation": "《生理学》第9版P206。机体发生萎缩性胃炎或胃大部切除后，由于内因子分泌不足，可因维生素B12吸收障碍而发生巨幼细胞性贫血。", "module": "消化系统", "is_single": true}, {"id": 3808, "index": 86, "type": "single", "stem": "蔬菜水果加工过程中损失的营养素主要是", "options": {"A": "蛋白质", "B": "脂肪", "C": "淀粉", "D": "维生素C"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版P121。常见的蔬菜制品有酱腌菜，在加工过程中可造成营养素的损失，尤其维生素C、叶酸的损失较大，但对矿物质及部分植物化学物的影响不大。", "module": "食物营养", "is_single": true}, {"id": 1874, "index": 87, "type": "multiple", "stem": "食谱营养评价的目的是（ ）。", "options": {"A": "检查该食谱能否满足营养需要", "B": "发现是否有某些营养素的缺乏", "C": "对食谱进行调整和纠正", "D": "分析食谱中的食物来源", "E": "同其他食谱进行比较"}, "answer": ["A", "B", "C"], "explanation": "食谱营养评价主要是围绕食谱是否满足营养需求展开，看是否存在营养素缺乏，进而对食谱进 行调整纠正。A、B、C 选项都围绕此核心目的，D 分析食物来源并非营养评价的关键目的，E 与其他食谱比 较不是营养评价本身主要目的。综合来看，ABC 选项能较全面体现食谱营养评价目的。答案：ABC 。", "module": "食品卫生", "is_single": false}, {"id": 826, "index": 88, "type": "multiple", "stem": "下列措施可安全有效预防学龄前儿童维生素A缺乏的有（ ）。", "options": {"A": "每天进食新鲜水果", "B": "每天进食牛奶和鸡蛋", "C": "在医生指导下补充鱼肝油", "D": "每周进食1次动物肝脏", "E": "每天摄入一定量深绿色或红黄色蔬菜"}, "answer": ["B", "C", "D", "E"], "explanation": "维生素A主要存在于动物性食物如动物肝脏、奶类、蛋类中，植物性食物中的胡萝卜素可转化为 维生素A，深绿色或红黄色蔬菜富含胡萝卜素。而水果一般维生素A及胡萝卜素含量少。鱼肝油富含维生素A和 D ，在医生指导下补充也可预防缺乏。答案：BCDE", "module": "食品卫生", "is_single": false}, {"id": 631, "index": 89, "type": "multiple", "stem": "进口的预包装食品应当有中文标签、中文说明书。标签、说明书应当载明食品的原产地以及境内代理商的 （ ）。", "options": {"A": "名称", "B": "地址", "C": "使用方法", "D": "联系方式"}, "answer": ["A", "B", "D"], "explanation": "进口预包装食品标签、说明书需载明境内代理商相关信息，名称、地址、联系方式都是对代理 商的关键识别和联系要素，而使用方法并非针对境内代理商。答案：ABD 。", "module": "食品卫生", "is_single": false}, {"id": 1026, "index": 90, "type": "multiple", "stem": "下列关于蛋白质、脂肪和糖的吸收形式正确的是（ ）。", "options": {"A": "蛋白质以氨基酸的形式被人体吸收", "B": "蛋白质以小肽的形式被人体吸收", "C": "糖以单糖的形式被人体吸收", "D": "脂肪以脂肪酸的形式被人体吸收", "E": "脂肪以甘油的形式被人体吸收"}, "answer": ["A", "B", "C", "D", "E"], "explanation": "这是一道关于生物化学吸收形式的选择题。我们来简化并分析各个选项：A. 蛋白质在人体内经 过消化后，主要以氨基酸的形式被吸收。这是生物化学的基本知识，因此A选项正确。B. 除了氨基酸，蛋白 质还可以以小肽（即短链肽）的形式被人体吸收。这是近年来生物化学研究的新发现，所以B选项也是正确的 。C. 糖类在人体内经过消化后，主要以单糖（如葡萄糖）的形式被吸收。这是基础的生物化学知识，因此 C选项无误。D. 脂肪在人体内消化后，主要以脂肪酸的形式被吸收。这是脂肪代谢的基本过程，故D选项正确 。E. 与D选项相似，脂肪还可以以甘油的形式被吸收。这也是脂肪消化吸收的一个重要环节，所以E选项同样 正确。综上所述，所有选项A、B、C、D和E均正确描述了蛋白质、脂肪和糖在人体内的吸收形式。所以，正确 答案是ABCDE。", "module": "人群营养", "is_single": false}, {"id": 479, "index": 91, "type": "single", "stem": "负责菜肴、点心等烹饪加工任务的餐饮企业的（ ）", "options": {"A": "管事部", "B": "厨房部", "C": "餐厅服务部", "D": "后勤部"}, "answer": "B", "explanation": "厨房部主要职责就是进行菜肴、点心等的烹饪加工。管事部侧重于餐具清洁等；餐厅服务部重 点在对顾客服务；后勤部范畴更广，多是提供综合性保障，不直接负责烹饪。答案：B", "module": "食品卫生", "is_single": true}, {"id": 187, "index": 92, "type": "single", "stem": "食品生产经营者在采购食品或原料时，除需要查验供货者的许可证外，还应查验（ ）。", "options": {"A": "食品合格的证明文件", "B": "健康证明", "C": "培训证明"}, "answer": "A", "explanation": "食品生产经营者采购食品或原料，查验供货者许可证是为确认其经营资质，同时查验食品合格 证明文件才能确保所采购食品符合质量安全要求，而健康证明主要针对直接接触食品的人员，培训证明并非 采购环节必须查验的与食品本身质量相关的文件。答案：A", "module": "食品卫生", "is_single": true}, {"id": 3976, "index": 93, "type": "single", "stem": "对于确定为糖尿病前期的人首选的干预措施为", "options": {"A": "运动疗法", "B": "饮食治疗", "C": "中医治疗", "D": "胰岛素治疗"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P206。糖尿病的防治主要包括健康教育、营养治疗、合理运动、药物治疗及自我检测等综合措施，其中饮食治疗则是控制血糖最基本、最有效的治疗措施之一。 饮食治疗为糖尿病前期病人的干预首选措施。", "module": "临床营养", "is_single": true}, {"id": 1515, "index": 94, "type": "single", "stem": "膳食调查分析报告的格式内容不包括（ ）。", "options": {"A": "结语", "B": "题目", "C": "数据库", "D": "前言"}, "answer": "C", "explanation": "膳食调查分析报告格式内容通常有题目、前言、正文、结语等部分，数据库不属于报告格式内 容范畴。答案：C", "module": "人群营养", "is_single": true}, {"id": 3615, "index": 95, "type": "single", "stem": "下列指标代表硒在体内活性形式的是", "options": {"A": "血浆硒", "B": "过氧化物酶", "C": "血浆硒蛋白酶-P", "D": "抗氧化酶"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P67。谷胱甘肽过氧化酶(GSH-Px)是含硒酶,代表硒在体内的活性形式。其他选项也都可以作为硒的营养评价指标。", "module": "基础营养", "is_single": true}, {"id": 3963, "index": 96, "type": "single", "stem": "高血压患者蛋白质摄入量应不低于总能量的", "options": {"A": "0.1", "B": "0.12", "C": "15%", "D": "18%"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P215，高血压的营养防治：减少膳食脂肪摄入量，增加优质蛋白质的摄入，蛋白质占能量的15%，肉类蛋白质以禽肉、鱼类、牛肉等为主，多食用大豆蛋白。", "module": "临床营养", "is_single": true}, {"id": 5919, "index": 97, "type": "single", "stem": "急性肝炎时血清中哪些酶的活性可见升高", "options": {"A": "LDH1、ALT(GPT)", "B": "LDH5、ALT(GPT)", "C": "LDHl、AST(GOT)", "D": "LDH5、AST(GOT)"}, "answer": "B", "explanation": "暂无解析", "module": "氨基酸代谢", "is_single": true}, {"id": 3783, "index": 98, "type": "single", "stem": "新生儿出现明显脚气病,这与母亲在妊娠期缺乏哪种营养素有关", "options": {"A": "维生素D", "B": "铁", "C": "镁", "D": "维生素B1"}, "answer": "D", "explanation": "母亲在妊娠期缺乏维生素B1导致婴儿脚气病,故选D。", "module": "基础营养", "is_single": true}, {"id": 3924, "index": 99, "type": "single", "stem": "下列不属于调味品的是", "options": {"A": "碘盐", "B": "火锅调料", "C": "阿斯巴甜", "D": "豆鼓"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版&nbsp; P315-P316 。阿斯巴甜属于食品添加剂。", "module": "食物营养", "is_single": true}, {"id": 5907, "index": 100, "type": "single", "stem": "生物体内氨基酸脱氨基的主要方式是", "options": {"A": "氧化脱氨基作用", "B": "转氨基作用", "C": "直接脱氨基作用", "D": "联合脱氨基作用"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P177，P179。氨基酸分解代谢的主要反应是脱氨基作用，可以通过多种方式如转氨基、氧化脱氨基及非氧化脱氨基等方式脱去氨基。转氨基作用只是把氨基酸分子中的氨基转移给a-酮戊二酸或其他α-酮酸，并没有真正实现脱氨基。若氨基转移酶与L-谷氨酸脱氢酶协同作用，首先通过转氨基作用使其他氨基酸的氨基转移至 a-酮戊二酸生成L-谷氨酸，然后L-谷氨酸再脱氨基，就可以使氨基酸脱氨生成NH3。这种方式需要氨基转移酶与L谷氨酸脱氢酶联合作用，即转氨基作用与L-谷氨酸的氧化脱氨基作用偶联进行，被称作转氨脱氨作用（transdeamination），又称联合脱氨作用。故选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 5909, "index": 101, "type": "single", "stem": "下列哪组维生素参与联合脱氨基作用", "options": {"A": "维生素B1,维生素B2", "B": "维生素B1,维生素B6", "C": "泛酸,维生素B6", "D": "维生素B6,PP"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P178，P180。氨基转移酶的辅基是维生素B6的磷酸酯。P180中氨基酸的转氨脱氨作用需要辅酶I（NAD）。《生物化学与分子生物学》第9版P386，食物中的烟酸（PP）主要以NAD+和NADP+的形式存在，故选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 2087, "index": 102, "type": "multiple", "stem": "青少年膳食摄入的脂肪中，n-6和n-3多不饱和脂肪酸的比例较适合的是（ ）。", "options": {"A": "（1～3）：1", "B": "（2～5）：1", "C": "（3～6）：1", "D": "（4～5）：1", "E": "（4～6）：1"}, "answer": ["D", "E"], "explanation": "正确答案：D、E。选项解析：A.（1～3）：1；B.（2～5）：1；C.（3～6）：1；D.（4～5）：1；E.（4～6）：1。建议查阅教材相应章节巩固知识。", "module": "人群营养", "is_single": false}, {"id": 3696, "index": 103, "type": "single", "stem": "维生素A原中最重要的是", "options": {"A": "α-胡萝卜素", "B": "β-胡萝卜素", "C": "γ-胡萝卜素", "D": "隐黄素"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P73。目前已经发现的类胡萝卜素700种，仅有约十分之一是维生素A原，其中最重要的为β-胡萝卜素。", "module": "基础营养", "is_single": true}, {"id": 4502, "index": 104, "type": "single", "stem": "航天作业对人体的影响不包括", "options": {"A": "肌肉萎缩", "B": "肾结石", "C": "体重增加", "D": "航天贫血"}, "answer": "C", "explanation": "《中国营养科学全书》等2版P1200。无论是几天的短期航天还是几个月直至一年以上的长期航天，绝大多数航天员都出现体重减轻的现象。", "module": "人群营养", "is_single": true}, {"id": 2668, "index": 105, "type": "single", "stem": "复合鲜味调味品中的（ ）类物质容易被食品中的磷酸酯酶分解，最好在菜肴加热完成后再加入。", "options": {"A": "糖", "B": "淀粉", "C": "香辛料", "D": "核苷酸"}, "answer": "D", "explanation": "在复合鲜味调味品中，核苷酸类物质会被食品中的磷酸酯酶分解，从而影响鲜味，所以为保证 其作用，最好在菜肴加热完成后加入。而糖、淀粉、香辛料不存在这种因磷酸酯酶分解而需后加的特性。答 案：D", "module": "食物营养", "is_single": true}, {"id": 1915, "index": 106, "type": "single", "stem": "在制定中小学生食谱时，应充分考虑优质蛋白质的供应，使优质蛋白质的摄入占膳食总蛋白质的（ ）以 上。", "options": {"A": "50%", "B": "20%", "C": "40%", "D": "30%"}, "answer": "A", "explanation": "一般要求中小学生优质蛋白质的摄入占膳食总蛋白质的50%以上，这样才能更好满足其生长发育 对优质蛋白的需求。答案：A", "module": "食物营养", "is_single": true}, {"id": 3695, "index": 107, "type": "single", "stem": "与动物的生殖功能和精子生成有关的维生素是", "options": {"A": "维生素A", "B": "维生素C", "C": "维生素E", "D": "维生素D"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P80。维生素E缺乏时可出现睾丸萎缩和上皮细胞变性、孕育异常。临床上常用维生素E治疗先兆流产和习惯性流产。", "module": "基础营养", "is_single": true}, {"id": 6073, "index": 108, "type": "single", "stem": "代谢可产生组胺的氨基酸属于", "options": {"A": "支链氨基酸", "B": "芳香族氨基酸", "C": "酸性氨基酸", "D": "碱性氨基酸"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P1186。组氨酸His经组氨酸脱羧酶催化脱去羧基生成组胺。而《生物化学与分子生物学》第9版P9-10 表1-1氨基酸分类中组氨酸属于碱性氨基酸。故选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 671, "index": 109, "type": "single", "stem": "世界上第一部关于食物成分数据的文献出自（ ）。", "options": {"A": "美国", "B": "英国", "C": "法国", "D": "中国"}, "answer": "A", "explanation": "世界上第一部关于食物成分数据的文献出自美国。早在1896年，美国就发表了第一部关于食物 成分数据的文献，此后美国的营养学研究一直处于领先地位。因此，正确答案是A.美国。", "module": "食品卫生", "is_single": true}, {"id": 298, "index": 110, "type": "single", "stem": "企业注重产品质量，拒绝顾客参与，认为产品的关键在于本身质量的高低，其核心是以质取胜，这种观念 是（ ）。", "options": {"A": "生产观念", "B": "推销观念", "C": "产品观念", "D": "市场营销观念"}, "answer": "C", "explanation": "产品观念认为消费者喜欢高质量、多功能和具有某种特色的产品，企业应致力于生产高值产品 ，并不断加以改进。该企业注重产品质量，拒绝顾客参与，以质取胜，符合产品观念特点。答案：C", "module": "综合训练", "is_single": true}, {"id": 6011, "index": 111, "type": "single", "stem": "一名婴儿被诊断出苯丙氨酸羟化酶基因缺陷,该缺陷可导致苯丙酮尿症,这类婴儿需在饮食上严格控制,下面哪种营养非必需氨基酸需在食物中补充", "options": {"A": "丙氨酸", "B": "天冬氨酸", "C": "甘氨酸", "D": "酪氨酸"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P192。先天性苯丙氨酸羟化酶缺陷病人，不能将苯丙氨酸羟化为酪氨酸，苯丙氨酸转氨基生成苯丙酮酸，大量积累后由尿排出，称为苯丙酮尿症。由于苯丙氨酸不能转化为酪氨酸，故应补充，选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 6005, "index": 112, "type": "single", "stem": "糖彻底氧化供能是通过", "options": {"A": "丙氨酸-葡萄糖循环", "B": "柠檬酸-丙酮酸循环", "C": "三羧酸循环", "D": "鸟氨酸循环"}, "answer": "C", "explanation": "《生物化学与分子生物学》第9版P100。糖、脂肪、氨基酸都是能源物质，他们在体内最终将产生乙酰CoA，然后进入三羧酸循环彻底氧化。选C。", "module": "氨基酸代谢", "is_single": true}, {"id": 6035, "index": 113, "type": "single", "stem": "厌食症病人肌组织活力降低,肌蛋白降解,为肝合成葡萄糖提供糖异生的碳骨架,但下列哪种氨基酸仍留在肌细胞中为肌细胞提供能量", "options": {"A": "Alanine", "B": "Aspartate", "C": "Glutamate", "D": "Leucine"}, "answer": "D", "explanation": "暂无解析", "module": "氨基酸代谢", "is_single": true}, {"id": 1495, "index": 114, "type": "multiple", "stem": "身体活动/运动的基本类型有（ ）。", "options": {"A": "有氧运动", "B": "家务劳动", "C": "力量运动", "D": "屈曲运动", "E": "伸展运动"}, "answer": ["A", "C", "D", "E"], "explanation": "身体活动/运动基本类型包括有氧运动、力量运动、屈曲和伸展运动等，家务劳动不属于基本运 动类型分类范畴。答案：ACDE", "module": "食物营养", "is_single": false}, {"id": 4339, "index": 115, "type": "single", "stem": "母乳中含量高于牛乳的成分是", "options": {"A": "乳清蛋白", "B": "酪蛋白", "C": "钙", "D": "铁"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P142。母乳蛋白质含量低于牛奶，但利用率高，母乳以乳清蛋白为主，乳清蛋白在胃酸作用卞形成的乳凝块细小而柔软，容易为婴儿消化吸收。", "module": "人群营养", "is_single": true}, {"id": 5903, "index": 116, "type": "single", "stem": "蛋白质的消化酶主要来源于", "options": {"A": "胃", "B": "小肠", "C": "胆囊", "D": "胰腺"}, "answer": "D", "explanation": "《生物化学与分子生物学》第10版P172-P173。蛋白质的消化主要在小肠中，未经消化或消化不完全的蛋白质受胰液及肠粘膜细胞分泌的多种蛋白酶及肽酶的共同作用，进一步水解成寡肽和氨基酸。水解蛋白的蛋白酶分为内肽酶和外肽酶，内肽酶包括胰蛋白酶，胰凝乳蛋白酶和弹性蛋白酶。外肽酶主要是羧肽酶。内肽酶和外肽酶都以酶原的形式由胰腺细胞分泌，故蛋白质的消化酶主要来源为胰腺，选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 5605, "index": 117, "type": "single", "stem": "分泌内因子的是", "options": {"A": "主细胞", "B": "壁细胞", "C": "黏液细胞", "D": "幽门黏膜中G细胞"}, "answer": "B", "explanation": "《生理学》第9版P185。壁细胞在分泌盐酸的同时，也分泌一种被称为内因子的糖蛋白。", "module": "消化系统", "is_single": true}, {"id": 2318, "index": 118, "type": "multiple", "stem": "影响维生素A吸收的因素包括（ ）。", "options": {"A": "胆汁", "B": "维生素E", "C": "卵磷脂", "D": "服用矿物油", "E": "服用矿物质"}, "answer": ["A", "B", "C", "D"], "explanation": "维生素A为脂溶性维生素，其吸收需要有胆汁、脂肪等参与。胆汁可乳化脂肪促进吸收；维生素 E可抗氧化保护维生素A利于吸收；卵磷脂是构成细胞膜等的成分，对脂溶性物质吸收有帮助；矿物油会溶解 维生素A并随粪便排出影响吸收。而矿物质一般对维生素A吸收无直接影响。答案：ABCD", "module": "食物营养", "is_single": false}, {"id": 3450, "index": 119, "type": "single", "stem": "肠内营养营养液配制后，室温存放超过多长时间应弃用？", "options": {"A": "2小时", "B": "4小时", "C": "8小时", "D": "12小时"}, "answer": "B", "explanation": "配制好的营养液室温存放超过4小时应弃用。各配方悬挂时间限制为：匀浆配方<2小时；非无菌配方及母乳<4小时；无菌配方（儿童及成人）<8小时；无菌配方（家庭营养）<12小时。", "module": "临床营养", "is_single": true}, {"id": 1375, "index": 120, "type": "single", "stem": "在计算标准人折合系数时，标准人是指（ ）。", "options": {"A": "体重65kg从事轻体力劳动的成年男子", "B": "体重60kg从事中体力劳动的成年男子", "C": "体重60kg从事轻体力劳动的成年女子", "D": "体重60kg从事轻体力劳动的成年男子"}, "answer": "D", "explanation": "标准人是指体重60kg从事轻体力劳动的成年男子。答案：D", "module": "人群营养", "is_single": true}, {"id": 1199, "index": 121, "type": "single", "stem": "小军上初二，身高是157cm，体重46kg，比胸围是47.1，则小军的胸围有（ ）cm。", "options": {"A": "73.9", "B": "109.9", "C": "85.3", "D": "76.1"}, "answer": "A", "explanation": "正确答案：A。选项解析：A.73.9；B.109.9；C.85.3；D.76.1。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": true}, {"id": 4550, "index": 122, "type": "single", "stem": "DRIs是一组每日平均膳食营养素摄入量的参考值，下列不属于DRIs内容的是", "options": {"A": "平均需要量（EAR）'", "B": "推荐摄入量（RNI）", "C": "适宜摄入量（AI）", "D": "推荐的每日膳食营养摄入量（RDA）"}, "answer": "D", "explanation": "《中国居民膳食营养素参考摄入量》2023版P6。DRIs是在RDA基础上发展起来的一组每日平均膳食营养素摄入量的参考值，其中包括：平均需要量（EAR）、推荐摄入量（RNI）、适宜摄入量（AI）、可耐受最高摄入量（UL）。", "module": "公共营养", "is_single": true}, {"id": 3926, "index": 123, "type": "single", "stem": "鱼汤冷却后形成凝胶的主要成分是", "options": {"A": "短链脂肪酸", "B": "长链脂肪酸", "C": "碳水化合物", "D": "胶原和黏蛋白"}, "answer": "D", "explanation": "《营养与食品卫生学》第9版&nbsp; P123 。存在于鱼类结缔组织和软骨中的含氮浸出物主要为胶原和黏蛋白,是鱼汤冷却形成凝胶的主要成分。", "module": "食物营养", "is_single": true}, {"id": 5, "index": 124, "type": "single", "stem": "下列哪种脂肪酸属于人体严格必需的脂肪酸？", "options": {"A": "亚油酸", "B": "花生四烯酸", "C": "EPA", "D": "DHA"}, "answer": "A", "explanation": "**考点定位**：严格必需脂肪酸的种类（亚油酸和α-亚麻酸）。属RD考试基础营养中脂肪酸的核心考点。\n**解题思路**：人体严格必需脂肪酸仅两种：亚油酸（ω-6系列）和α-亚麻酸（ω-3系列），体内不能合成，必须从食物获取。\n逐一排除：B花生四烯酸可由亚油酸转化（条件必需）；C（EPA）和D（DHA）可由α-亚麻酸部分转化（条件必需）。\n**易错点**：花生四烯酸（AA）常被误认为是必需脂肪酸。记住：严格必需=不能合成；条件必需=正常情况下能合成，特殊情况不足。\n**记忆点**：严格必需=亚油酸+α-亚麻酸，体内不能合成，必须从食物中获取。\n（教材回扣：《营养与食品卫生学》第2章·脂肪酸·必需脂肪酸）", "module": "基础营养", "is_single": true}, {"id": 1223, "index": 125, "type": "multiple", "stem": "典型的食品感官检验方法中定性分析包括（ ）。", "options": {"A": "区别检验", "B": "体验型检验", "C": "描述型检验", "D": "质量检验", "E": "情感检验"}, "answer": ["A", "C", "E"], "explanation": "典型食品感官检验方法的定性分析主要有区别检验、描述型检验、情感检验。体验型检验并非 典型感官检验定性分析类别，质量检验不属于定性分析范畴。答案：ACE", "module": "食品卫生", "is_single": false}, {"id": 3999, "index": 126, "type": "single", "stem": "主要应用于儿童生长发育与营养状况评价的是", "options": {"A": "理想体重", "B": "体质指数", "C": "年龄别体重、年龄别身高和身高别体重", "D": "皮褶厚度"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P168。体质指数(BMI)是目前评价营养状况最常用的方法之一,WHO建议BMI&lt;18.5为消瘦,18.5~24.9为正常,25~27.9为超重,≥30为肥胖。我国成人BMI标准是&lt;18.5为过低,18.5~23.9为正常,24.0~27.9为超重,≥28.0为肥胖。年龄别体重、年龄别身高和身高别体重主要应用于儿童生长发育与营养状况。其中年龄别体重主要是用于婴幼儿,年龄别身高反映长期营养状况,身高别体重反映近期营养状况。理想体重应用于成人,一般用来衡量尺测体重是否在适宜范围。皮褶厚度一般不单独作为肥胖标准,通常与身高标准体重结合起来判定。", "module": "临床营养", "is_single": true}, {"id": 5583, "index": 127, "type": "single", "stem": "急性胰腺炎时,可因胰管内压力升高导致胰小管和胰腺腺泡破裂,出现胰腺组织的自身消化,其主要作用的酶是", "options": {"A": "胰淀粉酶", "B": "胰蛋白酶", "C": "抗胰蛋白酶", "D": "胰脂肪酶"}, "answer": "B", "explanation": "《生理学》第9版P193。胰腺腺泡中含有大量的消化酶，胰腺组织多为蛋白质成分故自身消化主要作用的酶为胰蛋白酶。", "module": "消化系统", "is_single": true}, {"id": 1898, "index": 128, "type": "single", "stem": "心理品质不包括（ ）", "options": {"A": "心理过程", "B": "人格特征", "C": "情绪状态", "D": "思维方式", "E": "智力水平"}, "answer": "D", "explanation": "答案:D心理品质包括心理过程、人格特征、情绪状态、智力水平等，思维方式不属于心理品质 的范畴。", "module": "人群营养", "is_single": true}, {"id": 1261, "index": 129, "type": "single", "stem": "用身高体质指数评价中学生生长发育状况，若个体身材越高，其评价准确性（ ）。", "options": {"A": "相对越低", "B": "相对越高", "C": "没有变化", "D": "无法判断"}, "answer": "A", "explanation": "身高体质指数是体重与身高平方的比值。身材越高，体重受其他因素如骨骼粗细、肌肉量等影 响越大，单纯用身高体质指数来评价生长发育状况就越不准确，即评价准确性相对越低。答案：A", "module": "人群营养", "is_single": true}, {"id": 3662, "index": 130, "type": "single", "stem": "在胎儿期和新生儿期缺碘可引起", "options": {"A": "地方性甲状腺肿", "B": "甲状腺功能亢进症", "C": "高碘甲状腺肿", "D": "克汀病"}, "answer": "D", "explanation": "在胎儿期和新生儿期缺碘可引起克汀病,成人缺碘可引起地方性甲状腺肿,严重缺碘地区人群补碘后可发生甲状腺功能亢进,摄入碘过量可发生高碘甲状腺肿。", "module": "基础营养", "is_single": true}, {"id": 546, "index": 131, "type": "single", "stem": "餐饮服务提供者应当依法加强从业人员的（ ），确保从业人员的健康状况符合相关要求", "options": {"A": "健康管理", "B": "教育", "C": "培训", "D": "训练"}, "answer": "A", "explanation": "题干强调确保从业人员健康状况符合要求，重点在于对健康方面的管理。A选项“健康管理”直 接针对健康状况进行管理，可达成此目的；B选项“教育”、C选项“培训”、D选项“训练”都没有直接围绕 健康状况。所以答案是A。答案：A", "module": "食品卫生", "is_single": true}, {"id": 4111, "index": 132, "type": "single", "stem": "下列关于便秘的原因不包括", "options": {"A": "肠道阻塞", "B": "平滑肌衰弱使收缩和蠕动减慢", "C": "饮食长期缺乏膳食纤维及维生素B1", "D": "食欲好,进食量多"}, "answer": "D", "explanation": "本题主要考查便秘的病因,食欲差、进食量少会引起便秘。", "module": "临床营养", "is_single": true}, {"id": 6058, "index": 133, "type": "single", "stem": "氨基酸吸收载体存在于小肠上皮细胞的部位是", "options": {"A": "细胞质", "B": "蛋白酶体", "C": "细胞膜", "D": "溶酶体"}, "answer": "C", "explanation": "暂无解析", "module": "氨基酸代谢", "is_single": true}, {"id": 1368, "index": 134, "type": "single", "stem": "在所用的膳食调查方法中，最准确并常用做金标准的方法是（ ）。", "options": {"A": "称重法", "B": "食物频率法", "C": "24h回顾法", "D": "24h回顾结合称重法"}, "answer": "A", "explanation": "称重法能够准确称量每餐各种食物的生重、熟重及剩余量，从而精确计算出每人每日各种营养 素的摄入量，是最准确且常用做金标准的方法。其他选项，食物频率法主要了解长期食物摄入情况，不够精 确；24h回顾法依赖回忆，有一定主观性和误差；24h回顾结合称重法本质还是基于称重法等基础，单独称重 法就已很准确。答案：A", "module": "人群营养", "is_single": true}, {"id": 9, "index": 135, "type": "single", "stem": "下列哪项不属于蛋白质的主要生理功能？", "options": {"A": "催化体内化学反应", "B": "提供机体所需的大部分能量", "C": "参与免疫防御", "D": "运输营养物质"}, "answer": "B", "explanation": "**考点定位**：蛋白质的主要生理功能（供能不是主要角色）。属RD考试基础营养中蛋白质功能的基础题。\n**解题思路**：题干问\"不属于\"蛋白质主要生理功能，注意审题。\n逐一排除：A（酶催化）、C（抗体免疫）、D（载体运输）均为蛋白质的主要功能。B错，蛋白质虽可紧急供能（糖异生），但供能不是主要生理功能——主要能量来自碳水化合物和脂肪。\n**易错点**：很多备考者知道蛋白质可供能，但忽略了题干限定的\"主要生理功能\"。蛋白质供能是紧急状态下的备用功能。\n**记忆点**：蛋白质是功能分子，不是能量主力——碳水脂肪管能量。十大功能中供能排最后。\n（教材回扣：《营养与食品卫生学》第2章·蛋白质功能）", "module": "基础营养", "is_single": true}, {"id": 4531, "index": 136, "type": "single", "stem": "营养调查内容除外", "options": {"A": "能量摄入情况调查", "B": "社会经济指导", "C": "血清总蛋白测定", "D": "尿负荷实验"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P166。主要考核营养调查内容，包括膳食调查、人体生化水平的生化检验、营养相关疾病临床体征及症状检查、人体测量资料分析。", "module": "公共营养", "is_single": true}, {"id": 4228, "index": 137, "type": "single", "stem": "下列关于食品保藏原理的叙述,错误的是", "options": {"A": "低温保藏法可以破坏食品中的酶来保藏食品", "B": "高温保藏法可以使微生物的蛋白凝固达到防腐作用", "C": "脱水保藏可通过降低食品的水活度达到保藏目的", "D": "糖渍保藏可通过提高渗透压达到保藏目的"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P130。低温保藏法可以降低食品中的酶活性来保藏食品,而并非通过破坏食品中的酶。", "module": "食品卫生", "is_single": true}, {"id": 5933, "index": 138, "type": "single", "stem": "哺乳动物解除氨的毒性并排泄氨的主要形式是", "options": {"A": "尿酸", "B": "尿素", "C": "谷氨酰胺", "D": "碳酸铁"}, "answer": "B", "explanation": "《生物化学与分子生物学》第9版P182。正常成人尿素占排氮总量的80%-90%，可见肝在氨的解毒中起着重要作用，故选B。", "module": "氨基酸代谢", "is_single": true}, {"id": 1954, "index": 139, "type": "multiple", "stem": "大学生的饮食问题包括（ ）。", "options": {"A": "经常食用风味小吃", "B": "不吃早餐", "C": "盲目减肥", "D": "过多饮用碳酸型饮料", "E": "很少食用粗粮或薯类"}, "answer": ["A", "B", "C", "D", "E"], "explanation": "正确答案：A、B、C、D、E。选项解析：A.经常食用风味小吃；B.不吃早餐；C.盲目减肥；D.过多饮用碳酸型饮料；E.很少食用粗粮或薯类。建议查阅教材相应章节巩固知识。", "module": "食物营养", "is_single": false}, {"id": 5396, "index": 140, "type": "single", "stem": "下列对血管神经支配的描述中,正确的是①体内绝大多数血管都受交感缩血管神经纤维支配②体内大多数血管只受交感缩血管神经纤维单一支配③同一器官中,交感缩血管纤维对毛细血管前括约肌的支配密度最高④真毛细血管不受神经纤维支配", "options": {"A": "①②③", "B": "①②④", "C": "①③④", "D": "②③④"}, "answer": "B", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 1972, "index": 141, "type": "single", "stem": "三级预防的措施包括。（ ）", "options": {"A": "治疗与康复", "B": "预防与治疗", "C": "普查与筛查", "D": "门诊与住院", "E": "康复与保健"}, "answer": "A", "explanation": "三级预防主要是对已患某些病者，采取及时、有效的治疗和康复措施，防止病情恶化，预防并 发症和伤残等，A选项治疗与康复符合三级预防措施。答案：A", "module": "人群营养", "is_single": true}, {"id": 428, "index": 142, "type": "multiple", "stem": "以下有关我国BMI健康成人标准的说法，正确的有（ ）。", "options": {"A": "BMI=身高（ ）/体重（kg）的平方", "B": "BMI＜18.5，体型消瘦", "C": "24≤BM1≤27.9，体型正常", "D": "BMI≥28，体型肥胖", "E": "BMI＜24，体型消瘦"}, "answer": ["B", "D"], "explanation": "首先明确BMI计算公式是体重（kg）除以身高（m）的平方，A选项公式错误。 对于我国健康成 人，BMI＜18.5为体型消瘦，B选项正确；18.5≤BMI＜24为体型正常，24≤BMI＜28为超重，BMI≥28为肥胖 ，C选项体型正常范围错误，D选项正确，E选项BMI＜24不是体型消瘦的标准。答案：BD", "module": "食物营养", "is_single": false}, {"id": 5537, "index": 143, "type": "single", "stem": "可以促进胃酸分泌的内源性物质是", "options": {"A": "促胰液素", "B": "抑胃肽", "C": "Ach", "D": "表皮生长因子"}, "answer": "C", "explanation": "《生理学》第9版P189。迷走神经递质Ach（乙酰胆碱）能够促进胃酸分泌，故选C。", "module": "消化系统", "is_single": true}, {"id": 5572, "index": 144, "type": "single", "stem": "检查发现萎缩性胃炎患者血中促胃液素水平增高。其原因是", "options": {"A": "交感神经兴奋", "B": "迷走神经兴奋", "C": "促胰液素分泌减少", "D": "胃酸对G细胞的抑制作用减弱"}, "answer": "D", "explanation": "《生理学》第9版P188。促胃液素是由胃窦及十二指肠和空肠上段黏膜中G细胞分泌的一种胃肠激素，可强烈刺激壁细胞分泌胃酸。胃酸对促胃液素的分泌具有负反馈调节作用。萎缩性胃炎患者胃酸分泌减少，血中促胃液素水平增高。", "module": "消化系统", "is_single": true}, {"id": 5402, "index": 145, "type": "single", "stem": "关于肾上腺素和去甲肾上腺素的叙述,正确的是①在化学结构上都属于儿茶酚胺②均来自肾上腺髓质的分泌③肾上腺素可与α及β两类受体结合④在完整机体中,注射去甲肾上腺素引起血压升高,心率加快", "options": {"A": "①②③④", "B": "①②③", "C": "①②④", "D": "①③④"}, "answer": "B", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 2358, "index": 146, "type": "single", "stem": "（ ）中富含最理想的天然优质蛋白质。", "options": {"A": "牛奶", "B": "牛肉", "C": "鸡蛋", "D": "鱼肉"}, "answer": "C", "explanation": "鸡蛋的蛋白质氨基酸组成与人体组成模式接近，是最理想的天然优质蛋白质来源。牛奶虽也是 优质蛋白，但从与人体模式匹配度等综合看不如鸡蛋；牛肉和鱼肉同样含优质蛋白，但相比之下鸡蛋在这方 面优势更突出。答案：C。", "module": "食物营养", "is_single": true}, {"id": 1830, "index": 147, "type": "single", "stem": "肉及肉制品发生腐败变质的最主要原因是（ ）。", "options": {"A": "微生物污染", "B": "农药残留", "C": "环境因素", "D": "加工方法粗糙"}, "answer": "A", "explanation": "微生物污染是导致肉及肉制品腐败变质的关键因素，微生物在肉品上生长繁殖，分解其中成分 ，引发变质。农药残留主要涉及食品安全毒性方面，非变质主因；环境因素会影响变质速度，但不是根源 ；加工方法粗糙可能影响品质，但通常不是腐败变质最主要原因。答案：A", "module": "人群营养", "is_single": true}, {"id": 6016, "index": 148, "type": "single", "stem": "体内转运一碳单位的载体是", "options": {"A": "叶酸", "B": "SAM", "C": "四氢叶酸", "D": "生物素"}, "answer": "C", "explanation": "《生物化学与分子生物学》第9版P188。一碳单位不能游离存在，四氢叶酸是一碳单位的载体。选C。", "module": "氨基酸代谢", "is_single": true}, {"id": 4194, "index": 149, "type": "single", "stem": "街头烤羊肉串,是将小块羊肉串在铁针上,直接在炭火上烤制,这种羊肉串中含量较高的有", "options": {"A": "黄曲霉毒素", "B": "苯并[a]芘", "C": "氯丙醇", "D": "丙烯酰胺"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P280-281。选项A是真菌污染的代谢产物,其余3个选项均是食品加工过程中生成的,但只有选项B是在明火烟熏时最易生成。", "module": "食品卫生", "is_single": true}, {"id": 2860, "index": 150, "type": "single", "stem": "食品安全国家标准由（ ）负责制定、公布。", "options": {"A": "国务院卫生行政部门", "B": "国务院质量监督部门", "C": "国务院标准化行政部门"}, "answer": "A", "explanation": "根据《中华人民共和国食品安全法》规定，食品安全国家标准由国务院卫生行政部门会同国务 院食品安全监督管理部门制定、公布 ，国务院标准化行政部门提供国家标准编号。这里主要考查对食品安全 国家标准制定公布主体的记忆，最符合的是国务院卫生行政部门。答案：A", "module": "食品卫生", "is_single": true}, {"id": 4423, "index": 151, "type": "single", "stem": "母乳中的免疫物质量多的是", "options": {"A": "IgA", "B": "IgG", "C": "IgM", "D": "IgD"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P142。母乳中的免疫物质有：各种免疫球蛋白，包括IgA、IgG、IgM、IgD，其中IgA占总量的90%，多为分泌型IgA，具有抗肠道微生物和异物的作用。", "module": "人群营养", "is_single": true}, {"id": 5922, "index": 152, "type": "single", "stem": "下列哪种氨基酸不属于人体必需氨基酸", "options": {"A": "苯丙氨酸", "B": "赖氨酸", "C": "酪氨酸", "D": "亮氨酸"}, "answer": "C", "explanation": "《生物化学与分子生物学》第9版P172。人体中9种为必需氨基酸，分别是：赖氨酸：Lys；色氨酸：Trp；苯丙氨酸：Phe；蛋氨酸（甲硫氨酸）：Met；苏氨酸：Thr；异亮氨酸：Ile 亮氨酸：Leu；缬氨酸：Val；组氨酸：His。因此选C。", "module": "氨基酸代谢", "is_single": true}, {"id": 3571, "index": 153, "type": "single", "stem": "下列哪种酶与其辅助因子间的对应关系是错误的？", "options": {"A": "细胞色素氧化酶—铁", "B": "乙醇脱氢酶—铜", "C": "黄嘌呤氧化酶—钼", "D": "谷胱甘肽过氧化物酶—硒"}, "answer": "B", "explanation": "乙醇脱氢酶的辅助因子是锌（Zn），而非铜。乙醇脱氢酶含锌，催化乙醇脱氢生成乙醛。其他对应关系均正确：细胞色素氧化酶含铁（血红素铁），黄嘌呤氧化酶含钼，谷胱甘肽过氧化物酶含硒。", "module": "基础营养", "is_single": true}, {"id": 2554, "index": 154, "type": "single", "stem": "食品的杂物污染是指（ ）。", "options": {"A": "食品在烹调过程中发生的污染", "B": "食品在生产、储藏、运输和销售过程中受到杂物的污染", "C": "食品在生长过程中受到杂物的污染", "D": "食品在生产、储藏、运输和销售过程中受到环境的污染"}, "answer": "B", "explanation": "杂物污染主要是指在食品从生产到销售的一系列环节中混入了杂物。A选项烹调过程只是其中一 个环节，不全面；C选项生长过程只是一部分，且杂物污染更多在后续环节；D选项说的环境污染概念宽泛 ，并非特指杂物污染。而B选项涵盖了食品从生产到销售全过程受到杂物污染，符合杂物污染定义。答案：B", "module": "食物营养", "is_single": true}, {"id": 3682, "index": 155, "type": "single", "stem": "对体液免疫和细胞免疫都起重要作用的维生素是", "options": {"A": "维生素A", "B": "维生素B2", "C": "维生素B12", "D": "维生素C"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P76。维生素A对体液免疫和细胞免疫都起重要作用，能提高抗感染和抗肿瘤能力。", "module": "基础营养", "is_single": true}, {"id": 5985, "index": 156, "type": "single", "stem": "S-腺苷甲硫氨酸的重要作用是", "options": {"A": "补充甲硫氨酸", "B": "提供甲基", "C": "生成腺苷酸", "D": "合成四氢叶酸"}, "answer": "B", "explanation": "《生物化学与分子生物学》第9版P189。S-腺苷甲硫氨酸缩写SAM，是体内最重要的甲基直接供体。选B。", "module": "氨基酸代谢", "is_single": true}, {"id": 1553, "index": 157, "type": "multiple", "stem": "锌的良好来源有（ ）。", "options": {"A": "海产品", "B": "花生", "C": "红色肉", "D": "动物内脏", "E": "谷类胚芽"}, "answer": ["A", "B", "C", "D", "E"], "explanation": "锌的良好来源包括红色肉、动物内脏、海产品、坚果等。花生属于坚果类，谷类胚芽也含一定 锌。但通常红色肉和动物内脏含锌量丰富且吸收率高。答案：ABCDE", "module": "人群营养", "is_single": false}, {"id": 3776, "index": 158, "type": "single", "stem": "降糖药物双胍类竞争性抑制的维生素是", "options": {"A": "维生素A", "B": "维生素D", "C": "维生素K", "D": "维生素B12"}, "answer": "D", "explanation": "《中国营养科学全书》P230 考查维生素与药物的相互影响。降糖药物双胍类竞争性抑制的维生素是维生素B12。口服二甲双胍会导致血清维生素B12水平降低。", "module": "基础营养", "is_single": true}, {"id": 2284, "index": 159, "type": "single", "stem": "食物脂肪在血液中主要的运输形式为（ ）。", "options": {"A": "长链脂肪酸", "B": "中链脂肪酸", "C": "短链脂肪酸", "D": "乳糜微粒"}, "answer": "D", "explanation": "食物脂肪消化吸收后，以乳糜微粒形式经淋巴进入血液进行运输 。答案：D", "module": "食物营养", "is_single": true}, {"id": 200, "index": 160, "type": "multiple", "stem": "厨房运行中的工作主要从哪几方面重点管理（ ）", "options": {"A": "按生产的先后过程", "B": "食品生产阶段", "C": "按生产场地的空间", "D": "餐饮生产流程", "E": "储存阶段"}, "answer": ["A", "C"], "explanation": "正确答案：A、C。选项解析：A.按生产的先后过程；B.食品生产阶段；C.按生产场地的空间；D.餐饮生产流程；E.储存阶段。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": false}, {"id": 323, "index": 161, "type": "single", "stem": "中国营养学会推荐我国居民的碳水化合物的膳食供给量应占总能量的（ ）。", "options": {"A": "45%～50%", "B": "70%以上", "C": "55%～65%", "D": "30%以下"}, "answer": "C", "explanation": "中国营养学会推荐我国居民碳水化合物的膳食供给量占总能量的55% - 65% 。这是营养领域的 一个常见推荐范围知识点。答案：C", "module": "食品卫生", "is_single": true}, {"id": 1299, "index": 162, "type": "single", "stem": "儿童出现生长发育迟缓、消瘦、体重过轻、智力发育障碍，最可能的原因是（ ）。", "options": {"A": "热能不足", "B": "蛋白质营养不良", "C": "脂肪摄入不足", "D": "锌缺乏"}, "answer": "B", "explanation": "蛋白质是儿童生长发育的重要物质基础，蛋白质营养不良时可导致生长发育迟缓、消瘦、体重 过轻，还会影响智力发育。热能不足主要是消瘦等表现，对智力影响相对蛋白质营养不良没那么突出；脂肪 摄入不足主要影响能量供应及脂溶性维生素吸收等，一般不是题干症状主要原因；锌缺乏主要是食欲减退、 异食癖、生长发育迟缓等，但不如蛋白质营养不良全面涵盖题干所有症状。答案：B", "module": "人群营养", "is_single": true}, {"id": 4408, "index": 163, "type": "single", "stem": "低温环境中产能营养素利用的特点包括①碳水化合物优先利用为主②蛋白质优先利用为主③脂肪优先利用为主④机体组织摄取与利用脂肪速率增加⑤碳水化合物和脂肪利用均增加", "options": {"A": "②③④", "B": "③④⑤", "C": "①④⑤", "D": "①③④"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P154。低温环境下，碳水化合物和脂肪的利用均增加，但以碳水化合物优先利用产热为主。", "module": "人群营养", "is_single": true}, {"id": 5297, "index": 164, "type": "single", "stem": "关于静脉回心血量,错误的是", "options": {"A": "体循环平均充盈压升高,静脉回心血最减少", "B": "右心衰竭时,静脉回心血量显著减少", "C": "静脉内的瓣膜使血液只能向心脏方向流动", "D": "直立时静脉回心血量较平卧时低"}, "answer": "A", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 1686, "index": 165, "type": "single", "stem": "引起霉变甘蔗中毒的毒素是（ ）。", "options": {"A": "黄曲霉毒素", "B": "龙葵素", "C": "3-硝基丙酸", "D": "亚硝酸盐"}, "answer": "C", "explanation": "霉变甘蔗中毒是食用了被节菱孢霉污染的甘蔗，该霉菌产生3 - 硝基丙酸引起中毒。黄曲霉毒 素主要污染粮油及其制品等；龙葵素常见于发芽马铃薯；亚硝酸盐来源广泛，如腌制食品等，但都与霉变甘 蔗中毒无关。答案：C", "module": "食物营养", "is_single": true}, {"id": 442, "index": 166, "type": "single", "stem": "发生食品安全事故的单位和接收病人进行治疗的单位应当及时向事故发生地（ ）报告。", "options": {"A": "县级质量监督部门", "B": "县级卫生行政部门", "C": "县级食品药品监督管理部门"}, "answer": "B", "explanation": "正确答案：B。选项解析：A.县级质量监督部门；B.县级卫生行政部门；C.县级食品药品监督管理部门。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": true}, {"id": 310, "index": 167, "type": "single", "stem": "《餐饮服务许可证》许可事项变更（ ），需要进行现场核查的。", "options": {"A": "单位名称", "B": "备注项目", "C": "法定代表人（负责人或者业主）", "D": "地址门牌号改变（实际经营场所未改变）"}, "answer": "B", "explanation": "正确答案：B。选项解析：A.单位名称；B.备注项目；C.法定代表人（负责人或者业主）；D.地址门牌号改变（实际经营场所未改变）。建议查阅教材相应章节巩固知识。", "module": "食品卫生", "is_single": true}, {"id": 182, "index": 168, "type": "single", "stem": "应当按照要求对餐具、饮具进行清洗、消毒，并在专用保洁设施内备用，不得使用未经清洗和消毒的餐具 、饮具；购置、使用集中消毒企业供应的餐具、饮具，应当查验其经营资质，索取（ ）；", "options": {"A": "产品合格证", "B": "卫生合格证", "C": "消毒合格证"}, "answer": "C", "explanation": "购置集中消毒企业供应的餐具、饮具，重点是查验消毒方面的合格证明，以确保其消毒达标、 卫生安全。答案：C", "module": "食品卫生", "is_single": true}, {"id": 920, "index": 169, "type": "single", "stem": "幼儿全部20颗乳牙出齐应不迟于（ ）岁。", "options": {"A": "2", "B": "2.5", "C": "3.5", "D": "3"}, "answer": "B", "explanation": "小儿乳牙多于生后4～10个月开始萌出，2.5岁出齐20颗乳牙。答案：B", "module": "人群营养", "is_single": true}, {"id": 271, "index": 170, "type": "multiple", "stem": "我国常用食物成分工具书有（ ）。", "options": {"A": "《中国食物成分表2002》", "B": "《中国食物成分表2004》", "C": "《食物营养成分速查》", "D": "《食物血糖生成指数》", "E": "《中国居民膳食指南》"}, "answer": ["A", "B", "C"], "explanation": "我国常用食物成分工具书主要围绕食物成分相关内容，选项A《中国食物成分表2002》、B《中 国食物成分表2004》 、C《食物营养成分速查》都聚焦食物成分，而D《食物血糖生成指数》侧重特定指数 ，E《中国居民膳食指南》主要是膳食指导，并非食物成分工具书。答案：ABC", "module": "食品卫生", "is_single": false}, {"id": 2627, "index": 171, "type": "multiple", "stem": "关于副溶血弧菌食物中毒的叙述，正确的是（ ）。", "options": {"A": "沿海地区最常见的食物中毒", "B": "好发食品为海产品", "C": "有神经系统的损害", "D": "腹泻严重", "E": "好发在冬、春季"}, "answer": ["A", "B", "D"], "explanation": "副溶血弧菌食物中毒在沿海地区常见，因该菌嗜盐，好发食品为海产品，中毒后腹泻严重。一 般无神经系统损害，好发于夏秋季而非冬春季。答案：ABD", "module": "食品卫生", "is_single": false}, {"id": 4569, "index": 172, "type": "single", "stem": "反映婴幼儿长期营养状况的指标是", "options": {"A": "皮褶厚度", "B": "身高（身长）", "C": "身高别体重", "D": "年龄别体重"}, "answer": "B", "explanation": "《营养与食品卫生学》第9版P138。身高（身长）是反映婴幼儿骨骼系统生长的指标，短期营养不良对身高（身长）影响不明显，但长期营养不良可导致身高（身长）生长缓慢甚至停滞。", "module": "公共营养", "is_single": true}, {"id": 6042, "index": 173, "type": "single", "stem": "His脱羧的产物是", "options": {"A": "γ-氨基丁酸", "B": "牛磺酸", "C": "5-羟色胺", "D": "组胺"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P1186。组氨酸His经组氨酸脱羧酶催化脱去羧基生成组胺。", "module": "氨基酸代谢", "is_single": true}, {"id": 3902, "index": 174, "type": "single", "stem": "鸡蛋中干扰铁吸收的成分是", "options": {"A": "抗生物素", "B": "抗胰蛋白酶", "C": "卵黄高磷蛋白", "D": "磷脂"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P127。卵黄中含有高磷蛋白,该种蛋白可与铁进行结合,从而使铁的吸收率降低。", "module": "食物营养", "is_single": true}, {"id": 4440, "index": 175, "type": "single", "stem": "在寒冷地区生活的人群，应注意的问题是", "options": {"A": "增加脂肪的摄入量", "B": "减少维生素A的摄入量", "C": "减少维生素D的摄入量", "D": "减少食盐的摄入量"}, "answer": "A", "explanation": "《营养与食品卫生学》第9版P155。低温环境中，与碳水化合物代谢有关的酶活性降低，而动员脂肪作用的酶活性上升，脂肪代谢增高。", "module": "人群营养", "is_single": true}, {"id": 2780, "index": 176, "type": "single", "stem": "制作菜肴，投放味精最佳的时机是（ ）。", "options": {"A": "加热前", "B": "加热后", "C": "成熟后", "D": "成熟时或出锅前"}, "answer": "D", "explanation": "味精在高温下会分解产生焦谷氨酸钠，失去鲜味甚至可能产生有害物质，所以应在菜肴成熟时 或出锅前投放，此时温度相对较低，能最大程度保留味精鲜味。答案：D", "module": "食物营养", "is_single": true}, {"id": 1115, "index": 177, "type": "single", "stem": "根据WHO建议标准，BMI≥30应判断为（ ）。", "options": {"A": "消瘦", "B": "超重", "C": "肥胖", "D": "正常"}, "answer": "C", "explanation": "BMI即身体质量指数，WHO建议标准中，BMI≥30 被判定为肥胖。答案：C", "module": "人群营养", "is_single": true}, {"id": 3433, "index": 178, "type": "multiple", "stem": "一位注册营养师为严格素食者提供蛋白质营养咨询。以下哪些食物组合能够有效实现蛋白质互补作用，使混合蛋白质的氨基酸模式趋于全面？（选全部适用的）", "options": {"A": "糙米 + 黑豆", "B": "玉米饼 + 菜豆", "C": "大豆分离蛋白 + 藜麦", "D": "全麦面包 + 花生酱", "E": "全蛋 + 米饭"}, "answer": ["A", "B", "D"], "explanation": "蛋白质互补作用指将两种或以上不完全蛋白质搭配，使其氨基酸互相补充，接近完全蛋白质模式。A√谷物（缺赖氨酸）+豆类（富赖氨酸）是经典互补组合；B√玉米（缺赖氨酸）+大/菜豆（富赖氨酸）同样实现互补；D√全麦（缺赖氨酸）+花生（豆类，富赖氨酸），同时全麦提供花生相对缺乏的蛋氨酸，实现完全互补。**记忆点**：口诀「谷豆搭配，蛋白到位」——谷物与豆类是最佳互补CP。C✗大豆分离蛋白已是完全蛋白质，藜麦也是优质蛋白，两者搭配并非「互补」的必要场景；E✗全蛋已是完全蛋白质，与米饭搭配虽能提供全面氨基酸，但不属于「不完全蛋白质之间的互补作用」范畴——该选项是混淆完全蛋白与互补概念的常见陷阱。", "module": "基础营养", "is_single": false}, {"id": 5943, "index": 179, "type": "single", "stem": "氨基酸分解产生的NH3在体内主要的储存形式是", "options": {"A": "天冬氨酸", "B": "赖氨酸", "C": "谷氨酸", "D": "谷氨酰胺"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P181。氨在血液中主要以丙氨酸和谷氨酰胺两种形式进行运转，到肝合成尿素。故选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 5336, "index": 180, "type": "single", "stem": "血流速度最慢在", "options": {"A": "主动脉", "B": "微动脉", "C": "腔静脉", "D": "毛细血管"}, "answer": "D", "explanation": "暂无解析", "module": "血液循环", "is_single": true}, {"id": 3585, "index": 181, "type": "single", "stem": "糖异生的原料包括：①脂肪酸；②甘油；③乳酸；④亮氨酸；⑤精氨酸。", "options": {"A": "①③④", "B": "②③⑤", "C": "①③⑤", "D": "②④⑤"}, "answer": "B", "explanation": "糖异生的主要原料有乳酸（来自肌肉糖酵解）、甘油（来自脂肪分解）和生糖氨基酸（如精氨酸、丙氨酸等）。脂肪酸不能直接进行糖异生（乙酰CoA不能净生成糖）。亮氨酸为纯生酮氨基酸，不能糖异生。", "module": "基础营养", "is_single": true}, {"id": 1606, "index": 182, "type": "single", "stem": "属于合法药品广告的是（ ）", "options": {"A": "药品广告内容超出国家食品药品监督管理局批准的说明书，但是客观真实", "B": "药品广告含有表示功效的断言或者保证", "C": "药品广告利用中国医学科学院的名义作证明", "D": "将药品广告进行入户直投", "E": "在某地方电视台播放北京某制药厂生产之OTC的广告"}, "answer": "E", "explanation": "药品广告内容不能超出批准的说明书，不能有功效断言或保证，不能利用科研单位名义作证明 ，而入户直投未明确规范是否合法，OTC 药品可在大众媒体发布广告。答案：E", "module": "人群营养", "is_single": true}, {"id": 1297, "index": 183, "type": "single", "stem": "在尿液中加入（ ），既能抑制细菌生长，又能较好地保存尿中的有形成分，可用于化学成分检查。", "options": {"A": "福尔马林", "B": "甲苯", "C": "麝香草酚", "D": "氯仿"}, "answer": "C", "explanation": "麝香草酚既能抑制细菌生长，又能较好保存尿中有形成分，适用于化学成分检查。福尔马林主 要用于管型、细胞等有形成分保存，但对化学成分有影响；甲苯常用于尿糖、尿蛋白等化学成分定量检查 ，但对有形成分保存效果不佳；氯仿能防腐但对有形成分有破坏。答案：C", "module": "人群营养", "is_single": true}, {"id": 3897, "index": 184, "type": "single", "stem": "在对蛋进行加工烹调时,较易损失的营养素是", "options": {"A": "蛋白质", "B": "脂肪", "C": "乳糖", "D": "维生素B1"}, "answer": "D", "explanation": "蛋类在被加工烹调时,只有少量的维生素B1损失,对其他营养成分影响不大。", "module": "食物营养", "is_single": true}, {"id": 2364, "index": 185, "type": "single", "stem": "有些人煮稀饭为了增加粘稠性而加碱，这种烹调方式损失最多的营养素是（ ）。", "options": {"A": "蛋白质", "B": "脂肪", "C": "碳水化合物", "D": "维生素"}, "answer": "D", "explanation": "维生素对碱不稳定，在碱性环境下容易被破坏，加碱煮稀饭会使其中的维生素大量损失。而蛋 白质、脂肪、碳水化合物相对在这种情况下损失不如维生素多。答案：D", "module": "食物营养", "is_single": true}, {"id": 3546, "index": 186, "type": "single", "stem": "下列营养素过剩的危害对应关系中，正确的是：①蛋白质—Kwashiorkor；②钙—奶碱综合征；③锌—肠病性肢端皮炎；④维生素D—高钙血症；⑤叶酸—巨幼红细胞性贫血。", "options": {"A": "②④", "B": "②④⑤", "C": "①②③⑤", "D": "②③④⑤"}, "answer": "A", "explanation": "钙过量可导致奶碱综合征（高钙血症+碱中毒+肾衰竭）；维生素D过量导致高钙血症。Kwashiorkor是蛋白质缺乏而非过剩；肠病性肢端皮炎（acrodermatitis enteropathica）是锌缺乏疾病；巨幼红细胞性贫血是叶酸缺乏而非过剩。", "module": "临床营养", "is_single": true}, {"id": 1889, "index": 187, "type": "multiple", "stem": "属于数据的一致性和可维护性的内容有（ ）。", "options": {"A": "数据共享", "B": "数据集中控制", "C": "安全性控制", "D": "完整性控制", "E": "事故的发现和恢复"}, "answer": ["C", "D", "E"], "explanation": "这道题目询问的是哪些内容属于数据的一致性和可维护性。我们可以根据数据一致性和可维护 性的定义来快速判断：* 数据一致性关注的是数据的准确性和可靠性，确保数据在任何时候都是正确的。* 数据可维护性则关注数据的长期保存、更新、修复和保护，确保数据的持久性和可用性。现在我们来分析每 个选项：A. 数据共享 - 这更多地与数据的访问和使用有关，而不是直接关于数据的一致性和可维护性。B. 数据集中控制 - 这与数据的存储和管理方式有关，但不一定直接涉及数据的一致性和可维护性。C. 安全性 控制 - 这确保数据不被未经授权的用户访问或修改，从而维护数据的一致性和可维护性。D. 完整性控制 - 这确保数据的准确性和完整性，是数据一致性的关键部分。E. 事故的发现和恢复 - 这与数据可维护性紧密 相关，因为它涉及在数据出现问题时如何快速发现并恢复。综上所述，属于数据的一致性和可维护性的内容 有：C. 安全性控制，D. 完整性控制，E. 事故的发现和恢复。因此，正确答案是CDE。", "module": "食品卫生", "is_single": false}, {"id": 5544, "index": 188, "type": "single", "stem": "关于胃排空的描述哪一项是错误的", "options": {"A": "胃内食糜由胃排入十二指肠的过程称为胃排空", "B": "胃排空是连续进行的", "C": "胃排空决定于幽门两侧的压力差", "D": "胃排空受十二指肠内容物pH的影响"}, "answer": "B", "explanation": "《生理学》第9版P191。胃排空收到十二指肠内因素的控制，可以暂停，不一定是连续的。故选B。", "module": "消化系统", "is_single": true}, {"id": 3649, "index": 189, "type": "single", "stem": "铬的生理功能不包括", "options": {"A": "增强胰岛素作用", "B": "促进蛋白质合成", "C": "抗氧化功能", "D": "使RNA、DNA合成增强"}, "answer": "C", "explanation": "《营养与食品卫生学》第9版P68。铬的生理功能有维持胰岛素作用、预防动脉粥样硬化、促进蛋白质代谢和生长发育。", "module": "基础营养", "is_single": true}, {"id": 2560, "index": 190, "type": "single", "stem": "用食盐保存海鱼，用盐量不应低于（ ）。", "options": {"A": "5％", "B": "10％", "C": "15％", "D": "20％"}, "answer": "B", "explanation": "食盐浓度达到 8% - 10% 时，可停止大部分微生物繁殖，但不能杀灭。要杀灭微生物保存海鱼 ，用盐量不应低于 10%。答案：B", "module": "食品卫生", "is_single": true}, {"id": 6065, "index": 191, "type": "single", "stem": "代谢可产生PAPS的是", "options": {"A": "支链氨基酸", "B": "芳香族氨基酸", "C": "酸性氨基酸", "D": "含硫氨基酸"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P191。半胱氨酸是体内硫酸根的主要来源。体内的硫酸根，一部分以无机盐的形式随尿排出，另一部分由ATP或化成活性硫酸根，即3‘-磷酸腺苷-5’磷酸硫酸PAPS。半胱氨酸属于含硫氨基酸，故选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 1728, "index": 192, "type": "single", "stem": "一个孕中期妇女的标准人系数为（ ）。", "options": {"A": "0.888", "B": "0.85", "C": "0.96", "D": "1.21"}, "answer": "D", "explanation": "孕中期妇女的标准人系数是1.21 。标准人系数是将各类人群的能量推荐摄入量与标准人（轻体 力活动成年男子）的能量推荐摄入量之比。孕中期妇女由于生理需求变化，能量需要增加，其标准人系数相 对有特定值。答案：D", "module": "人群营养", "is_single": true}, {"id": 3780, "index": 193, "type": "single", "stem": "胆碱的生理功能不包括", "options": {"A": "促进体内乙酰基代谢", "B": "促进脑发育并提高记忆力", "C": "促进脂肪代谢防止脂肪异常积聚", "D": "构成生物膜的重要成分从而保证细胞膜的功能"}, "answer": "A", "explanation": "胆碱可促进体内甲基代谢。", "module": "基础营养", "is_single": true}, {"id": 6001, "index": 194, "type": "single", "stem": "下列物质中不为氨基酸的合成提供碳链骨架的是", "options": {"A": "琥珀酸", "B": "丙酮酸", "C": "草酰乙酸", "D": "5-磷酸核糖"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P181。各种氨基酸脱氨基后产生的α-酮酸结构差异很大，其代谢途径也不尽相同，转变过程的中间产物乙酰CoA和丙酮酸及三羧酸循环的中间物，例如α-酮戊二酸、草酰乙酸、延胡索酸及琥珀酰CoA等。故选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 1991, "index": 195, "type": "single", "stem": "诸多因素影响能量消耗，除了（ ）", "options": {"A": "气候条件", "B": "一天中的不同时刻", "C": "记忆力", "D": "活动的类型", "E": "个人技巧等"}, "answer": "C", "explanation": "气候条件、一天中不同时刻、活动类型、个人技巧等都可对能量消耗产生影响，而记忆力属于 大脑认知功能方面，和能量消耗并无直接关联。答案：C", "module": "人群营养", "is_single": true}, {"id": 2667, "index": 196, "type": "single", "stem": "谷类主要提供的维生素为（ ）。", "options": {"A": "维生素D", "B": "维生素A", "C": "维生素E", "D": "维生素B1"}, "answer": "D", "explanation": "谷类是维生素B族的重要来源，其中维生素B1含量丰富。而维生素A主要来自动物性食物及深色 蔬菜水果；维生素D主要来源是日光照射皮肤合成及少数食物；维生素E多存在于油料种子、植物油等。所以 答案是D。", "module": "食物营养", "is_single": true}, {"id": 6019, "index": 197, "type": "single", "stem": "γ-氨基丁酸合成的原料是", "options": {"A": "甘氨酸", "B": "色氨酸", "C": "酪氨酸", "D": "谷氨酸"}, "answer": "D", "explanation": "《生物化学与分子生物学》第9版P186。谷氨酸脱羧生成γ-氨基丁酸。选D。", "module": "氨基酸代谢", "is_single": true}, {"id": 5265, "index": 198, "type": "single", "stem": "快速充盈期时", "options": {"A": "房内压>室内压>主动脉压", "B": "房内压<室内压<主动脉压", "C": "房内压>室内压<主动脉压", "D": "房内压<室内压>主动脉压"}, "answer": "C", "explanation": "《生理学》第9版P87。", "module": "血液循环", "is_single": true}, {"id": 426, "index": 199, "type": "multiple", "stem": "餐饮业食物中毒的起因可能包括（ ）", "options": {"A": "初加工不当", "B": "烹煮不当", "C": "调味不当", "D": "成品污染", "E": "食品伪造"}, "answer": ["A", "B", "C", "D"], "explanation": "正确答案：A、B、C、D。选项解析：A.初加工不当；B.烹煮不当；C.调味不当；D.成品污染；E.食品伪造。建议查阅教材相应章节巩固知识。", "module": "食物营养", "is_single": false}, {"id": 2246, "index": 200, "type": "multiple", "stem": "以下属于三级预防的措施有（ ）", "options": {"A": "家庭功能康复", "B": "健康教育", "C": "临床治疗", "D": "心理康复", "E": "物理治疗"}, "answer": ["A", "C", "D", "E"], "explanation": "正确答案：A、C、D、E。选项解析：A.家庭功能康复；B.健康教育；C.临床治疗；D.心理康复；E.物理治疗。建议查阅教材相应章节巩固知识。", "module": "食物营养", "is_single": false}];
+const PRECOMPLETED_IDS = new Set([].map(String));
+const userAnswers = {};
+const completedAnswers = {};
+const RD_DATE = "2026-09-04";
+const RD_CARD_KEY = "coverage-day-44";
+const RD_STORAGE_KEY = 'rd-completed:' + RD_CARD_KEY;
+const RD_PROGRESS_API = location.protocol === 'http:'
+  ? location.origin + '/api/progress'
+  : 'http://127.0.0.1:8080/api/progress';
+let restoringProgress = false;
+let lastConfirmedPosition = 0;
+
+function progressPayload() {
+  return {
+    card_key: RD_CARD_KEY,
+    card_filename: location.pathname.split('/').pop(),
+    date: RD_DATE,
+    completed: completedAnswers,
+    completed_count: Object.keys(completedAnswers).length,
+    last_position: lastConfirmedPosition,
+    updated_at: new Date().toISOString()
+  };
+}
+
+function saveProgress() {
+  const payload = progressPayload();
+  try { localStorage.setItem(RD_STORAGE_KEY, JSON.stringify(payload)); } catch (e) {}
+  return fetch(RD_PROGRESS_API, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload),
+    keepalive: true
+  }).catch(() => null);
+}
+
+async function restoreProgress() {
+  let localPayload = null;
+  let serverPayload = null;
+  try { localPayload = JSON.parse(localStorage.getItem(RD_STORAGE_KEY) || 'null'); } catch (e) {}
+  try {
+    const response = await fetch(RD_PROGRESS_API + '?date=' + encodeURIComponent(RD_DATE) + '&card_key=' + encodeURIComponent(RD_CARD_KEY));
+    if (response.ok) serverPayload = await response.json();
+  } catch (e) {}
+  const saved = Object.assign({},
+    localPayload && localPayload.completed || {},
+    serverPayload && serverPayload.completed || {}
+  );
+  lastConfirmedPosition = Math.max(
+    Number(localPayload && localPayload.last_position || 0),
+    Number(serverPayload && serverPayload.last_position || 0)
+  );
+  restoringProgress = true;
+  Object.entries(saved).forEach(([questionId, record]) => {
+    const qIdx = QUESTIONS.findIndex(q => String(q.id) === String(questionId));
+    if (qIdx < 0) return;
+    const answers = Array.isArray(record.answer) ? record.answer : [];
+    userAnswers[qIdx] = answers.slice();
+    const card = document.getElementById(`qcard-${qIdx}`);
+    answers.forEach(key => {
+      const option = card.querySelector(`.option[data-key="${key}"]`);
+      if (option) option.classList.add('selected');
+    });
+    checkQuestion(qIdx, false);
+    lastConfirmedPosition = Math.max(lastConfirmedPosition, qIdx + 1);
+  });
+  QUESTIONS.forEach((q, qIdx) => {
+    if (!PRECOMPLETED_IDS.has(String(q.id)) || saved[String(q.id)]) return;
+    const card = document.getElementById(`qcard-${qIdx}`);
+    card.dataset.completed = 'true';
+    card.classList.add('recorded');
+    card.querySelectorAll('.option').forEach(o => o.classList.add('disabled'));
+    const button = document.getElementById(`checkBtn-${qIdx}`);
+    button.disabled = true;
+    button.textContent = '已记录完成';
+    document.getElementById(`result-${qIdx}`).textContent = '已保存到总进度';
+    lastConfirmedPosition = Math.max(lastConfirmedPosition, qIdx + 1);
+  });
+  restoringProgress = false;
+  updateLiveSummary();
+  if (Object.keys(saved).length) saveProgress();
+  const completedCount = Object.keys(saved).length;
+  if (completedCount > 0) {
+    const nextIdx = QUESTIONS.findIndex((q, i) => document.getElementById(`qcard-${i}`).dataset.completed !== 'true');
+    const resumeBadge = document.getElementById('resumeBadge');
+    if (nextIdx >= 0) {
+      resumeBadge.textContent = `📍 已恢复：上次做到第 ${lastConfirmedPosition} 题，本次从第 ${nextIdx + 1} 题继续`;
+      resumeBadge.style.display = 'block';
+      setTimeout(() => document.getElementById(`qcard-${nextIdx}`).scrollIntoView({behavior:'smooth', block:'start'}), 250);
+    } else {
+      resumeBadge.textContent = `✅ 已恢复：本卷 ${QUESTIONS.length} 题均已完成`;
+      resumeBadge.style.display = 'block';
+    }
+  }
+}
+
+function renderQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const isSingle = q.is_single;
+    const optionsHtml = Object.entries(q.options).map(([key, val]) =>
+      `<div class="option ${isSingle?'option-single':'option-multi'}" data-q="${i}" data-key="${key}" onclick="selectOption(${i},'${key}',${isSingle})"><span class="option-key">${key}.</span><span>${val}</span></div>`
+    ).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `qcard-${i}`;
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-number">#${i+1} <span style="font-weight:400;color:#999;font-size:13px">/ ${QUESTIONS.length}</span></span>
+        <span><span class="q-type">${isSingle?'单选题':'多选题'}</span><span class="q-module">${q.module}</span></span>
+      </div>
+      <div class="q-stem">${q.stem}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="question-actions">
+        <button class="btn-check-one" id="checkBtn-${i}" onclick="checkQuestion(${i})">✅ 确认本题</button>
+        <span class="answer-result" id="result-${i}"></span>
+      </div>
+      <div class="explanation-box" id="exp-${i}">
+        <div class="exp-label" id="answer-${i}">✅ 正确答案：</div>
+        <div>${q.explanation.replace('\n','<br>')}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qIdx, key, isSingle) {
+  const card = document.getElementById(`qcard-${qIdx}`);
+  if (card.dataset.completed === 'true') return;
+  const opts = card.querySelectorAll('.option');
+  if (isSingle) {
+    opts.forEach(o => o.classList.remove('selected'));
+    opts.forEach(o => {
+      if (o.dataset.key === key) o.classList.add('selected');
+    });
+    userAnswers[qIdx] = [key];
+  } else {
+    const el = card.querySelector(`.option[data-key="${key}"]`);
+    el.classList.toggle('selected');
+    const selected = [...card.querySelectorAll('.option.selected')].map(o => o.dataset.key);
+    userAnswers[qIdx] = selected.length > 0 ? selected : null;
+  }
+}
+
+function checkQuestion(qIdx, force=false) {
+  const q = QUESTIONS[qIdx];
+  const card = document.getElementById(`qcard-${qIdx}`);
+  if (card.dataset.graded === 'true') return card.classList.contains('correct');
+  const userAns = userAnswers[qIdx] || [];
+  if (!userAns.length && !force) {
+    alert('请先选择答案，再确认本题。');
+    return null;
+  }
+  const correctAnswer = Array.isArray(q.answer) ? q.answer.slice().sort() : [q.answer];
+  const isCorrect = userAns.length > 0 && JSON.stringify(userAns.slice().sort()) === JSON.stringify(correctAnswer);
+  const opts = card.querySelectorAll('.option');
+  card.dataset.graded = 'true';
+  card.dataset.completed = 'true';
+  card.classList.add(isCorrect ? 'correct' : 'wrong');
+  opts.forEach(o => {
+    o.classList.add('disabled');
+    const key = o.dataset.key;
+    if (correctAnswer.includes(key)) o.classList.add('correct-answer');
+    if (userAns.includes(key) && !correctAnswer.includes(key)) o.classList.add('wrong-answer');
+  });
+  const result = document.getElementById(`result-${qIdx}`);
+  result.textContent = isCorrect ? '回答正确' : `回答错误，正确答案：${correctAnswer.join('、')}`;
+  result.className = `answer-result ${isCorrect ? 'correct-text' : 'wrong-text'}`;
+  document.getElementById(`answer-${qIdx}`).textContent = `✅ 正确答案：${correctAnswer.join('、')}`;
+  document.getElementById(`exp-${qIdx}`).classList.add('show');
+  const button = document.getElementById(`checkBtn-${qIdx}`);
+  button.disabled = true;
+  button.textContent = '已确认';
+  completedAnswers[String(q.id)] = {answer: userAns.slice().sort(), is_correct: isCorrect};
+  lastConfirmedPosition = Math.max(lastConfirmedPosition, qIdx + 1);
+  if (!restoringProgress) saveProgress();
+  updateLiveSummary();
+  return isCorrect;
+}
+
+window.addEventListener('pagehide', () => {
+  const body = JSON.stringify(progressPayload());
+  try {
+    navigator.sendBeacon(RD_PROGRESS_API, new Blob([body], {type:'text/plain;charset=UTF-8'}));
+  } catch (e) {}
+});
+
+function updateLiveSummary() {
+  const graded = QUESTIONS.map((q, i) => document.getElementById(`qcard-${i}`)).filter(card => card.dataset.graded === 'true');
+  const correct = graded.filter(card => card.classList.contains('correct')).length;
+  const wrong = graded.length - correct;
+  const pct = graded.length ? Math.round(correct / graded.length * 100) : 0;
+  document.getElementById('scoreBadge').textContent = `已做 ${graded.length}/${QUESTIONS.length}｜正确 ${correct}`;
+  document.getElementById('scoreBadge').style.color = pct >= 70 ? '#52c41a' : pct >= 50 ? '#faad14' : '#ff4d4f';
+  document.getElementById('summaryTotal').textContent = graded.length;
+  document.getElementById('summaryCorrect').textContent = correct;
+  document.getElementById('summaryWrong').textContent = wrong;
+  document.getElementById('summaryRate').textContent = pct + '%';
+}
+
+function submitQuiz() {
+  QUESTIONS.forEach((q, i) => {
+    if ((userAnswers[i] || []).length) checkQuestion(i, false);
+  });
+
+  const total = document.querySelectorAll('.question-card[data-graded="true"]').length;
+  if (!total) {
+    alert('还没有已作答题目。请先选择答案并确认本题。');
+    return;
+  }
+  const correct = document.querySelectorAll('.question-card.correct').length;
+  const wrong = total - correct;
+  const pct = total > 0 ? Math.round(correct/total*100) : 0;
+  document.getElementById('scoreBadge').innerHTML = `${correct}/${total} (${pct}%)`;
+  document.getElementById('scoreBadge').style.color = pct >= 70 ? '#52c41a' : pct >= 50 ? '#faad14' : '#ff4d4f';
+
+  // Update summary
+  document.getElementById('summaryTotal').textContent = total;
+  document.getElementById('summaryCorrect').textContent = correct;
+  document.getElementById('summaryWrong').textContent = wrong;
+  document.getElementById('summaryRate').textContent = pct + '%';
+  document.getElementById('summaryBar').classList.add('show');
+
+  // Scroll to top
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  // Show wrong list with detail
+  const wrongIndices = [];
+  const wrongDetails = [];
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    if (card.classList.contains('wrong')) {
+      wrongIndices.push(i + 1);
+      const userAns = userAnswers[i] || [];
+      const correctAnswer = Array.isArray(q.answer) ? q.answer.slice().sort() : [q.answer];
+      wrongDetails.push({
+        idx: i + 1,
+        id: q.id,
+        module: q.module,
+        stem: q.stem,
+        userAnswer: userAns.length ? userAns.join(', ') : '（未作答）',
+        correctAnswer: correctAnswer.join(', '),
+      });
+    }
+  });
+  const wrongNumsEl = document.getElementById('wrongNums');
+  const detailText = document.getElementById('wrongDetailText');
+  if (wrongIndices.length > 0) {
+    wrongNumsEl.innerHTML = wrongIndices.map(n => `<span>#${n}</span>`).join('');
+    // Build detail text for copying
+    let text = '===== RD 错题报告 =====\n';
+    text += '共 ' + wrongIndices.length + ' 题\n\n';
+    wrongDetails.forEach((w, i) => {
+      text += '--- 第' + w.idx + '题 ---\n';
+      text += '题号: ' + w.idx + '  (数据库ID: ' + w.id + ')\n';
+      text += '模块: ' + w.module + '\n';
+      text += '题干: ' + w.stem + '\n';
+      text += '你的答案: ' + w.userAnswer + '\n';
+      text += '正确答案: ' + w.correctAnswer + '\n';
+      text += '——————————————\n';
+    });
+    text += '\n请帮我分析这些错题的错因和薄弱点。';
+    detailText.value = text;
+    document.getElementById('wrongList').classList.add('show');
+    document.getElementById('copyWrongBtn').style.display = '';
+  } else {
+    wrongNumsEl.innerHTML = '<span style="color:#52c41a;font-weight:600;">🎉 全部正确！</span>';
+    detailText.value = '🎉 全部正确，太棒了！';
+    document.getElementById('wrongList').classList.add('show');
+    document.getElementById('copyWrongBtn').style.display = 'none';
+  }
+}
+
+function resetQuiz() {
+  Object.keys(userAnswers).forEach(k => delete userAnswers[k]);
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    card.className = 'question-card';
+    delete card.dataset.graded;
+    card.querySelectorAll('.option').forEach(o => {
+      o.classList.remove('selected', 'correct-answer', 'wrong-answer', 'disabled');
+    });
+    document.getElementById(`exp-${i}`).classList.remove('show');
+    const checkBtn = document.getElementById(`checkBtn-${i}`);
+    checkBtn.disabled = false;
+    checkBtn.textContent = '✅ 确认本题';
+    const result = document.getElementById(`result-${i}`);
+    result.textContent = '';
+    result.className = 'answer-result';
+  });
+  document.getElementById('scoreBadge').innerHTML = '待提交';
+  document.getElementById('scoreBadge').style.color = '#667eea';
+  document.getElementById('wrongList').classList.remove('show');
+  document.getElementById('copyWrongBtn').style.display = 'none';
+  document.getElementById('resumeBadge').style.display = 'none';
+}
+
+function copyWrongDetail() {
+  const ta = document.getElementById('wrongDetailText');
+  ta.select();
+  ta.setSelectionRange(0, 999999);
+  try {
+    navigator.clipboard.writeText(ta.value).then(() => {
+      alert('✅ 已复制错题详情，请发给教练分析！');
+    }).catch(() => {
+      document.execCommand('copy');
+      alert('✅ 已复制，请发给教练分析！');
+    });
+  } catch(e) {
+    document.execCommand('copy');
+    alert('✅ 已复制，请发给教练分析！');
+  }
+}
+
+function copyWrongAnswers() {
+  const wrongIndices = [];
+  QUESTIONS.forEach((q, i) => {
+    const card = document.getElementById(`qcard-${i}`);
+    if (card.classList.contains('wrong')) wrongIndices.push(i + 1);
+  });
+  if (wrongIndices.length === 0) {
+    alert('🎉 全部正确，没有错题！');
+    return;
+  }
+  const text = wrongIndices.join(', ');
+  navigator.clipboard.writeText(text).then(() => {
+    alert(`✅ 已复制错题号：${text}`);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert(`✅ 已复制错题号：${text}`);
+  });
+}
+
+try {
+  renderQuestions();
+  document.getElementById('jsFallback').style.display = 'none';
+  restoreProgress();
+} catch(e) {
+  document.getElementById('jsFallback').innerHTML =
+    '<div style="font-size:48px;margin-bottom:16px;">❌</div>' +
+    '<div style="font-size:16px;color:#ff4d4f;">题目加载失败</div>' +
+    '<div style="font-size:13px;margin-top:8px;color:#999;">错误: ' + e.message + '</div>' +
+    '<div style="font-size:13px;margin-top:4px;color:#999;">请截屏此错误信息发给教练修复</div>';
+  console.error('RD题卡渲染错误:', e);
+}
+</script>
+</body>
+</html>
